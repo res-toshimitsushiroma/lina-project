@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINA - オーナー様初期設定</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .form-input, .form-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #f5a623;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #f5a623;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #f39c12;
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div style="background: linear-gradient(135deg, #f5a623 0%, #f76b1c 100%); color: white; padding: 30px 20px; text-align: center;">
+            <h1 style="font-size: 28px; margin: 0;">💝 LINA</h1>
+            <p style="margin: 10px 0 0 0; font-size: 14px; opacity: 0.95;">LINE×Google完全統合型 予約管理システム</p>
+        </div>
+        
+        <!-- 事前準備確認 -->
+        <div style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 15px; margin: 20px;">
+            <p style="font-size: 14px; color: #e65100; font-weight: bold; margin: 0 0 10px 0;">
+                📋 初期設定の前にご確認ください
+            </p>
+            <p style="font-size: 12px; color: #666; margin: 0;">
+                以下の準備が完了していることをご確認ください：
+            </p>
+            <ul style="font-size: 12px; color: #666; margin: 10px 0 0 0; padding-left: 20px;">
+                <li style="margin-bottom: 5px;">
+                    <strong>LINE公式アカウント</strong>が作成済み<br>
+                    <span style="font-size: 11px; color: #999;">（まだの方は事前にお送りしたガイドをご確認ください）</span>
+                </li>
+                <li>
+                    <strong>10分程度の時間</strong>が確保できる<br>
+                    <span style="font-size: 11px; color: #999;">（途中保存はできません）</span>
+                </li>
+            </ul>
+        </div>
+        
+        <div style="padding: 20px;">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h2 style="color: #333; font-size: 20px; margin-bottom: 10px;">かんたん初期設定</h2>
+                <p style="color: #666; font-size: 14px;">5分で全ての準備が完了します</p>
+            </div>
+            
+            <!-- ステップインジケーター -->
+            <div style="display: flex; justify-content: space-between; margin-bottom: 30px; position: relative;">
+                <div style="position: absolute; top: 15px; left: 25px; right: 25px; height: 2px; background: #e0e0e0; z-index: 0;"></div>
+                <div id="progress-bar" style="position: absolute; top: 15px; left: 25px; width: 0%; height: 2px; background: #4caf50; z-index: 1; transition: width 0.3s;"></div>
+                
+                <div style="text-align: center; z-index: 2; position: relative;">
+                    <div id="step1-indicator" style="width: 30px; height: 30px; background: #f5a623; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; font-size: 12px;">1</div>
+                    <span style="font-size: 10px; color: #333;">基本情報</span>
+                </div>
+                <div style="text-align: center; z-index: 2; position: relative;">
+                    <div id="step2-indicator" style="width: 30px; height: 30px; background: #e0e0e0; color: #999; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; font-size: 12px;">2</div>
+                    <span style="font-size: 10px; color: #999;">LINE</span>
+                </div>
+                <div style="text-align: center; z-index: 2; position: relative;">
+                    <div id="step3-indicator" style="width: 30px; height: 30px; background: #e0e0e0; color: #999; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; font-size: 12px;">3</div>
+                    <span style="font-size: 10px; color: #999;">Google</span>
+                </div>
+                <div style="text-align: center; z-index: 2; position: relative;">
+                    <div id="step4-indicator" style="width: 30px; height: 30px; background: #e0e0e0; color: #999; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; font-size: 12px;">4</div>
+                    <span style="font-size: 10px; color: #999;">契約確認</span>
+                </div>
+                <div style="text-align: center; z-index: 2; position: relative;">
+                    <div id="step5-indicator" style="width: 30px; height: 30px; background: #e0e0e0; color: #999; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; font-size: 12px;">5</div>
+                    <span style="font-size: 10px; color: #999;">完了</span>
+                </div>
+            </div>
+            
+            <!-- STEP 1: サロン基本情報 -->
+            <div id="step1" style="display: block;">
+                <div style="background: white; border: 1px solid #ddd; border-radius: 10px; padding: 20px;">
+                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <span style="background: #d4a574; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 15px;">💇</span>
+                        <div>
+                            <h3 style="margin: 0; font-size: 16px; color: #333;">STEP 1: サロン基本情報</h3>
+                            <p style="margin: 3px 0 0 0; font-size: 12px; color: #666;">お店の基本情報を入力してください</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">サロン名 <span style="color: #dc3545;">*</span></label>
+                        <input type="text" class="form-input" placeholder="例：美容サロン LINA" id="salon-name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">オーナー様のお名前 <span style="color: #dc3545;">*</span></label>
+                        <input type="text" class="form-input" placeholder="例：山田 花子" id="owner-name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            サロンID <span style="color: #dc3545;">*</span>
+                            <span style="color: #1976d2; cursor: pointer; font-size: 16px;" title="お店を識別する固有のIDです。URLなどに使用されます。">ℹ️</span>
+                        </label>
+                        <input type="text" class="form-input" placeholder="例：LINA2024" id="salon-id" maxlength="10" pattern="[A-Za-z0-9]{1,10}" style="text-transform: uppercase;">
+                        <p style="font-size: 11px; color: #666; margin-top: 5px;">
+                            ※英数字のみ、10文字以内、変更不可<br>
+                            ※予約URL: https://lina-app.com/<strong id="salon-id-preview">SALON_ID</strong>
+                        </p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">電話番号 <span style="color: #dc3545;">*</span></label>
+                        <input type="tel" class="form-input" placeholder="例：090-1234-5678" id="phone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">営業時間</label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="time" class="form-input" value="10:00" id="open-time">
+                            <span>〜</span>
+                            <input type="time" class="form-input" value="19:00" id="close-time">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">定休日</label>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            <label style="display: flex; align-items: center;">
+                                <input type="checkbox" style="margin-right: 5px;">
+                                <span style="font-size: 14px;">月</span>
+                            </label>
+                            <label style="display: flex; align-items: center;">
+                                <input type="checkbox" style="margin-right: 5px;">
+                                <span style="font-size: 14px;">火</span>
+                            </label>
+                            <label style="display: flex; align-items: center;">
+                                <input type="checkbox" style="margin-right: 5px;">
+                                <span style="font-size: 14px;">水</span>
+                            </label>
+                            <label style="display: flex; align-items: center;">
+                                <input type="checkbox" style="margin-right: 5px;">
+                                <span style="font-size: 14px;">木</span>
+                            </label>
+                            <label style="display: flex; align-items: center;">
+                                <input type="checkbox" style="margin-right: 5px;">
+                                <span style="font-size: 14px;">金</span>
+                            </label>
+                            <label style="display: flex; align-items: center;">
+                                <input type="checkbox" style="margin-right: 5px;">
+                                <span style="font-size: 14px;">土</span>
+                            </label>
+                            <label style="display: flex; align-items: center;">
+                                <input type="checkbox" checked style="margin-right: 5px;">
+                                <span style="font-size: 14px;">日</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button onclick="validateAndNext(2)" class="btn btn-primary" style="width: 100%;">次へ</button>
+                </div>
+            </div>
+            
+            <!-- STEP 2: LINE連携 -->
+            <div id="step2" style="display: none;">
+                <div style="background: white; border: 1px solid #ddd; border-radius: 10px; padding: 20px;">
+                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <span style="background: #00B900; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 15px;">L</span>
+                        <div>
+                            <h3 style="margin: 0; font-size: 16px; color: #333;">STEP 2: LINE公式アカウント連携</h3>
+                            <p style="margin: 3px 0 0 0; font-size: 12px; color: #666;">事前に作成いただいたアカウントを連携します</p>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <p style="font-size: 13px; color: #2e7d32; margin: 0;">
+                            <strong>✅ 事前準備の確認</strong><br>
+                            LINE公式アカウントの作成は完了していますか？
+                        </p>
+                    </div>
+                    
+                    <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <p style="font-size: 13px; color: #666; margin: 0 0 10px 0;">
+                            <strong>連携で可能になること：</strong><br>
+                            • 予約の自動通知<br>
+                            • 空き枠カレンダーの配信<br>
+                            • リマインドメッセージ送信<br>
+                            • 顧客管理の自動化
+                        </p>
+                    </div>
+                    
+                    <button onclick="connectLine()" style="width: 100%; padding: 15px; background: #00B900; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 10px;">
+                        <span style="margin-right: 10px;">🟢</span>LINE公式アカウントを連携する
+                    </button>
+                </div>
+            </div>
+            
+            <!-- STEP 3: Google連携 -->
+            <div id="step3" style="display: none;">
+                <div style="background: white; border: 1px solid #ddd; border-radius: 10px; padding: 20px;">
+                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <span style="background: #4285F4; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 15px;">G</span>
+                        <div>
+                            <h3 style="margin: 0; font-size: 16px; color: #333;">STEP 3: LINA専用Googleアカウント作成</h3>
+                            <p style="margin: 3px 0 0 0; font-size: 12px; color: #666;">新規アカウントを作成します（必須）</p>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #ffebee; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <p style="font-size: 12px; color: #c62828; margin: 0;">
+                            <strong>⚠️ 重要：必ず新規作成してください</strong><br>
+                            既存のGoogleアカウントは使用できません。
+                        </p>
+                    </div>
+                    
+                    <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <p style="font-size: 12px; color: #1976d2; margin: 0;">
+                            <strong>💡 新規作成が必要な理由</strong><br>
+                            ✅ 無料容量15GBをフル活用<br>
+                            ✅ プライベートと完全分離<br>
+                            ✅ 全オーナー様が同じ条件で利用<br>
+                            ✅ 退会時にアカウントごと削除可能
+                        </p>
+                    </div>
+                    
+                    <button onclick="startGoogleCreation()" class="btn btn-primary" style="background: #4285F4; border-color: #4285F4; width: 100%; font-size: 16px; padding: 15px;">
+                        <span style="margin-right: 10px;">➕</span>新規Googleアカウントを作成する
+                    </button>
+                </div>
+            </div>
+            
+            <!-- STEP 4: 契約確認 -->
+            <div id="step4" style="display: none;">
+                <div style="background: white; border: 1px solid #ddd; border-radius: 10px; padding: 20px;">
+                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <span style="background: #f5a623; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 15px;">📋</span>
+                        <div>
+                            <h3 style="margin: 0; font-size: 16px; color: #333;">STEP 4: 契約内容確認</h3>
+                            <p style="margin: 3px 0 0 0; font-size: 12px; color: #666;">ご利用規約と契約内容をご確認ください</p>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <h4 style="font-size: 14px; color: #333; margin-bottom: 10px;">契約情報</h4>
+                        <table style="width: 100%; font-size: 13px;">
+                            <tr>
+                                <td style="padding: 5px 0; color: #666;">契約プラン:</td>
+                                <td style="padding: 5px 0; font-weight: bold;">無料プラン</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px 0; color: #666;">サロンID:</td>
+                                <td style="padding: 5px 0; font-weight: bold;" id="confirm-salon-id">-</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px 0; color: #666;">契約開始日:</td>
+                                <td style="padding: 5px 0; font-weight: bold;">2024年12月27日</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label style="display: flex; align-items: flex-start;">
+                            <input type="checkbox" id="agree-terms" style="margin-right: 10px; margin-top: 3px;">
+                            <span style="font-size: 13px;">
+                                利用規約およびプライバシーポリシーに同意します
+                            </span>
+                        </label>
+                    </div>
+                    
+                    <button onclick="completeSetup()" class="btn btn-primary" id="complete-btn" disabled style="width: 100%; opacity: 0.5;">
+                        設定を完了する
+                    </button>
+                </div>
+            </div>
+            
+            <!-- STEP 5: 完了 -->
+            <div id="step5" style="display: none;">
+                <div style="background: linear-gradient(135deg, #4caf50, #45a049); color: white; border-radius: 10px; padding: 30px; text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 60px; margin-bottom: 20px;">🎉</div>
+                    <h2 style="font-size: 24px; margin-bottom: 10px;">設定完了！</h2>
+                    <p style="font-size: 14px; opacity: 0.95;">すべての機能が使える状態になりました</p>
+                </div>
+                
+                <div style="background: white; border: 1px solid #ddd; border-radius: 10px; padding: 20px;">
+                    <h4 style="color: #333; font-size: 16px; margin-bottom: 15px;">📝 登録情報</h4>
+                    <div style="background: #f9f9f9; padding: 10px; border-radius: 8px; font-size: 13px;">
+                        <p style="margin: 5px 0;"><strong>サロンID:</strong> <span id="final-salon-id" style="color: #1976d2; font-weight: bold;">-</span></p>
+                        <p style="margin: 5px 0;"><strong>予約URL:</strong> https://lina-app.com/<span id="final-url-id">-</span></p>
+                        <p style="margin: 5px 0;"><strong>管理画面:</strong> https://lina-app.com/admin/<span id="final-admin-id">-</span></p>
+                    </div>
+                </div>
+                
+                <button onclick="goToAdmin()" class="btn btn-primary" style="width: 100%; font-size: 16px; padding: 15px; margin-top: 20px;">
+                    管理画面へ進む
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ステップ管理
+        function nextStep(step) {
+            document.querySelectorAll('[id^="step"]').forEach(el => {
+                if (!el.id.includes('indicator')) el.style.display = 'none';
+            });
+            document.getElementById(`step${step}`).style.display = 'block';
+            
+            // プログレスバー更新
+            const progress = (step - 1) * 25;
+            document.getElementById('progress-bar').style.width = progress + '%';
+            
+            // インジケーター更新
+            for (let i = 1; i <= 5; i++) {
+                const indicator = document.getElementById(`step${i}-indicator`);
+                if (i < step) {
+                    indicator.style.background = '#4caf50';
+                    indicator.innerHTML = '✓';
+                    indicator.style.color = 'white';
+                } else if (i === step) {
+                    indicator.style.background = '#f5a623';
+                    indicator.innerHTML = i;
+                    indicator.style.color = 'white';
+                } else {
+                    indicator.style.background = '#e0e0e0';
+                    indicator.innerHTML = i;
+                    indicator.style.color = '#999';
+                }
+            }
+        }
+        
+        // 入力検証
+        function validateAndNext(step) {
+            const salonName = document.getElementById('salon-name').value;
+            const ownerName = document.getElementById('owner-name').value;
+            const salonId = document.getElementById('salon-id').value;
+            const phone = document.getElementById('phone').value;
+            
+            if (!salonName || !ownerName || !salonId || !phone) {
+                alert('必須項目を入力してください');
+                return;
+            }
+            
+            if (!/^[A-Za-z0-9]{1,10}$/.test(salonId)) {
+                alert('サロンIDは英数字10文字以内で入力してください');
+                return;
+            }
+            
+            nextStep(step);
+        }
+        
+        // サロンID入力時のプレビュー
+        document.getElementById('salon-id')?.addEventListener('input', function(e) {
+            const value = e.target.value.toUpperCase();
+            e.target.value = value;
+            document.getElementById('salon-id-preview').textContent = value || 'SALON_ID';
+        });
+        
+        // LINE連携
+        function connectLine() {
+            if (confirm('LINE公式アカウントの連携画面を開きます')) {
+                setTimeout(() => nextStep(3), 1000);
+            }
+        }
+        
+        // Google作成
+        function startGoogleCreation() {
+            window.open('https://accounts.google.com/signup', '_blank');
+            setTimeout(() => nextStep(4), 2000);
+        }
+        
+        // 利用規約同意
+        document.getElementById('agree-terms')?.addEventListener('change', function(e) {
+            const btn = document.getElementById('complete-btn');
+            btn.disabled = !e.target.checked;
+            btn.style.opacity = e.target.checked ? '1' : '0.5';
+        });
+        
+        // 設定完了
+        function completeSetup() {
+            const salonId = document.getElementById('salon-id').value;
+            document.getElementById('confirm-salon-id').textContent = salonId;
+            document.getElementById('final-salon-id').textContent = salonId;
+            document.getElementById('final-url-id').textContent = salonId.toLowerCase();
+            document.getElementById('final-admin-id').textContent = salonId.toLowerCase();
+            nextStep(5);
+        }
+        
+        // 管理画面へ
+        function goToAdmin() {
+            window.location.href = 'lina-owner-admin.html';
+        }
+    </script>
+</body>
+</html>

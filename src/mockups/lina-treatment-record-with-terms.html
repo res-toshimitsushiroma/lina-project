@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINA - 施術記録詳細（利用規約履歴付き）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #d4a574 0%, #c19a6b 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .back-button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        /* 施術記録ヘッダー */
+        .record-header {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .record-date {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .record-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .record-item {
+            font-size: 12px;
+        }
+        
+        .record-label {
+            color: #666;
+        }
+        
+        .record-value {
+            color: #333;
+            font-weight: 500;
+        }
+        
+        /* 利用規約記録 */
+        .terms-record-box {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border: 1px solid #ffcc80;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .terms-record-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #f57c00;
+            margin-bottom: 12px;
+        }
+        
+        .terms-timestamp {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        .agreed-terms {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+        
+        .term-tag {
+            background: white;
+            border: 1px solid #ffcc80;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            color: #f57c00;
+        }
+        
+        .evidence-note {
+            background: rgba(255,255,255,0.8);
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 10px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        /* 写真セクション */
+        .photo-section {
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #333;
+        }
+        
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .photo-item {
+            position: relative;
+        }
+        
+        .photo-placeholder {
+            width: 100%;
+            aspect-ratio: 1;
+            background: #e0e0e0;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 12px;
+        }
+        
+        .photo-label {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 10px;
+        }
+        
+        /* 施術メモ */
+        .memo-section {
+            background: #fffde7;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .memo-content {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        /* 次回への申し送り */
+        .handover-section {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .handover-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 8px;
+        }
+        
+        .handover-content {
+            font-size: 13px;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* アクションボタン */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: #d4a574;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        
+        /* 証跡ダウンロード */
+        .evidence-download {
+            background: #f5f5f5;
+            border: 1px dashed #999;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .download-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .download-text {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .download-button {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .download-button:hover {
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <button class="back-button" onclick="history.back()">←</button>
+            <h1 style="font-size: 18px;">施術記録詳細</h1>
+        </div>
+        
+        <div class="content">
+            <!-- 施術記録ヘッダー -->
+            <div class="record-header">
+                <div class="record-date">2024年12月25日（水）14:00</div>
+                <div class="record-info">
+                    <div class="record-item">
+                        <span class="record-label">顧客名：</span>
+                        <span class="record-value">田中 美咲 様</span>
+                    </div>
+                    <div class="record-item">
+                        <span class="record-label">メニュー：</span>
+                        <span class="record-value">まつげパーマ</span>
+                    </div>
+                    <div class="record-item">
+                        <span class="record-label">担当者：</span>
+                        <span class="record-value">山田</span>
+                    </div>
+                    <div class="record-item">
+                        <span class="record-label">料金：</span>
+                        <span class="record-value">¥5,000</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 利用規約同意記録 -->
+            <div class="terms-record-box">
+                <div class="terms-record-title">
+                    <span>📝</span>
+                    <span>利用規約同意記録</span>
+                </div>
+                
+                <div class="terms-timestamp">
+                    同意取得日時：2024年12月23日 10:30:45
+                </div>
+                
+                <div class="agreed-terms">
+                    <span class="term-tag">健全運営ポリシー</span>
+                    <span class="term-tag">ハラスメント防止</span>
+                </div>
+                
+                <div class="evidence-note">
+                    <strong>法的証跡：</strong><br>
+                    IPアドレス：203.0.113.42<br>
+                    デバイス：iPhone 14 Pro (iOS 17.2)<br>
+                    予約番号：R-2024-125-0342<br>
+                    <span style="color: #f57c00; font-weight: bold;">
+                        ※ この記録は改ざん防止のため暗号化保存されています
+                    </span>
+                </div>
+            </div>
+            
+            <!-- 写真記録 -->
+            <div class="photo-section">
+                <div class="section-title">📸 施術写真</div>
+                <div class="photo-grid">
+                    <div class="photo-item">
+                        <div class="photo-placeholder">
+                            <div>📷</div>
+                            <div>Before</div>
+                        </div>
+                        <div class="photo-label">Before</div>
+                    </div>
+                    <div class="photo-item">
+                        <div class="photo-placeholder">
+                            <div>📷</div>
+                            <div>After</div>
+                        </div>
+                        <div class="photo-label">After</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 施術メモ -->
+            <div class="memo-section">
+                <div class="section-title" style="margin-bottom: 10px;">📝 施術メモ</div>
+                <div class="memo-content">
+                    ・カール：Cカール（お客様希望）<br>
+                    ・ロッド：9mm, 10mm使用<br>
+                    ・パーマ液放置時間：10分（細毛のため短め）<br>
+                    ・仕上がり：自然なカールで満足いただけた<br>
+                    ・アレルギー反応：なし
+                </div>
+            </div>
+            
+            <!-- 次回への申し送り -->
+            <div class="handover-section">
+                <div class="handover-title">💡 次回への申し送り</div>
+                <div class="handover-content">
+                    ・まつげが細いため、カールは控えめがおすすめ<br>
+                    ・次回は2ヶ月後を推奨<br>
+                    ・眉毛の形も整えたいとのご要望あり
+                </div>
+            </div>
+            
+            <!-- 証跡ダウンロード -->
+            <div class="evidence-download">
+                <div class="download-icon">📋</div>
+                <div class="download-text">
+                    この施術記録と利用規約同意記録を<br>
+                    法的証跡としてダウンロード
+                </div>
+                <button class="download-button" onclick="downloadEvidence()">
+                    PDFでダウンロード
+                </button>
+            </div>
+            
+            <!-- アクションボタン -->
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="editRecord()">
+                    編集
+                </button>
+                <button class="btn btn-primary" onclick="shareRecord()">
+                    共有
+                </button>
+            </div>
+            
+            <!-- 関連施術履歴 -->
+            <div style="background: #f9f9f9; border-radius: 10px; padding: 15px;">
+                <div class="section-title" style="margin-bottom: 12px;">📅 この顧客の他の施術記録</div>
+                
+                <div style="border-bottom: 1px solid #e0e0e0; padding: 10px 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-size: 12px; color: #666;">2024年11月20日</div>
+                            <div style="font-size: 13px; font-weight: bold;">眉毛ワックス</div>
+                        </div>
+                        <div style="font-size: 10px; color: #999;">
+                            規約：健全運営・ハラスメント防止
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="border-bottom: 1px solid #e0e0e0; padding: 10px 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-size: 12px; color: #666;">2024年10月15日</div>
+                            <div style="font-size: 13px; font-weight: bold;">ネイル</div>
+                        </div>
+                        <div style="font-size: 10px; color: #999;">
+                            規約：健全運営・ハラスメント防止
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="padding: 10px 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-size: 12px; color: #666;">2024年6月10日</div>
+                            <div style="font-size: 13px; font-weight: bold;">ネイル</div>
+                        </div>
+                        <div style="font-size: 10px; color: #1976d2; font-weight: bold;">
+                            規約：18歳未満の親権者同意
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function downloadEvidence() {
+            alert('法的証跡PDFをダウンロード中...\n\n含まれる内容：\n' +
+                  '・施術記録詳細\n' +
+                  '・利用規約同意記録\n' +
+                  '・同意取得時の技術的記録\n' +
+                  '・タイムスタンプ証明\n\n' +
+                  'ファイル名：evidence_2024-12-25_tanaka_misaki.pdf');
+        }
+        
+        function editRecord() {
+            alert('施術記録を編集します');
+        }
+        
+        function shareRecord() {
+            alert('施術記録を共有します\n（利用規約同意記録も含まれます）');
+        }
+    </script>
+</body>
+</html>

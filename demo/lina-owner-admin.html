@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINA - オーナー管理画面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #d4a574 0%, #c19a6b 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .tabs {
+            background: white;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab-row {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .tab-item {
+            flex: 1;
+            padding: 8px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .tab-item.active {
+            background: #d4a574;
+            color: white;
+            border-color: #d4a574;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .stat-item {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin: 5px 0;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #d4a574;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #c19a6b;
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .reservation-card {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .customer-list {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        
+        .customer-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .customer-item:hover {
+            background: #f9f9f9;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .calendar-slot {
+            background: #f0f0f0;
+            border-radius: 5px;
+            padding: 8px;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .slot-available {
+            background: #e8f5e9;
+            border: 1px solid #4caf50;
+        }
+        
+        .slot-reserved {
+            background: #ffebee;
+            border: 1px solid #f44336;
+        }
+        
+        .accordion-item {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        
+        .accordion-header {
+            padding: 12px 15px;
+            background: #f9f9f9;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .accordion-header:hover {
+            background: #f0f0f0;
+        }
+        
+        .accordion-content {
+            padding: 15px;
+            display: none;
+            border-top: 1px solid #ddd;
+        }
+        
+        .accordion-content.active {
+            display: block;
+        }
+        
+        .menu-item {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .photo-upload {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            background: #fafafa;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .photo-upload:hover {
+            background: #f0f0f0;
+            border-color: #d4a574;
+        }
+        
+        #additional-menu {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <h1 style="font-size: 20px;">LINA 管理画面</h1>
+            <span style="font-size: 12px;">美容サロン LINA</span>
+        </div>
+        
+        <!-- タブメニュー -->
+        <div class="tabs">
+            <!-- メインメニュー -->
+            <div class="tab-row">
+                <button class="tab-item active" onclick="showTab('dashboard')">
+                    <div style="font-size: 20px;">📊</div>
+                    <div style="font-size: 11px; margin-top: 3px;">ダッシュボード</div>
+                </button>
+                <button class="tab-item" onclick="showTab('reservations')">
+                    <div style="font-size: 20px;">📅</div>
+                    <div style="font-size: 11px; margin-top: 3px;">予約管理</div>
+                </button>
+                <button class="tab-item" onclick="showTab('availability')">
+                    <div style="font-size: 20px;">🗓️</div>
+                    <div style="font-size: 11px; margin-top: 3px;">空き枠設定</div>
+                </button>
+            </div>
+            
+            <!-- その他のメニュー（アコーディオン） -->
+            <button class="btn btn-secondary" onclick="toggleMenuAccordion()" style="width: 100%; margin-top: 5px;">
+                その他のメニュー <span id="menu-arrow">▼</span>
+            </button>
+            <div id="additional-menu" style="display: none;">
+                <div class="tab-row">
+                    <button class="tab-item" onclick="showTab('customers')">
+                        <div style="font-size: 20px;">👥</div>
+                        <div style="font-size: 11px; margin-top: 3px;">顧客管理</div>
+                    </button>
+                    <button class="tab-item" onclick="showTab('records')">
+                        <div style="font-size: 20px;">📸</div>
+                        <div style="font-size: 11px; margin-top: 3px;">施術記録</div>
+                    </button>
+                    <button class="tab-item" onclick="showTab('reports')">
+                        <div style="font-size: 20px;">📊</div>
+                        <div style="font-size: 11px; margin-top: 3px;">集計</div>
+                    </button>
+                </div>
+                <div class="tab-row">
+                    <button class="tab-item" onclick="showTab('menus')">
+                        <div style="font-size: 20px;">📋</div>
+                        <div style="font-size: 11px; margin-top: 3px;">メニュー管理</div>
+                    </button>
+                    <button class="tab-item" onclick="showTab('settings')">
+                        <div style="font-size: 20px;">⚙️</div>
+                        <div style="font-size: 11px; margin-top: 3px;">設定</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- コンテンツエリア -->
+        <div class="content">
+            <!-- ダッシュボード -->
+            <div id="dashboard" class="tab-content active">
+                <h2 style="font-size: 18px; margin-bottom: 20px;">本日の概要</h2>
+                
+                <div class="stat-card">
+                    <h3 style="font-size: 14px; color: #666; margin-bottom: 15px;">今日の予約</h3>
+                    <div class="stat-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">総予約数</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">完了</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2</div>
+                            <div class="stat-label">予定</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">¥21,000</div>
+                            <div class="stat-label">売上</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card" style="background: #ffecd2;">
+                    <h3 style="font-size: 14px; color: #ff6b6b; margin-bottom: 15px;">今週の統計</h3>
+                    <div class="stat-grid">
+                        <div class="stat-item" style="background: white;">
+                            <div class="stat-value">28</div>
+                            <div class="stat-label">予約数</div>
+                        </div>
+                        <div class="stat-item" style="background: white;">
+                            <div class="stat-value">¥98,000</div>
+                            <div class="stat-label">売上</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card" style="background: #e3f2fd;">
+                    <h3 style="font-size: 14px; color: #1976d2; margin-bottom: 15px;">今月の統計</h3>
+                    <div class="stat-grid">
+                        <div class="stat-item" style="background: white;">
+                            <div class="stat-value">89</div>
+                            <div class="stat-label">予約数</div>
+                            <div style="font-size: 11px; color: #4caf50; margin-top: 5px;">前月比 +5件</div>
+                        </div>
+                        <div class="stat-item" style="background: white;">
+                            <div class="stat-value">¥312,000</div>
+                            <div class="stat-label">売上</div>
+                            <div style="font-size: 11px; color: #4caf50; margin-top: 5px;">前月比 +¥18,000</div>
+                        </div>
+                        <div class="stat-item" style="background: white;">
+                            <div class="stat-value">8</div>
+                            <div class="stat-label">新規顧客</div>
+                            <div style="font-size: 11px; color: #f44336; margin-top: 5px;">前月比 -2名</div>
+                        </div>
+                        <div class="stat-item" style="background: white;">
+                            <div class="stat-value">92%</div>
+                            <div class="stat-label">リピート率</div>
+                            <div style="font-size: 11px; color: #4caf50; margin-top: 5px;">前月比 +3%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 style="font-size: 16px; margin: 20px 0 15px;">次の予約</h3>
+                <div class="reservation-card">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <strong>14:00 - 山田 花子様</strong>
+                        <span style="background: #d4a574; color: white; padding: 3px 10px; border-radius: 15px; font-size: 12px;">
+                            眉毛ワックス
+                        </span>
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%;">詳細を見る</button>
+                </div>
+            </div>
+            
+            <!-- 予約管理 -->
+            <div id="reservations" class="tab-content">
+                <h2 style="font-size: 18px; margin-bottom: 20px;">予約管理</h2>
+                
+                <div class="form-group">
+                    <input type="date" class="form-input" value="2024-11-20">
+                </div>
+                
+                <div class="reservation-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <div>
+                            <strong>10:00 - 11:00</strong>
+                            <p style="font-size: 14px; color: #666; margin-top: 5px;">佐藤 美咲様</p>
+                        </div>
+                        <span style="background: #e8f5e9; color: #2e7d32; padding: 5px 10px; border-radius: 5px; font-size: 12px;">
+                            完了
+                        </span>
+                    </div>
+                    <div style="background: white; padding: 10px; border-radius: 5px; font-size: 13px;">
+                        メニュー：まつげパーマ<br>
+                        料金：¥5,000
+                    </div>
+                </div>
+                
+                <div class="reservation-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <div>
+                            <strong>14:00 - 14:30</strong>
+                            <p style="font-size: 14px; color: #666; margin-top: 5px;">山田 花子様</p>
+                        </div>
+                        <span style="background: #fff3e0; color: #f57c00; padding: 5px 10px; border-radius: 5px; font-size: 12px;">
+                            予定
+                        </span>
+                    </div>
+                    <div style="background: white; padding: 10px; border-radius: 5px; font-size: 13px;">
+                        メニュー：眉毛ワックス<br>
+                        料金：¥3,500<br>
+                        <button class="btn btn-primary" style="margin-top: 10px;">施術開始</button>
+                    </div>
+                </div>
+                
+                <div class="reservation-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <div>
+                            <strong>16:00 - 17:30</strong>
+                            <p style="font-size: 14px; color: #666; margin-top: 5px;">鈴木 愛様</p>
+                        </div>
+                        <span style="background: #ffebee; color: #f44336; padding: 5px 10px; border-radius: 5px; font-size: 12px;">
+                            キャンセル
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 空き枠設定（アコーディオン式） -->
+            <div id="availability" class="tab-content">
+                <h2 style="font-size: 18px; margin-bottom: 20px;">空き枠カレンダー設定</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">設定する週を選択</label>
+                    <input type="week" class="form-input" value="2024-W47">
+                </div>
+                
+                <!-- 日付ごとのアコーディオン -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <div>
+                            <strong>11月20日（水）</strong>
+                            <span style="font-size: 12px; color: #666; margin-left: 10px;">
+                                10:00空 11:00埋 他5枠
+                            </span>
+                        </div>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <label style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <input type="checkbox" style="margin-right: 10px;">
+                            <span>休業日にする</span>
+                        </label>
+                        <div class="calendar-slot slot-reserved">
+                            <span>10:00 - 11:00</span>
+                            <span style="color: #f44336;">埋まり</span>
+                        </div>
+                        <div class="calendar-slot slot-available">
+                            <span>11:00 - 12:00</span>
+                            <span style="color: #4caf50;">空き</span>
+                        </div>
+                        <div class="calendar-slot slot-available">
+                            <span>13:00 - 14:00</span>
+                            <span style="color: #4caf50;">空き</span>
+                        </div>
+                        <div class="calendar-slot slot-reserved">
+                            <span>14:00 - 15:00</span>
+                            <span style="color: #f44336;">埋まり</span>
+                        </div>
+                        <button class="btn btn-secondary" style="width: 100%; margin-top: 10px;">
+                            一括で空きに設定
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <div>
+                            <strong>11月21日（木）</strong>
+                            <span style="font-size: 12px; color: #666; margin-left: 10px;">
+                                全枠空き
+                            </span>
+                        </div>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <!-- 時間枠設定 -->
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" style="width: 100%; margin-top: 20px;">
+                    空き枠カレンダーを生成してLINEで配信
+                </button>
+            </div>
+            
+            <!-- 顧客管理 -->
+            <div id="customers" class="tab-content">
+                <h2 style="font-size: 18px; margin-bottom: 20px;">顧客管理</h2>
+                
+                <div class="form-group">
+                    <input type="search" class="form-input" placeholder="顧客名で検索...">
+                </div>
+                
+                <div class="customer-list">
+                    <div class="customer-item" onclick="showCustomerDetail('山田花子')">
+                        <div>
+                            <strong>山田 花子様</strong>
+                            <p style="font-size: 12px; color: #666;">最終来店：2024/11/15</p>
+                            <p style="font-size: 11px; color: #999;">来店回数：24回</p>
+                        </div>
+                        <span style="background: #ffd700; padding: 3px 8px; border-radius: 3px; font-size: 11px;">
+                            VIP
+                        </span>
+                    </div>
+                    
+                    <div class="customer-item">
+                        <div>
+                            <strong>佐藤 美咲様</strong>
+                            <p style="font-size: 12px; color: #666;">最終来店：2024/11/10</p>
+                            <p style="font-size: 11px; color: #999;">来店回数：12回</p>
+                        </div>
+                        <span style="background: #dc3545; color: white; padding: 3px 8px; border-radius: 3px; font-size: 11px;">
+                            ブロック中
+                        </span>
+                    </div>
+                    
+                    <div class="customer-item">
+                        <div>
+                            <strong>鈴木 愛様</strong>
+                            <p style="font-size: 12px; color: #666;">最終来店：2024/10/28</p>
+                            <p style="font-size: 11px; color: #999;">来店回数：3回</p>
+                        </div>
+                        <span style="background: #90caf9; padding: 3px 8px; border-radius: 3px; font-size: 11px;">
+                            新規
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- 顧客詳細（通常は非表示） -->
+                <div id="customer-detail" style="display: none;">
+                    <button class="btn btn-secondary" onclick="backToCustomerList()">← 一覧に戻る</button>
+                    <h3 style="margin: 20px 0 15px;" id="customer-name">山田 花子様</h3>
+                    
+                    <div style="background: #fff9e6; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                        <h4 style="font-size: 14px; margin-bottom: 10px;">メモ</h4>
+                        <div id="memo-display">
+                            <p style="font-size: 13px; line-height: 1.6;">
+                                金属アレルギーあり（ピアスNG）<br>
+                                ナチュラルな仕上がり希望<br>
+                                お子様の話でリラックスされます
+                            </p>
+                            <button class="btn btn-secondary" onclick="editMemo()" style="margin-top: 10px;">編集</button>
+                        </div>
+                        <div id="memo-edit" style="display: none;">
+                            <textarea class="form-textarea" rows="5">金属アレルギーあり（ピアスNG）
+ナチュラルな仕上がり希望
+お子様の話でリラックスされます</textarea>
+                            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                <button class="btn btn-primary" onclick="saveMemo()">保存</button>
+                                <button class="btn btn-secondary" onclick="cancelMemo()">キャンセル</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #f9f9f9; padding: 15px; border-radius: 10px;">
+                        <h4 style="font-size: 14px; margin-bottom: 10px;">来店履歴</h4>
+                        <div style="font-size: 13px;">
+                            <div style="padding: 8px 0; border-bottom: 1px solid #ddd;">
+                                2024/11/15 - 眉毛ワックス (¥3,500)
+                            </div>
+                            <div style="padding: 8px 0; border-bottom: 1px solid #ddd;">
+                                2024/10/20 - まつげパーマ (¥5,000)
+                            </div>
+                            <div style="padding: 8px 0;">
+                                2024/09/15 - 眉毛ワックス (¥3,500)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 施術記録 -->
+            <div id="records" class="tab-content">
+                <h2 style="font-size: 18px; margin-bottom: 20px;">施術記録</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">顧客選択</label>
+                    <select class="form-select">
+                        <option>山田 花子様</option>
+                        <option>佐藤 美咲様</option>
+                        <option>鈴木 愛様</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Before写真（最大5枚）</label>
+                    <div class="photo-upload">
+                        <div style="font-size: 24px; color: #d4a574;">📷</div>
+                        <p style="color: #999; font-size: 14px; margin-top: 10px;">クリックして写真を選択</p>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">After写真（最大5枚）</label>
+                    <div class="photo-upload">
+                        <div style="font-size: 24px; color: #d4a574;">📷</div>
+                        <p style="color: #999; font-size: 14px; margin-top: 10px;">クリックして写真を選択</p>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">施術メモ</label>
+                    <textarea class="form-textarea" rows="4" placeholder="施術内容や次回への申し送りなど"></textarea>
+                </div>
+                
+                <button class="btn btn-primary" style="width: 100%;">記録を保存</button>
+                
+                <h3 style="margin: 30px 0 15px;">過去の記録</h3>
+                <div style="background: #f9f9f9; border-radius: 10px; padding: 15px; margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <strong>山田 花子様 - 眉毛ワックス</strong>
+                        <span style="font-size: 12px; color: #999;">2024/11/15</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23ddd'%3E%3Crect width='100' height='100'/%3E%3Ctext x='50' y='50' text-anchor='middle' dy='.3em' fill='%23999'%3EBefore%3C/text%3E%3C/svg%3E" style="width: 100%; border-radius: 5px;">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23ddd'%3E%3Crect width='100' height='100'/%3E%3Ctext x='50' y='50' text-anchor='middle' dy='.3em' fill='%23999'%3EAfter%3C/text%3E%3C/svg%3E" style="width: 100%; border-radius: 5px;">
+                    </div>
+                    <p style="font-size: 12px; color: #666; margin-top: 10px;">メモ: 次回は少し太めのデザインを希望</p>
+                </div>
+            </div>
+            
+            <!-- 集計・レポート -->
+            <div id="reports" class="tab-content">
+                <h2 style="font-size: 18px; margin-bottom: 20px;">集計・レポート</h2>
+                
+                <!-- 期間選択 -->
+                <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                    <div class="form-group">
+                        <label class="form-label">集計期間</label>
+                        <select class="form-select" onchange="changePeriod(this.value)">
+                            <option value="month">今月（2024年11月）</option>
+                            <option value="quarter">今四半期（2024年Q4）</option>
+                            <option value="year" selected>今年（2024年）</option>
+                            <option value="custom">期間指定</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- 年間サマリー -->
+                <div style="background: #e8f5e9; border: 1px solid #4caf50; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
+                    <h4 style="color: #2e7d32; margin-bottom: 15px;">2024年 年間サマリー</h4>
+                    <div class="stat-grid">
+                        <div style="background: white; padding: 10px; border-radius: 8px;">
+                            <p style="font-size: 12px; color: #666; margin: 0;">総売上</p>
+                            <p style="font-size: 20px; font-weight: bold; color: #333; margin: 5px 0;">¥3,842,000</p>
+                            <p style="font-size: 11px; color: #4caf50;">前年比 +23.5%</p>
+                        </div>
+                        <div style="background: white; padding: 10px; border-radius: 8px;">
+                            <p style="font-size: 12px; color: #666; margin: 0;">総予約数</p>
+                            <p style="font-size: 20px; font-weight: bold; color: #333; margin: 5px 0;">1,095件</p>
+                            <p style="font-size: 11px; color: #4caf50;">前年比 +18.2%</p>
+                        </div>
+                        <div style="background: white; padding: 10px; border-radius: 8px;">
+                            <p style="font-size: 12px; color: #666; margin: 0;">顧客数</p>
+                            <p style="font-size: 20px; font-weight: bold; color: #333; margin: 5px 0;">148名</p>
+                            <p style="font-size: 11px; color: #666;">新規: 42名</p>
+                        </div>
+                        <div style="background: white; padding: 10px; border-radius: 8px;">
+                            <p style="font-size: 12px; color: #666; margin: 0;">平均客単価</p>
+                            <p style="font-size: 20px; font-weight: bold; color: #333; margin: 5px 0;">¥3,510</p>
+                            <p style="font-size: 11px; color: #4caf50;">前年比 +¥210</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- エクスポート機能 -->
+                <div style="background: #fff3e0; border: 1px solid #ffcc80; border-radius: 10px; padding: 15px; margin-bottom: 20px;">
+                    <h5 style="color: #f57c00; font-size: 14px; margin-bottom: 10px;">
+                        📥 データエクスポート
+                    </h5>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <button class="btn btn-secondary" style="font-size: 12px;">📄 PDF</button>
+                        <button class="btn btn-secondary" style="font-size: 12px;">🖼️ 画像</button>
+                        <button class="btn btn-secondary" style="font-size: 12px;">📊 CSV</button>
+                        <button class="btn btn-secondary" style="font-size: 12px;">💾 バックアップ</button>
+                    </div>
+                </div>
+                
+                <!-- データ管理 -->
+                <div style="background: #ffebee; border: 1px solid #ffcdd2; border-radius: 10px; padding: 15px;">
+                    <h5 style="color: #c62828; font-size: 14px; margin-bottom: 10px;">
+                        🗑️ データ管理
+                    </h5>
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <input type="checkbox" style="margin-right: 10px;">
+                            <span style="font-size: 13px;">1年以上前の施術写真を圧縮</span>
+                        </label>
+                        <label style="display: flex; align-items: center;">
+                            <input type="checkbox" style="margin-right: 10px;">
+                            <span style="font-size: 13px;">2年以上前の予約詳細を削除</span>
+                        </label>
+                    </div>
+                    <button class="btn btn-secondary" style="background: #ff9800; color: white;">
+                        データ整理を実行
+                    </button>
+                    <p style="font-size: 11px; color: #999; margin-top: 10px;">
+                        現在の使用容量: 128MB / 500MB（25.6%）
+                    </p>
+                </div>
+            </div>
+            
+            <!-- メニュー管理 -->
+            <div id="menus" class="tab-content">
+                <h2 style="font-size: 18px; margin-bottom: 20px;">メニュー管理</h2>
+                
+                <div class="menu-item">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <h3 style="font-size: 16px;">眉毛ワックス</h3>
+                        <button class="btn btn-secondary" style="padding: 5px 10px; font-size: 12px;">編集</button>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px;">
+                        <div>
+                            <span style="color: #666;">料金:</span> ¥3,500
+                        </div>
+                        <div>
+                            <span style="color: #666;">施術時間:</span> 30分
+                        </div>
+                        <div>
+                            <span style="color: #666;">準備時間:</span> 10分
+                        </div>
+                        <div>
+                            <span style="color: #666;">片付け時間:</span> 10分
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <h3 style="font-size: 16px;">まつげパーマ</h3>
+                        <button class="btn btn-secondary" style="padding: 5px 10px; font-size: 12px;">編集</button>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px;">
+                        <div>
+                            <span style="color: #666;">料金:</span> ¥5,000
+                        </div>
+                        <div>
+                            <span style="color: #666;">施術時間:</span> 60分
+                        </div>
+                        <div>
+                            <span style="color: #666;">準備時間:</span> 15分
+                        </div>
+                        <div>
+                            <span style="color: #666;">片付け時間:</span> 15分
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" style="width: 100%; margin-top: 20px;">
+                    新しいメニューを追加
+                </button>
+            </div>
+            
+            <!-- 利用規約設定 -->
+            <div id="terms" class="tab-content">
+                <h2 style="font-size: 18px; margin-bottom: 20px;">利用規約設定</h2>
+                
+                <div style="background: #e3f2fd; border-left: 4px solid #2196f3; padding: 12px; margin-bottom: 20px; border-radius: 5px;">
+                    <p style="font-size: 12px; color: #1976d2; margin: 0;">
+                        <strong>💡 お客様向けの利用規約</strong><br>
+                        予約時に同意いただく規約を設定できます。ONにした規約は予約確認時に表示されます。
+                    </p>
+                </div>
+                
+                <!-- 年齢制限 -->
+                <div style="background: white; border: 1px solid #ddd; border-radius: 10px; padding: 15px; margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong style="font-size: 14px;">18歳未満の親権者同意</strong>
+                            <span style="display: inline-block; padding: 2px 6px; background: #e0e0e0; color: #666; border-radius: 10px; font-size: 10px; margin-left: 8px;">OFF</span>
+                        </div>
+                        <label style="position: relative; width: 44px; height: 24px;">
+                            <input type="checkbox" style="opacity: 0; width: 0; height: 0;">
+                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; border-radius: 24px; transition: 0.4s;"></span>
+                        </label>
+                    </div>
+                    <p style="font-size: 11px; color: #666; margin-top: 8px;">未成年者の施術に親権者同意を必須とします</p>
+                </div>
+                
+                <!-- 施術責任 -->
+                <div style="background: white; border: 1px solid #ddd; border-radius: 10px; padding: 15px; margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong style="font-size: 14px;">施術責任の明確化</strong>
+                            <span style="display: inline-block; padding: 2px 6px; background: #e0e0e0; color: #666; border-radius: 10px; font-size: 10px; margin-left: 8px;">OFF</span>
+                        </div>
+                        <label style="position: relative; width: 44px; height: 24px;">
+                            <input type="checkbox" style="opacity: 0; width: 0; height: 0;">
+                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; border-radius: 24px; transition: 0.4s;"></span>
+                        </label>
+                    </div>
+                    <p style="font-size: 11px; color: #666; margin-top: 8px;">施術内容の責任範囲を明示します</p>
+                </div>
+                
+                <!-- 健全運営 -->
+                <div style="background: white; border: 1px solid #ddd; border-radius: 10px; padding: 15px; margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong style="font-size: 14px;">健全運営ポリシー</strong>
+                            <span style="display: inline-block; padding: 2px 6px; background: #e8f5e9; color: #2e7d32; border-radius: 10px; font-size: 10px; margin-left: 8px;">ON</span>
+                        </div>
+                        <label style="position: relative; width: 44px; height: 24px;">
+                            <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
+                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #4caf50; border-radius: 24px; transition: 0.4s;"></span>
+                        </label>
+                    </div>
+                    <p style="font-size: 11px; color: #666; margin-top: 8px;">不適切な利用を防止します</p>
+                </div>
+                
+                <!-- ハラスメント防止 -->
+                <div style="background: white; border: 1px solid #ddd; border-radius: 10px; padding: 15px; margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong style="font-size: 14px;">ハラスメント防止</strong>
+                            <span style="display: inline-block; padding: 2px 6px; background: #e8f5e9; color: #2e7d32; border-radius: 10px; font-size: 10px; margin-left: 8px;">ON</span>
+                        </div>
+                        <label style="position: relative; width: 44px; height: 24px;">
+                            <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
+                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #4caf50; border-radius: 24px; transition: 0.4s;"></span>
+                        </label>
+                    </div>
+                    <p style="font-size: 11px; color: #666; margin-top: 8px;">スタッフとお客様の安全を守ります</p>
+                </div>
+                
+                <!-- カスタム規約 -->
+                <div style="background: #fafafa; border: 2px dashed #ddd; border-radius: 10px; padding: 15px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong style="font-size: 14px;">独自の規約</strong>
+                            <span style="display: inline-block; padding: 2px 6px; background: #e0e0e0; color: #666; border-radius: 10px; font-size: 10px; margin-left: 8px;">OFF</span>
+                        </div>
+                        <label style="position: relative; width: 44px; height: 24px;">
+                            <input type="checkbox" style="opacity: 0; width: 0; height: 0;">
+                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; border-radius: 24px; transition: 0.4s;"></span>
+                        </label>
+                    </div>
+                    <p style="font-size: 11px; color: #666; margin-top: 8px;">お店独自のルールを追加できます</p>
+                </div>
+                
+                <button class="btn btn-primary" style="width: 100%;" onclick="alert('詳細設定画面を開きます')">
+                    📝 利用規約の詳細設定
+                </button>
+            </div>
+            
+            <!-- 設定 -->
+            <div id="settings" class="tab-content">
+                <h2 style="font-size: 18px; margin-bottom: 20px;">設定</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">サロン名</label>
+                    <input type="text" class="form-input" value="美容サロン LINA">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">営業時間</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="time" class="form-input" value="10:00">
+                        <span style="padding: 10px;">〜</span>
+                        <input type="time" class="form-input" value="19:00">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">定休日</label>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <label><input type="checkbox"> 月</label>
+                        <label><input type="checkbox"> 火</label>
+                        <label><input type="checkbox"> 水</label>
+                        <label><input type="checkbox"> 木</label>
+                        <label><input type="checkbox"> 金</label>
+                        <label><input type="checkbox"> 土</label>
+                        <label><input type="checkbox" checked> 日</label>
+                    </div>
+                </div>
+                
+                <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin-top: 20px;">
+                    <h4 style="font-size: 14px; margin-bottom: 10px;">LINE連携設定</h4>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                        ステータス: <span style="color: #4caf50; font-weight: bold;">連携済み</span>
+                    </p>
+                    <button class="btn btn-secondary">連携を解除</button>
+                </div>
+                
+                <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin-top: 15px;">
+                    <h4 style="font-size: 14px; margin-bottom: 10px;">Google連携設定</h4>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                        ステータス: <span style="color: #4caf50; font-weight: bold;">連携済み</span>
+                    </p>
+                    <button class="btn btn-secondary">連携を解除</button>
+                </div>
+                
+                <button class="btn btn-primary" style="width: 100%; margin-top: 30px;">
+                    設定を保存
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function showTab(tabName) {
+            // すべてのタブコンテンツを非表示
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // すべてのタブボタンから active クラスを削除
+            document.querySelectorAll('.tab-item').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // 選択されたタブコンテンツを表示
+            document.getElementById(tabName).classList.add('active');
+            
+            // クリックされたタブボタンに active クラスを追加
+            event.target.closest('.tab-item').classList.add('active');
+        }
+        
+        function toggleMenuAccordion() {
+            const menu = document.getElementById('additional-menu');
+            const arrow = document.getElementById('menu-arrow');
+            if (menu.style.display === 'none') {
+                menu.style.display = 'block';
+                arrow.textContent = '▲';
+            } else {
+                menu.style.display = 'none';
+                arrow.textContent = '▼';
+            }
+        }
+        
+        function toggleAccordion(element) {
+            const content = element.nextElementSibling;
+            const arrow = element.querySelector('span:last-child');
+            
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+                arrow.textContent = '▼';
+            } else {
+                content.classList.add('active');
+                arrow.textContent = '▲';
+            }
+        }
+        
+        function showCustomerDetail(name) {
+            document.querySelector('.customer-list').style.display = 'none';
+            document.getElementById('customer-detail').style.display = 'block';
+            document.getElementById('customer-name').textContent = name + '様';
+        }
+        
+        function backToCustomerList() {
+            document.querySelector('.customer-list').style.display = 'block';
+            document.getElementById('customer-detail').style.display = 'none';
+        }
+        
+        function editMemo() {
+            document.getElementById('memo-display').style.display = 'none';
+            document.getElementById('memo-edit').style.display = 'block';
+        }
+        
+        function saveMemo() {
+            document.getElementById('memo-display').style.display = 'block';
+            document.getElementById('memo-edit').style.display = 'none';
+        }
+        
+        function cancelMemo() {
+            document.getElementById('memo-display').style.display = 'block';
+            document.getElementById('memo-edit').style.display = 'none';
+        }
+        
+        function changePeriod(value) {
+            // 期間変更処理
+            console.log('Period changed to:', value);
+        }
+    </script>
+</body>
+</html>

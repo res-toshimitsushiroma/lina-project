@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美容サロン LINA - 予約</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #d4a574 0%, #c19a6b 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .menu-card {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .menu-card.selected {
+            border-color: #d4a574;
+            background: #fff9f0;
+        }
+        
+        .calendar-container {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-top: 15px;
+        }
+        
+        .calendar-day {
+            padding: 10px 5px;
+            text-align: center;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .calendar-day.available {
+            background: #e8f5e9;
+            border: 1px solid #4caf50;
+        }
+        
+        .calendar-day.available:hover {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .calendar-day.full {
+            background: #ffebee;
+            color: #999;
+            cursor: not-allowed;
+        }
+        
+        .calendar-day.selected {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .time-slot {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .time-slot:hover {
+            background: #f0f0f0;
+        }
+        
+        .time-slot.selected {
+            background: #d4a574;
+            color: white;
+            border-color: #d4a574;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background: #d4a574;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #c19a6b;
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 5px;
+            font-size: 14px;
+            color: #999;
+        }
+        
+        .step.active .step-number {
+            background: #d4a574;
+            color: white;
+        }
+        
+        .step.completed .step-number {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .step-line {
+            position: absolute;
+            top: 15px;
+            left: 15%;
+            right: 15%;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: 1;
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .info-card {
+            background: #f0f8ff;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        
+        .success-message {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <h1 style="font-size: 24px; margin-bottom: 10px;">美容サロン LINA</h1>
+            <p style="font-size: 14px; opacity: 0.9;">かんたんLINE予約</p>
+        </div>
+        
+        <div class="content">
+            <!-- ステップインジケーター -->
+            <div class="step-indicator">
+                <div class="step-line"></div>
+                <div class="step active">
+                    <div class="step-number">1</div>
+                    <div class="step-label">メニュー</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-label">日時</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-label">情報入力</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-label">確認</div>
+                </div>
+            </div>
+            
+            <!-- STEP 1: メニュー選択 -->
+            <div id="step1" class="section active">
+                <h2 style="font-size: 18px; margin-bottom: 20px;">メニューを選択</h2>
+                
+                <div class="menu-card" onclick="selectMenu(this, '眉毛ワックス', 3500, 30)">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h3 style="font-size: 16px; margin-bottom: 5px;">眉毛ワックス</h3>
+                            <p style="font-size: 13px; color: #666;">所要時間：約30分</p>
+                        </div>
+                        <div style="text-align: right;">
+                            <p style="font-size: 18px; font-weight: bold; color: #d4a574;">¥3,500</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-card" onclick="selectMenu(this, 'まつげパーマ', 5000, 60)">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h3 style="font-size: 16px; margin-bottom: 5px;">まつげパーマ</h3>
+                            <p style="font-size: 13px; color: #666;">所要時間：約60分</p>
+                        </div>
+                        <div style="text-align: right;">
+                            <p style="font-size: 18px; font-weight: bold; color: #d4a574;">¥5,000</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-card" onclick="selectMenu(this, 'ネイル', 7000, 90)">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h3 style="font-size: 16px; margin-bottom: 5px;">ネイル</h3>
+                            <p style="font-size: 13px; color: #666;">所要時間：約90分</p>
+                        </div>
+                        <div style="text-align: right;">
+                            <p style="font-size: 18px; font-weight: bold; color: #d4a574;">¥7,000</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="goToStep(2)" style="margin-top: 30px;">
+                    次へ：日時選択
+                </button>
+            </div>
+            
+            <!-- STEP 2: 日時選択 -->
+            <div id="step2" class="section">
+                <h2 style="font-size: 18px; margin-bottom: 20px;">日時を選択</h2>
+                
+                <div class="calendar-container">
+                    <h3 style="font-size: 14px; margin-bottom: 10px;">2024年11月</h3>
+                    <div class="calendar-grid">
+                        <div style="text-align: center; font-size: 11px; color: #999;">日</div>
+                        <div style="text-align: center; font-size: 11px; color: #999;">月</div>
+                        <div style="text-align: center; font-size: 11px; color: #999;">火</div>
+                        <div style="text-align: center; font-size: 11px; color: #999;">水</div>
+                        <div style="text-align: center; font-size: 11px; color: #999;">木</div>
+                        <div style="text-align: center; font-size: 11px; color: #999;">金</div>
+                        <div style="text-align: center; font-size: 11px; color: #999;">土</div>
+                        
+                        <div class="calendar-day full">17</div>
+                        <div class="calendar-day full">18</div>
+                        <div class="calendar-day full">19</div>
+                        <div class="calendar-day available" onclick="selectDate(this, '20')">20<br>○</div>
+                        <div class="calendar-day available" onclick="selectDate(this, '21')">21<br>○</div>
+                        <div class="calendar-day available" onclick="selectDate(this, '22')">22<br>◎</div>
+                        <div class="calendar-day available" onclick="selectDate(this, '23')">23<br>◎</div>
+                    </div>
+                </div>
+                
+                <h3 style="font-size: 14px; margin-bottom: 15px;">時間を選択</h3>
+                <div class="time-slots">
+                    <div class="time-slot" onclick="selectTime(this, '10:00')">10:00</div>
+                    <div class="time-slot" onclick="selectTime(this, '11:00')">11:00</div>
+                    <div class="time-slot" onclick="selectTime(this, '13:00')">13:00</div>
+                    <div class="time-slot" onclick="selectTime(this, '14:00')">14:00</div>
+                    <div class="time-slot" onclick="selectTime(this, '15:00')">15:00</div>
+                    <div class="time-slot" onclick="selectTime(this, '16:00')">16:00</div>
+                </div>
+                
+                <button class="btn btn-secondary" onclick="goToStep(1)">
+                    戻る
+                </button>
+                <button class="btn btn-primary" onclick="goToStep(3)">
+                    次へ：予約確認
+                </button>
+            </div>
+            
+            <!-- STEP 3: 情報入力 -->
+            <div id="step3" class="section">
+                <h2 style="font-size: 18px; margin-bottom: 20px;">お客様情報の入力</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">お名前 <span style="color: #dc3545;">*</span></label>
+                    <input type="text" class="form-input" id="customer-name" placeholder="山田 花子" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">電話番号 <span style="color: #dc3545;">*</span></label>
+                    <input type="tel" class="form-input" id="customer-phone" placeholder="090-1234-5678" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">メールアドレス</label>
+                    <input type="email" class="form-input" id="customer-email" placeholder="example@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">ご要望（任意）</label>
+                    <textarea class="form-textarea" rows="3" placeholder="アレルギーやご要望があればご記入ください"></textarea>
+                </div>
+                
+                <button class="btn btn-secondary" onclick="goToStep(2)">
+                    戻る
+                </button>
+                <button class="btn btn-primary" onclick="goToStep(4)">
+                    次へ：予約確認
+                </button>
+            </div>
+            
+            <!-- STEP 4: 予約確認 -->
+            <div id="step4" class="section">
+                <h2 style="font-size: 18px; margin-bottom: 20px;">予約内容の確認</h2>
+                
+                <!-- 予約内容サマリー -->
+                <div style="background: #f9f9f9; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h3 style="font-size: 14px; color: #666; margin-bottom: 15px;">予約内容</h3>
+                    <table style="width: 100%; font-size: 14px;">
+                        <tr>
+                            <td style="padding: 8px 0; color: #666;">メニュー：</td>
+                            <td style="padding: 8px 0; font-weight: bold;" id="confirm-menu">眉毛ワックス</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; color: #666;">日時：</td>
+                            <td style="padding: 8px 0; font-weight: bold;" id="confirm-datetime">11月20日（水）14:00</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; color: #666;">料金：</td>
+                            <td style="padding: 8px 0; font-weight: bold;" id="confirm-price">¥3,500</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; color: #666;">所要時間：</td>
+                            <td style="padding: 8px 0;" id="confirm-duration">約30分</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <!-- 利用規約 -->
+                <div style="background: #fff3e0; border: 1px solid #ffcc80; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
+                    <h3 style="font-size: 16px; color: #f57c00; margin-bottom: 15px;">📝 ご利用規約</h3>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 15px;">
+                        以下の規約に同意の上、ご予約をお願いいたします。
+                    </p>
+                    
+                    <div style="background: white; padding: 15px; border-radius: 8px; max-height: 300px; overflow-y: auto; margin-bottom: 15px; font-size: 13px; line-height: 1.8;">
+                        <!-- 健全運営ポリシー -->
+                        <h4 style="font-size: 14px; color: #333; margin-bottom: 10px;">第1条 サービスの利用目的</h4>
+                        <p style="margin-bottom: 15px;">
+                            当サロンは美容、健康、リラクゼーションを目的としたサービスを提供しております。<br>
+                            風俗営業、性的サービス、またはこれらに該当・類似する行為を目的とした利用は固くお断りいたします。<br>
+                            不適切な利用が確認された場合、サービスの提供を中止し、以後の利用をお断りさせていただきます。
+                        </p>
+                        
+                        <!-- ハラスメント防止 -->
+                        <h4 style="font-size: 14px; color: #333; margin-bottom: 10px;">第2条 禁止行為</h4>
+                        <p style="margin-bottom: 10px;">
+                            お客様には、当サロンスタッフに対して以下の行為を行わないことをお約束いただきます：
+                        </p>
+                        <ul style="margin: 0 0 15px 20px; padding: 0;">
+                            <li>暴言、威圧、脅迫等のハラスメント行為</li>
+                            <li>性的な発言、接触、要求等のセクシャルハラスメント</li>
+                            <li>わいせつな言動または行為</li>
+                            <li>業務の円滑な遂行を妨げる行為</li>
+                            <li>その他、社会通念上不適切と判断される行為</li>
+                        </ul>
+                        <p>
+                            違反があった場合、サービスの提供を中止し、予約の取消、今後の利用停止等の措置を取らせていただきます。<br>
+                            なお、これらの対応について予約システム提供者（LINA）は一切の責任を負いません。
+                        </p>
+                    </div>
+                    
+                    <label style="display: flex; align-items: flex-start; cursor: pointer;">
+                        <input type="checkbox" id="agree-terms" style="margin-right: 10px; margin-top: 3px;" required>
+                        <span style="font-size: 14px; color: #333;">
+                            上記の利用規約に同意します <span style="color: #dc3545;">*</span>
+                        </span>
+                    </label>
+                </div>
+                
+                <!-- キャンセルポリシー -->
+                <div class="info-card">
+                    <h4 style="font-size: 13px; margin-bottom: 8px;">⚠️ キャンセルポリシー</h4>
+                    <p style="font-size: 12px; margin: 0;">
+                        前日までのキャンセル：無料<br>
+                        当日キャンセル：料金の50%
+                    </p>
+                </div>
+                
+                <button class="btn btn-secondary" onclick="goToStep(3)">
+                    戻る
+                </button>
+                <button class="btn btn-primary" onclick="confirmReservation()" id="confirm-button" disabled style="opacity: 0.5;">
+                    予約を確定する
+                </button>
+            </div>
+            
+            <!-- 予約完了 -->
+            <div id="complete" class="section">
+                <div class="success-message">
+                    <div style="font-size: 48px; margin-bottom: 20px;">✅</div>
+                    <h2 style="font-size: 20px; color: #4caf50; margin-bottom: 10px;">予約が完了しました</h2>
+                    <p style="color: #666; font-size: 14px;">
+                        LINEに確認メッセージをお送りしました
+                    </p>
+                </div>
+                
+                <div style="background: #f9f9f9; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h3 style="font-size: 14px; color: #666; margin-bottom: 15px;">予約詳細</h3>
+                    <p style="font-size: 14px; line-height: 1.8;">
+                        <strong>予約番号：</strong> #2024112001<br>
+                        <strong>メニュー：</strong> <span id="complete-menu">眉毛ワックス</span><br>
+                        <strong>日時：</strong> <span id="complete-datetime">11月20日（水）14:00</span><br>
+                        <strong>場所：</strong> 美容サロンLINA
+                    </p>
+                </div>
+                
+                <div style="background: #fff3e0; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                    <p style="font-size: 13px; color: #f57c00;">
+                        <strong>⏰ リマインド通知</strong><br>
+                        前日の20時にLINEでリマインドをお送りします
+                    </p>
+                </div>
+                
+                <button class="btn btn-primary" onclick="backToHome()">
+                    ホームに戻る
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let selectedMenu = {};
+        let selectedDate = '';
+        let selectedTime = '';
+        
+        function selectMenu(element, name, price, duration) {
+            // 全てのメニューカードから selected クラスを削除
+            document.querySelectorAll('.menu-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // クリックされたカードに selected クラスを追加
+            element.classList.add('selected');
+            
+            // 選択されたメニュー情報を保存
+            selectedMenu = { name, price, duration };
+        }
+        
+        function selectDate(element, date) {
+            // 全ての日付から selected クラスを削除
+            document.querySelectorAll('.calendar-day').forEach(day => {
+                day.classList.remove('selected');
+            });
+            
+            // クリックされた日付に selected クラスを追加
+            element.classList.add('selected');
+            selectedDate = date;
+        }
+        
+        function selectTime(element, time) {
+            // 全ての時間から selected クラスを削除
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            
+            // クリックされた時間に selected クラスを追加
+            element.classList.add('selected');
+            selectedTime = time;
+        }
+        
+        function goToStep(step) {
+            // 全てのセクションを非表示
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // 指定されたステップを表示
+            document.getElementById(`step${step}`).classList.add('active');
+            
+            // ステップインジケーターを更新
+            updateStepIndicator(step);
+            
+            // 確認画面の場合、選択内容を反映
+            if (step === 4) {
+                document.getElementById('confirm-menu').textContent = selectedMenu.name || '未選択';
+                document.getElementById('confirm-datetime').textContent = `11月${selectedDate}日（水）${selectedTime}`;
+                document.getElementById('confirm-price').textContent = `¥${selectedMenu.price?.toLocaleString() || '0'}`;
+                document.getElementById('confirm-duration').textContent = `約${selectedMenu.duration || '0'}分`;
+            }
+        }
+        
+        function updateStepIndicator(currentStep) {
+            document.querySelectorAll('.step').forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index + 1 < currentStep) {
+                    step.classList.add('completed');
+                    step.querySelector('.step-number').textContent = '✓';
+                } else if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                } else {
+                    step.querySelector('.step-number').textContent = index + 1;
+                }
+            });
+        }
+        
+        // 利用規約同意チェック
+        document.addEventListener('DOMContentLoaded', function() {
+            const agreeCheckbox = document.getElementById('agree-terms');
+            const confirmButton = document.getElementById('confirm-button');
+            
+            if (agreeCheckbox && confirmButton) {
+                agreeCheckbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        confirmButton.disabled = false;
+                        confirmButton.style.opacity = '1';
+                    } else {
+                        confirmButton.disabled = true;
+                        confirmButton.style.opacity = '0.5';
+                    }
+                });
+            }
+        });
+        
+        function confirmReservation() {
+            if (!document.getElementById('agree-terms').checked) {
+                alert('利用規約に同意してください');
+                return;
+            }
+            
+            // 完了画面の情報を更新
+            document.getElementById('complete-menu').textContent = selectedMenu.name;
+            document.getElementById('complete-datetime').textContent = `11月${selectedDate}日（水）${selectedTime}`;
+            
+            // 全てのセクションを非表示
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // 完了画面を表示
+            document.getElementById('complete').classList.add('active');
+            
+            // ステップインジケーターを非表示
+            document.querySelector('.step-indicator').style.display = 'none';
+        }
+        
+        function backToHome() {
+            // ホームに戻る（実際の実装では適切なページへ遷移）
+            location.reload();
+        }
+    </script>
+</body>
+</html>

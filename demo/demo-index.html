@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINA - デモ選択</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s;
+        }
+        
+        .logo {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.95;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .demo-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            animation: fadeInUp 0.8s;
+            animation-fill-mode: both;
+        }
+        
+        .demo-card:nth-child(1) { animation-delay: 0.1s; }
+        .demo-card:nth-child(2) { animation-delay: 0.2s; }
+        .demo-card:nth-child(3) { animation-delay: 0.3s; }
+        
+        .demo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+        }
+        
+        .card-header {
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.1;
+            background-image: radial-gradient(circle at 50% 50%, white 0%, transparent 70%);
+        }
+        
+        .owner-setup .card-header {
+            background: linear-gradient(135deg, #f5a623 0%, #f76b1c 100%);
+            color: white;
+        }
+        
+        .owner-admin .card-header {
+            background: linear-gradient(135deg, #d4a574 0%, #c19a6b 100%);
+            color: white;
+        }
+        
+        .customer .card-header {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+        }
+        
+        .card-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-type {
+            font-size: 14px;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-content {
+            padding: 30px;
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+        
+        .feature-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .check-icon {
+            color: #4caf50;
+            margin-right: 12px;
+            font-size: 16px;
+        }
+        
+        .demo-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #f5f5f5;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+        }
+        
+        .demo-button:hover {
+            background: #e0e0e0;
+            transform: translateX(5px);
+        }
+        
+        .arrow {
+            display: inline-block;
+            margin-left: 8px;
+            transition: transform 0.3s;
+        }
+        
+        .demo-button:hover .arrow {
+            transform: translateX(5px);
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+            animation: fadeIn 1s 0.5s both;
+        }
+        
+        .back-link a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 10px 20px;
+            border: 2px solid white;
+            border-radius: 25px;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        
+        .back-link a:hover {
+            background: white;
+            color: #764ba2;
+        }
+        
+        /* デバイス表示 */
+        .device-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .device {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 15px;
+            font-size: 12px;
+        }
+        
+        /* ステータスバッジ */
+        .status-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            z-index: 2;
+        }
+        
+        .new-badge {
+            background: #ff4757;
+            color: white;
+        }
+        
+        /* アニメーション */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 28px;
+            }
+            
+            .subtitle {
+                font-size: 16px;
+            }
+            
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-header {
+                padding: 30px;
+            }
+            
+            .card-icon {
+                font-size: 48px;
+            }
+        }
+        
+        /* ツールチップ */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <div class="logo">💝</div>
+            <h1>LINA デモンストレーション</h1>
+            <p class="subtitle">実際の画面を操作してLINAの機能をご体験ください</p>
+        </div>
+        
+        <!-- デモカード -->
+        <div class="demo-grid">
+            <!-- オーナー初期設定 -->
+            <a href="lina-owner-setup.html" class="demo-card owner-setup">
+                <div class="card-header">
+                    <span class="status-badge new-badge">NEW</span>
+                    <div class="card-icon">🚀</div>
+                    <h2 class="card-title">初期設定</h2>
+                    <p class="card-type">オーナー様向け</p>
+                </div>
+                <div class="card-content">
+                    <ul class="feature-list">
+                        <li>
+                            <span class="check-icon">✅</span>
+                            サロン基本情報の登録
+                        </li>
+                        <li>
+                            <span class="check-icon">✅</span>
+                            サロンIDの設定（データ管理キー）
+                        </li>
+                        <li>
+                            <span class="check-icon">✅</span>
+                            LINE公式アカウント連携
+                        </li>
+                        <li>
+                            <span class="check-icon">✅</span>
+                            Google新規アカウント作成
+                        </li>
+                        <li>
+                            <span class="check-icon">✅</span>
+                            契約内容の確認
+                        </li>
+                    </ul>
+                    <div class="demo-button">
+                        デモを開始
+                        <span class="arrow">→</span>
+                    </div>
+                    <div class="device-indicator">
+                        <div class="device">
+                            <span>📱</span>
+                            <span>スマホ対応</span>
+                        </div>
+                        <div class="device">
+                            <span>💻</span>
+                            <span>PC対応</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- オーナー管理画面 -->
+            <a href="lina-owner-admin.html" class="demo-card owner-admin">
+                <div class="card-header">
+                    <div class="card-icon">📊</div>
+                    <h2 class="card-title">管理画面</h2>
+                    <p class="card-type">オーナー様向け</p>
+                </div>
+                <div class="card-content">
+                    <ul class="feature-list">
+                        <li>
+                            <span class="check-icon">✅</span>
+                            ダッシュボード（売上・統計）
+                        </li>
+                        <li>
+                            <span class="check-icon">✅</span>
+                            予約管理・空き枠設定
+                        </li>
+                        <li>
+                            <span class="check-icon">✅</span>
+                            顧客管理（メモ・履歴）
+                        </li>
+                        <li>
+                            <span class="check-icon">✅</span>
+                            施術記録（写真管理）
+                        </li>
+                        <li>
+                            <span class="check-icon">✅</span>
+                            集計レポート（確定申告対応）
+                        </li>
+                    </ul>
+                    <div class="demo-button">
+                        デモを開始
+                        <span class="arrow">→</span>
+                    </div>
+                    <div class="device-indicator">
+                        <div class="device">
+                            <span>📱</span>
+                            <span>スマホ最適化</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- お客様予約画面 -->
+            <a href="lina-customer.html" class="demo-card customer">
+                <div class="card-header">
+                    <div class="card-icon">📱</div>
+                    <h2 class="card-title">予約画面</h2>
+                    <p class="card-type">お客様向け</p>
+                </div>
+                <div class="card-content">
+                    <ul class="feature-list">
+                        <li>
+                            <span class="check-icon">✅</span>
+                            LINEから直接アクセス
+                        </li>
+                        <li>
+                            <span class="check-icon">✅</span>
+                            メニュー選択
+                        </li>
+                        <li>
+                            <span class="check-icon">✅</span>
+                            カレンダーから日時選択
+                        </li>
+                        <li>
+                            <span class="check-icon">✅</span>
+                            予約確認・完了通知
+                        </li>
+                        <li>
+                            <span class="check-icon">✅</span>
+                            リマインド設定
+                        </li>
+                    </ul>
+                    <div class="demo-button">
+                        デモを開始
+                        <span class="arrow">→</span>
+                    </div>
+                    <div class="device-indicator">
+                        <div class="device">
+                            <span>💬</span>
+                            <span>LINE連携</span>
+                        </div>
+                        <div class="device">
+                            <span>📱</span>
+                            <span>スマホ専用</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <!-- 戻るリンク -->
+        <div class="back-link">
+            <a href="../index.html">← トップページに戻る</a>
+        </div>
+    </div>
+    
+    <script>
+        // カードのホバーエフェクト
+        document.querySelectorAll('.demo-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        // ページ読み込み時のアニメーション
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.demo-card').forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+        
+        // デバイス判定
+        function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+        
+        // モバイルの場合は表示を調整
+        if (isMobile()) {
+            document.querySelectorAll('.device').forEach(device => {
+                if (device.textContent.includes('スマホ')) {
+                    device.style.background = '#4caf50';
+                    device.style.color = 'white';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINA - 利用規約管理システム（全文保存版）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #d4a574;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        pre {
+            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            overflow-x: auto;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        
+        .code-block {
+            margin: 15px 0;
+        }
+        
+        .code-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        .highlight {
+            background: #fffde7;
+            border-left: 4px solid #ffc107;
+            padding: 10px 15px;
+            margin: 15px 0;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .api-endpoint {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .api-method {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #2196f3;
+            color: white;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+        
+        .api-path {
+            font-family: monospace;
+            color: #333;
+        }
+        
+        .flow-diagram {
+            background: #fff3e0;
+            border: 1px solid #ffcc80;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        
+        .flow-step {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .flow-number {
+            background: #f57c00;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .flow-text {
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 LINA 利用規約管理システム - 全文保存実装</h1>
+        
+        <!-- データ構造 -->
+        <div class="section">
+            <h2 class="section-title">1. データ構造設計</h2>
+            
+            <div class="code-block">
+                <div class="code-title">予約時の利用規約スナップショット（JSON）</div>
+                <pre>{
+  "reservation_id": "R-2024-0610-0123",
+  "customer_id": "C2024-0542",
+  "salon_id": "LINA2024",
+  "agreed_at": "2024-06-10T10:45:23.456Z",
+  
+  "terms_snapshot": {
+    "version": "2.1.0",
+    "generated_at": "2024-06-10T10:45:20.000Z",
+    "hash": "sha256:7d865e959b2466918c9863afca942d0fb89d7c9ac0c99bafc3749504ded97730",
+    
+    "terms": [
+      {
+        "id": "age_consent",
+        "title": "18歳未満の親権者同意",
+        "enabled": true,
+        "order": 1,
+        "content": "18歳未満のお客様が施術を受ける場合、親権者の同意が必要となります。\nご予約時に親権者の同意を得ていることをご確認ください。\nなお、親権者の同意確認はお客様の自己申告に基づくものとし、予約システム提供者（LINA）はその真偽について確認する義務を負わず、一切の責任を負いません。\n同意の確認および管理は当サロンの責任において行います。"
+      },
+      {
+        "id": "harassment_prevention",
+        "title": "ハラスメント防止",
+        "enabled": true,
+        "order": 2,
+        "content": "お客様には、当サロンスタッフに対して以下の行為を行わないことをお約束いただきます：\n・暴言、威圧、脅迫等のハラスメント行為\n・性的な発言、接触、要求等のセクシャルハラスメント\n・わいせつな言動または行為\n・業務の円滑な遂行を妨げる行為\n・その他、社会通念上不適切と判断される行為\n\n違反があった場合、サービスの提供を中止し、予約の取消、今後の利用停止等の措置を取らせていただきます。\nなお、これらの対応について予約システム提供者（LINA）は一切の責任を負いません。"
+      }
+    ]
+  },
+  
+  "agreement_evidence": {
+    "ip_address": "203.0.113.42",
+    "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X)",
+    "device_info": {
+      "type": "mobile",
+      "os": "iOS",
+      "os_version": "17.2",
+      "browser": "Safari",
+      "browser_version": "17.2"
+    },
+    "geolocation": {
+      "country": "JP",
+      "region": "Okinawa",
+      "city": "Naha"
+    },
+    "session_id": "sess_2024061010452300123",
+    "signature": "ECDSA:3045022100abc...def"
+  }
+}</pre>
+            </div>
+            
+            <div class="highlight">
+                <strong>💡 ポイント：</strong><br>
+                ・規約の全文（content）を完全保存<br>
+                ・ハッシュ値で改ざん検証可能<br>
+                ・バージョン管理で変更履歴追跡<br>
+                ・技術的証跡（IP、デバイス等）も記録
+            </div>
+        </div>
+        
+        <!-- データベース設計 -->
+        <div class="section">
+            <h2 class="section-title">2. データベース設計（PostgreSQL）</h2>
+            
+            <div class="code-block">
+                <div class="code-title">テーブル定義</div>
+                <pre>-- 利用規約マスタ（現在有効な規約）
+CREATE TABLE terms_master (
+    id SERIAL PRIMARY KEY,
+    salon_id VARCHAR(10) NOT NULL,
+    term_type VARCHAR(50) NOT NULL,
+    title VARCHAR(200) NOT NULL,
+    content TEXT NOT NULL,
+    version VARCHAR(10) NOT NULL,
+    is_active BOOLEAN DEFAULT true,
+    display_order INTEGER DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(salon_id, term_type, version)
+);
+
+-- 利用規約スナップショット（予約時点の全文保存）
+CREATE TABLE terms_snapshots (
+    id SERIAL PRIMARY KEY,
+    snapshot_id VARCHAR(50) UNIQUE NOT NULL, -- UUID形式
+    salon_id VARCHAR(10) NOT NULL,
+    version VARCHAR(10) NOT NULL,
+    terms_data JSONB NOT NULL, -- 規約全文を含むJSON
+    content_hash VARCHAR(256) NOT NULL, -- SHA-256ハッシュ
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_snapshot_salon (salon_id, created_at DESC)
+);
+
+-- 同意記録（軽量テーブル）
+CREATE TABLE terms_agreements (
+    id SERIAL PRIMARY KEY,
+    reservation_id VARCHAR(20) UNIQUE NOT NULL,
+    customer_id VARCHAR(15) NOT NULL,
+    salon_id VARCHAR(10) NOT NULL,
+    snapshot_id VARCHAR(50) REFERENCES terms_snapshots(snapshot_id),
+    agreed_at TIMESTAMP NOT NULL,
+    ip_address INET,
+    user_agent TEXT,
+    device_info JSONB,
+    geolocation JSONB,
+    session_id VARCHAR(100),
+    digital_signature TEXT, -- デジタル署名
+    is_valid BOOLEAN DEFAULT true,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_customer_agreements (customer_id, agreed_at DESC),
+    INDEX idx_salon_agreements (salon_id, agreed_at DESC),
+    INDEX idx_reservation (reservation_id)
+);
+
+-- 規約変更履歴（監査用）
+CREATE TABLE terms_change_log (
+    id SERIAL PRIMARY KEY,
+    salon_id VARCHAR(10) NOT NULL,
+    term_type VARCHAR(50) NOT NULL,
+    old_version VARCHAR(10),
+    new_version VARCHAR(10),
+    old_content TEXT,
+    new_content TEXT,
+    changed_by VARCHAR(50), -- スタッフID
+    change_reason TEXT,
+    changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_salon_changes (salon_id, changed_at DESC)
+);</pre>
+            </div>
+        </div>
+        
+        <!-- API設計 -->
+        <div class="section">
+            <h2 class="section-title">3. API設計</h2>
+            
+            <div class="api-endpoint">
+                <span class="api-method">POST</span>
+                <span class="api-path">/api/v1/reservations/{reservationId}/terms-agreement</span>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-title">リクエスト（予約時の同意保存）</div>
+                <pre>{
+  "customer_id": "C2024-0542",
+  "agreed_terms": ["age_consent", "harassment_prevention"],
+  "client_info": {
+    "ip_address": "203.0.113.42",
+    "user_agent": "Mozilla/5.0...",
+    "timestamp": "2024-06-10T10:45:23.456Z"
+  }
+}</pre>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-title">レスポンス</div>
+                <pre>{
+  "success": true,
+  "data": {
+    "agreement_id": "AGR-2024-0610-0123",
+    "snapshot_id": "snap_7d865e959b246691",
+    "hash": "sha256:7d865e959b2466918c9863afca942d0fb89d7c9ac0c99bafc3749504ded97730",
+    "timestamp": "2024-06-10T10:45:23.456Z",
+    "message": "利用規約への同意を記録しました"
+  }
+}</pre>
+            </div>
+            
+            <div class="api-endpoint">
+                <span class="api-method">GET</span>
+                <span class="api-path">/api/v1/customers/{customerId}/terms-history</span>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-title">レスポンス（顧客の同意履歴取得）</div>
+                <pre>{
+  "customer_id": "C2024-0542",
+  "agreements": [
+    {
+      "reservation_id": "R-2024-1225-0456",
+      "agreed_at": "2024-12-25T14:00:00Z",
+      "menu": "まつげパーマ",
+      "terms": [
+        {"id": "appropriate_use", "title": "健全運営ポリシー"},
+        {"id": "harassment_prevention", "title": "ハラスメント防止"}
+      ],
+      "snapshot_id": "snap_abc123def456"
+    },
+    {
+      "reservation_id": "R-2024-0610-0123",
+      "agreed_at": "2024-06-10T10:45:23Z",
+      "menu": "ネイル",
+      "terms": [
+        {"id": "age_consent", "title": "18歳未満の親権者同意"}
+      ],
+      "snapshot_id": "snap_7d865e959b246691"
+    }
+  ]
+}</pre>
+            </div>
+            
+            <div class="api-endpoint">
+                <span class="api-method">GET</span>
+                <span class="api-path">/api/v1/terms/snapshot/{snapshotId}</span>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-title">レスポンス（規約全文取得）</div>
+                <pre>{
+  "snapshot_id": "snap_7d865e959b246691",
+  "version": "2.1.0",
+  "created_at": "2024-06-10T10:45:20Z",
+  "terms": [
+    {
+      "id": "age_consent",
+      "title": "18歳未満の親権者同意",
+      "content": "18歳未満のお客様が施術を受ける場合、親権者の同意が必要となります。\n（全文）..."
+    }
+  ],
+  "hash": "sha256:7d865e959b246691...",
+  "is_valid": true
+}</pre>
+            </div>
+        </div>
+        
+        <!-- 実装フロー -->
+        <div class="section">
+            <h2 class="section-title">4. 実装フロー</h2>
+            
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <div class="flow-number">1</div>
+                    <div class="flow-text">
+                        <strong>予約時</strong><br>
+                        現在有効な規約を取得し、全文を表示
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="flow-number">2</div>
+                    <div class="flow-text">
+                        <strong>同意取得</strong><br>
+                        チェックボックスで同意を確認
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="flow-number">3</div>
+                    <div class="flow-text">
+                        <strong>スナップショット作成</strong><br>
+                        現在の規約全文をJSONで保存、ハッシュ値生成
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="flow-number">4</div>
+                    <div class="flow-text">
+                        <strong>同意記録</strong><br>
+                        技術的証跡（IP、デバイス等）と共に記録
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="flow-number">5</div>
+                    <div class="flow-text">
+                        <strong>証跡保存</strong><br>
+                        改ざん防止のデジタル署名を付与
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- JavaScript実装例 -->
+        <div class="section">
+            <h2 class="section-title">5. フロントエンド実装（JavaScript）</h2>
+            
+            <div class="code-block">
+                <div class="code-title">利用規約の同意処理</div>
+                <pre>class TermsAgreementManager {
+    constructor() {
+        this.currentTerms = null;
+        this.snapshotId = null;
+    }
+    
+    // 現在の規約を取得
+    async loadCurrentTerms(salonId) {
+        const response = await fetch(`/api/v1/salons/${salonId}/terms/current`);
+        this.currentTerms = await response.json();
+        return this.currentTerms;
+    }
+    
+    // 規約への同意を保存
+    async saveAgreement(reservationId, customerId, agreedTerms) {
+        // クライアント情報を収集
+        const clientInfo = {
+            ip_address: await this.getClientIP(),
+            user_agent: navigator.userAgent,
+            timestamp: new Date().toISOString(),
+            device_info: this.getDeviceInfo(),
+            geolocation: await this.getGeolocation()
+        };
+        
+        // スナップショットを作成
+        const snapshot = {
+            version: this.currentTerms.version,
+            terms: this.currentTerms.terms.filter(t => agreedTerms.includes(t.id)),
+            generated_at: new Date().toISOString()
+        };
+        
+        // ハッシュ値を計算
+        const hash = await this.calculateHash(JSON.stringify(snapshot));
+        
+        // APIに送信
+        const response = await fetch(`/api/v1/reservations/${reservationId}/terms-agreement`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                customer_id: customerId,
+                agreed_terms: agreedTerms,
+                snapshot: snapshot,
+                hash: hash,
+                client_info: clientInfo
+            })
+        });
+        
+        const result = await response.json();
+        this.snapshotId = result.data.snapshot_id;
+        
+        return result;
+    }
+    
+    // SHA-256ハッシュ計算
+    async calculateHash(text) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(text);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        return `sha256:${hashHex}`;
+    }
+    
+    // デバイス情報取得
+    getDeviceInfo() {
+        return {
+            type: /Mobile|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+            os: this.detectOS(),
+            browser: this.detectBrowser(),
+            screen: {
+                width: window.screen.width,
+                height: window.screen.height
+            }
+        };
+    }
+    
+    // OS検出
+    detectOS() {
+        const userAgent = navigator.userAgent;
+        if (userAgent.includes('Win')) return 'Windows';
+        if (userAgent.includes('Mac')) return 'macOS';
+        if (userAgent.includes('Linux')) return 'Linux';
+        if (userAgent.includes('Android')) return 'Android';
+        if (userAgent.includes('iOS') || userAgent.includes('iPhone')) return 'iOS';
+        return 'Unknown';
+    }
+    
+    // ブラウザ検出
+    detectBrowser() {
+        const userAgent = navigator.userAgent;
+        if (userAgent.includes('Chrome')) return 'Chrome';
+        if (userAgent.includes('Safari')) return 'Safari';
+        if (userAgent.includes('Firefox')) return 'Firefox';
+        if (userAgent.includes('Edge')) return 'Edge';
+        return 'Unknown';
+    }
+    
+    // 位置情報取得（許可が必要）
+    async getGeolocation() {
+        return new Promise((resolve) => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        resolve({
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude
+                        });
+                    },
+                    () => {
+                        resolve(null); // 位置情報取得失敗
+                    }
+                );
+            } else {
+                resolve(null);
+            }
+        });
+    }
+    
+    // IPアドレス取得（外部APIを使用）
+    async getClientIP() {
+        try {
+            const response = await fetch('https://api.ipify.org?format=json');
+            const data = await response.json();
+            return data.ip;
+        } catch {
+            return null;
+        }
+    }
+}
+
+// 使用例
+const termsManager = new TermsAgreementManager();
+
+// 予約確認画面での処理
+async function handleReservationConfirm() {
+    // 規約を読み込み
+    const terms = await termsManager.loadCurrentTerms('LINA2024');
+    
+    // 規約を表示
+    displayTerms(terms);
+    
+    // 同意ボタンクリック時
+    document.getElementById('confirm-button').addEventListener('click', async () => {
+        // チェックされた規約を取得
+        const agreedTerms = getCheckedTerms();
+        
+        // 同意を保存
+        const result = await termsManager.saveAgreement(
+            'R-2024-0610-0123',
+            'C2024-0542',
+            agreedTerms
+        );
+        
+        if (result.success) {
+            console.log('同意記録完了:', result.data.snapshot_id);
+            // 予約完了画面へ
+        }
+    });
+}</pre>
+            </div>
+        </div>
+        
+        <!-- 証跡出力 -->
+        <div class="section">
+            <h2 class="section-title">6. 法的証跡のPDF出力</h2>
+            
+            <div class="code-block">
+                <div class="code-title">PDF生成処理（Node.js + PDFKit）</div>
+                <pre>const PDFDocument = require('pdfkit');
+const fs = require('fs');
+
+class LegalEvidenceGenerator {
+    async generatePDF(agreementData) {
+        const doc = new PDFDocument({
+            size: 'A4',
+            info: {
+                Title: '利用規約同意証跡',
+                Author: 'LINA予約管理システム',
+                Subject: `予約番号: ${agreementData.reservation_id}`,
+                CreationDate: new Date()
+            }
+        });
+        
+        // ヘッダー
+        doc.fontSize(20)
+           .text('利用規約同意証跡', { align: 'center' });
+        
+        doc.moveDown();
+        
+        // 基本情報
+        doc.fontSize(12)
+           .text(`発行日: ${new Date().toLocaleDateString('ja-JP')}`)
+           .text(`予約番号: ${agreementData.reservation_id}`)
+           .text(`顧客ID: ${agreementData.customer_id}`)
+           .text(`同意日時: ${agreementData.agreed_at}`);
+        
+        doc.moveDown();
+        
+        // 同意した規約（全文）
+        doc.fontSize(14)
+           .text('同意した規約内容', { underline: true });
+        
+        agreementData.terms_snapshot.terms.forEach((term, index) => {
+            doc.moveDown()
+               .fontSize(12)
+               .text(`第${index + 1}条 ${term.title}`, { bold: true })
+               .fontSize(10)
+               .text(term.content, { align: 'justify' });
+        });
+        
+        doc.moveDown();
+        
+        // 技術的証跡
+        doc.addPage()
+           .fontSize(14)
+           .text('技術的証跡', { underline: true })
+           .moveDown()
+           .fontSize(10)
+           .text(`IPアドレス: ${agreementData.agreement_evidence.ip_address}`)
+           .text(`デバイス: ${agreementData.agreement_evidence.device_info.type}`)
+           .text(`OS: ${agreementData.agreement_evidence.device_info.os}`)
+           .text(`ブラウザ: ${agreementData.agreement_evidence.device_info.browser}`)
+           .text(`セッションID: ${agreementData.agreement_evidence.session_id}`);
+        
+        // デジタル署名
+        doc.moveDown()
+           .fontSize(14)
+           .text('デジタル署名', { underline: true })
+           .fontSize(8)
+           .text(`Hash: ${agreementData.terms_snapshot.hash}`)
+           .text(`Signature: ${agreementData.agreement_evidence.signature}`);
+        
+        // フッター
+        doc.fontSize(8)
+           .text('この証跡は改ざん防止処理が施されています', { align: 'center' })
+           .text('LINA予約管理システム', { align: 'center' });
+        
+        return doc;
+    }
+    
+    async saveToFile(agreementData, filepath) {
+        const doc = await this.generatePDF(agreementData);
+        doc.pipe(fs.createWriteStream(filepath));
+        doc.end();
+    }
+}</pre>
+            </div>
+        </div>
+        
+        <!-- バックアップ戦略 -->
+        <div class="section">
+            <h2 class="section-title">7. データバックアップ戦略</h2>
+            
+            <div class="code-block">
+                <div class="code-title">自動バックアップ設定</div>
+                <pre># PostgreSQL自動バックアップ（cron設定）
+# 毎日午前3時に実行
+0 3 * * * pg_dump -U postgres -d lina_db -t terms_snapshots -t terms_agreements > /backup/terms_$(date +\%Y\%m\%d).sql
+
+# Google Cloud Storageへアップロード
+0 4 * * * gsutil cp /backup/terms_$(date +\%Y\%m\%d).sql gs://lina-backup/terms/
+
+# 古いバックアップの削除（30日以上）
+0 5 * * * find /backup -name "terms_*.sql" -mtime +30 -delete
+
+# 長期保存（法的要件：7年間）
+# 月次でアーカイブ
+0 0 1 * * tar czf /archive/terms_$(date +\%Y\%m).tar.gz /backup/terms_*.sql</pre>
+            </div>
+            
+            <div class="highlight">
+                <strong>🔒 保存期間の推奨：</strong><br>
+                ・通常の同意記録：3年間<br>
+                ・未成年者関連：成人後3年間（最長21年）<br>
+                ・トラブル案件：解決後7年間<br>
+                ・会計関連：7年間（税務要件）
+            </div>
+        </div>
+        
+        <!-- まとめ -->
+        <div class="section">
+            <h2 class="section-title">8. 実装のメリット</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                <div style="background: #e8f5e9; padding: 15px; border-radius: 8px;">
+                    <h3 style="font-size: 14px; margin-bottom: 10px; color: #2e7d32;">✅ 完全な法的保護</h3>
+                    <p style="font-size: 12px; color: #333;">
+                        規約の全文と技術的証跡を完全保存。<br>
+                        裁判等でも証拠として提出可能。
+                    </p>
+                </div>
+                
+                <div style="background: #e3f2fd; padding: 15px; border-radius: 8px;">
+                    <h3 style="font-size: 14px; margin-bottom: 10px; color: #1976d2;">🔍 改ざん防止</h3>
+                    <p style="font-size: 12px; color: #333;">
+                        SHA-256ハッシュとデジタル署名で<br>
+                        データの完全性を保証。
+                    </p>
+                </div>
+                
+                <div style="background: #fff3e0; padding: 15px; border-radius: 8px;">
+                    <h3 style="font-size: 14px; margin-bottom: 10px; color: #f57c00;">📊 規約変更対応</h3>
+                    <p style="font-size: 12px; color: #333;">
+                        規約を変更しても過去の同意内容は<br>
+                        そのまま保持。時系列で追跡可能。
+                    </p>
+                </div>
+                
+                <div style="background: #fce4ec; padding: 15px; border-radius: 8px;">
+                    <h3 style="font-size: 14px; margin-bottom: 10px; color: #c2185b;">🚨 即座の対応</h3>
+                    <p style="font-size: 12px; color: #333;">
+                        クレーム時にすぐ証跡を提示。<br>
+                        PDF出力で外部提出も簡単。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

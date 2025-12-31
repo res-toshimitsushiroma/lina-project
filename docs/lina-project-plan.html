@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINA - プロジェクト計画書 v1.0</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Yu Gothic", sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* ヘッダー */
+        .header {
+            background: linear-gradient(135deg, #d4a574 0%, #c19a6b 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .version-info {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            font-size: 14px;
+        }
+        
+        /* 目次 */
+        .toc {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .toc h2 {
+            font-size: 24px;
+            color: #d4a574;
+            margin-bottom: 20px;
+        }
+        
+        .toc-list {
+            list-style: none;
+        }
+        
+        .toc-list > li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .toc-list > li:last-child {
+            border-bottom: none;
+        }
+        
+        .toc-list a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .toc-list a:hover {
+            color: #d4a574;
+            padding-left: 10px;
+        }
+        
+        .toc-number {
+            display: inline-block;
+            width: 30px;
+            font-weight: bold;
+            color: #d4a574;
+        }
+        
+        /* セクション */
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            font-size: 24px;
+            color: #d4a574;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #d4a574;
+        }
+        
+        .section h3 {
+            font-size: 18px;
+            color: #333;
+            margin: 20px 0 15px;
+            padding-left: 15px;
+            border-left: 4px solid #d4a574;
+        }
+        
+        .section h4 {
+            font-size: 16px;
+            color: #666;
+            margin: 15px 0 10px;
+        }
+        
+        /* ハイライトボックス */
+        .highlight-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .success-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .warning-box {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        /* テーブル */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th {
+            background: #f5f5f5;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        tr:hover {
+            background: #fafafa;
+        }
+        
+        /* リスト */
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+        
+        li {
+            margin: 8px 0;
+        }
+        
+        /* フェーズカード */
+        .phase-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .phase-card {
+            background: white;
+            border: 2px solid #d4a574;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        
+        .phase-card:hover {
+            box-shadow: 0 5px 15px rgba(212, 165, 116, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        .phase-number {
+            background: #d4a574;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .phase-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .phase-duration {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        /* タイムライン */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #d4a574;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 80px;
+            margin-bottom: 30px;
+        }
+        
+        .timeline-marker {
+            position: absolute;
+            left: 41px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background: #d4a574;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .timeline-content {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        /* 予算テーブル */
+        .budget-table {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .budget-table table {
+            margin: 0;
+        }
+        
+        .budget-total {
+            background: #d4a574;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* リスク評価 */
+        .risk-matrix {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .risk-item {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .risk-high {
+            background: #ffebee;
+            border: 2px solid #f44336;
+        }
+        
+        .risk-medium {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+        }
+        
+        .risk-low {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+        }
+        
+        /* プリント対応 */
+        @media print {
+            .container {
+                max-width: 100%;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+            
+            .header {
+                background: #d4a574 !important;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+        }
+        
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .phase-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .version-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            table {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <h1>📋 LINA プロジェクト計画書</h1>
+            <p class="subtitle">LINE × Google 統合型予約管理システム開発プロジェクト</p>
+            <div class="version-info">
+                <span>📅 作成日: 2024年12月29日</span>
+                <span>📌 バージョン: 1.0</span>
+                <span>👤 作成者: 合同会社RES</span>
+            </div>
+        </div>
+        
+        <!-- 目次 -->
+        <div class="toc">
+            <h2>📑 目次</h2>
+            <ul class="toc-list">
+                <li><a href="#overview"><span class="toc-number">1.</span>プロジェクト概要</a></li>
+                <li><a href="#objectives"><span class="toc-number">2.</span>目的と目標</a></li>
+                <li><a href="#scope"><span class="toc-number">3.</span>スコープ定義</a></li>
+                <li><a href="#features"><span class="toc-number">4.</span>機能要件</a></li>
+                <li><a href="#architecture"><span class="toc-number">5.</span>システムアーキテクチャ</a></li>
+                <li><a href="#phases"><span class="toc-number">6.</span>開発フェーズ</a></li>
+                <li><a href="#schedule"><span class="toc-number">7.</span>スケジュール</a></li>
+                <li><a href="#resources"><span class="toc-number">8.</span>必要リソース</a></li>
+                <li><a href="#budget"><span class="toc-number">9.</span>予算計画</a></li>
+                <li><a href="#risks"><span class="toc-number">10.</span>リスク管理</a></li>
+                <li><a href="#kpi"><span class="toc-number">11.</span>成功指標（KPI）</a></li>
+                <li><a href="#deliverables"><span class="toc-number">12.</span>成果物</a></li>
+            </ul>
+        </div>
+        
+        <!-- 1. プロジェクト概要 -->
+        <div class="section" id="overview">
+            <h2>1. プロジェクト概要</h2>
+            
+            <h3>プロジェクト名</h3>
+            <p><strong>LINA（リナ）</strong> - LINE Integrated Appointment System</p>
+            
+            <h3>プロジェクトビジョン</h3>
+            <div class="highlight-box">
+                <p>「美容サロンの予約管理を革新し、オーナーとお客様の両方に最高の体験を提供する」</p>
+                <p>LINEとGoogleの完全統合により、既存のツールを活用しながら、導入コストゼロで始められる予約管理システムを実現します。</p>
+            </div>
+            
+            <h3>背景と課題</h3>
+            <ul>
+                <li><strong>市場の課題：</strong>既存の予約システムは高額で、小規模サロンには導入障壁が高い</li>
+                <li><strong>技術的課題：</strong>LINE公式アカウントの機能だけでは予約管理が不十分</li>
+                <li><strong>法的課題：</strong>利用規約やトラブル対応の仕組みが不明確</li>
+                <li><strong>運用課題：</strong>顧客情報と予約情報が分散し、一元管理できない</li>
+            </ul>
+            
+            <h3>ソリューション</h3>
+            <div class="success-box">
+                <p><strong>LINE × Google の完全統合プラットフォーム</strong></p>
+                <ul>
+                    <li>LINE公式アカウント：顧客コミュニケーション</li>
+                    <li>Googleカレンダー：スケジュール管理</li>
+                    <li>Googleスプレッドシート：データ管理</li>
+                    <li>独自の利用規約管理：法的保護</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 2. 目的と目標 -->
+        <div class="section" id="objectives">
+            <h2>2. 目的と目標</h2>
+            
+            <h3>プロジェクトの目的</h3>
+            <table>
+                <tr>
+                    <th>カテゴリ</th>
+                    <th>目的</th>
+                    <th>期待効果</th>
+                </tr>
+                <tr>
+                    <td>ビジネス</td>
+                    <td>美容サロン向けSaaS市場への参入</td>
+                    <td>新規収益源の確立</td>
+                </tr>
+                <tr>
+                    <td>顧客価値</td>
+                    <td>予約管理の効率化と自動化</td>
+                    <td>業務時間50%削減</td>
+                </tr>
+                <tr>
+                    <td>技術革新</td>
+                    <td>API統合による新しいサービスモデル</td>
+                    <td>競合優位性の確立</td>
+                </tr>
+                <tr>
+                    <td>社会貢献</td>
+                    <td>小規模事業者のDX支援</td>
+                    <td>業界全体の効率化</td>
+                </tr>
+            </table>
+            
+            <h3>SMART目標</h3>
+            <div class="info-box">
+                <h4>6ヶ月以内の達成目標</h4>
+                <ul>
+                    <li><strong>S（具体的）：</strong>美容サロン向け予約管理システムのリリース</li>
+                    <li><strong>M（測定可能）：</strong>100店舗の導入</li>
+                    <li><strong>A（達成可能）：</strong>MVP版での段階的展開</li>
+                    <li><strong>R（関連性）：</strong>沖縄県内の美容サロンから開始</li>
+                    <li><strong>T（期限）：</strong>2025年6月30日まで</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 3. スコープ定義 -->
+        <div class="section" id="scope">
+            <h2>3. スコープ定義</h2>
+            
+            <h3>プロジェクトスコープ（含むもの）</h3>
+            <table>
+                <tr>
+                    <th>機能カテゴリ</th>
+                    <th>詳細</th>
+                    <th>優先度</th>
+                </tr>
+                <tr>
+                    <td>予約管理</td>
+                    <td>LINE経由の予約受付、変更、キャンセル</td>
+                    <td>必須</td>
+                </tr>
+                <tr>
+                    <td>顧客管理</td>
+                    <td>顧客情報、来店履歴、施術記録</td>
+                    <td>必須</td>
+                </tr>
+                <tr>
+                    <td>カレンダー連携</td>
+                    <td>Googleカレンダーとの双方向同期</td>
+                    <td>必須</td>
+                </tr>
+                <tr>
+                    <td>利用規約管理</td>
+                    <td>規約の設定、同意取得、履歴管理</td>
+                    <td>必須</td>
+                </tr>
+                <tr>
+                    <td>管理画面</td>
+                    <td>Web版ダッシュボード</td>
+                    <td>必須</td>
+                </tr>
+                <tr>
+                    <td>レポート機能</td>
+                    <td>売上分析、顧客分析レポート</td>
+                    <td>高</td>
+                </tr>
+                <tr>
+                    <td>決済連携</td>
+                    <td>LINE Pay、PayPay連携</td>
+                    <td>中</td>
+                </tr>
+                <tr>
+                    <td>多店舗対応</td>
+                    <td>チェーン店向け機能</td>
+                    <td>低</td>
+                </tr>
+            </table>
+            
+            <h3>対象外スコープ</h3>
+            <div class="warning-box">
+                <ul>
+                    <li>POSシステムとの連携（フェーズ2で検討）</li>
+                    <li>在庫管理機能（将来バージョンで検討）</li>
+                    <li>スタッフ給与計算（外部システム連携で対応）</li>
+                    <li>会計ソフト連携（フェーズ2で検討）</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 4. 機能要件 -->
+        <div class="section" id="features">
+            <h2>4. 機能要件</h2>
+            
+            <h3>コア機能</h3>
+            
+            <h4>1. LINE連携機能</h4>
+            <ul>
+                <li>LINE公式アカウントAPI連携</li>
+                <li>リッチメニューからの予約導線</li>
+                <li>自動応答メッセージ</li>
+                <li>予約確認・リマインド通知</li>
+                <li>キャンセル・変更受付</li>
+            </ul>
+            
+            <h4>2. Google連携機能</h4>
+            <ul>
+                <li>Googleカレンダー同期</li>
+                <li>Googleスプレッドシートへのデータ出力</li>
+                <li>Gmail通知連携</li>
+                <li>Google Drive バックアップ</li>
+            </ul>
+            
+            <h4>3. 利用規約管理システム</h4>
+            <div class="highlight-box">
+                <p><strong>革新的な全文保存システム</strong></p>
+                <ul>
+                    <li>規約の全文スナップショット保存</li>
+                    <li>SHA-256ハッシュによる改ざん防止</li>
+                    <li>同意時の技術的証跡記録（IP、デバイス情報）</li>
+                    <li>PDF形式での証跡出力</li>
+                    <li>7年間の長期保存</li>
+                </ul>
+            </div>
+            
+            <h4>4. 管理画面機能</h4>
+            <ul>
+                <li>ダッシュボード（予約状況、売上サマリー）</li>
+                <li>顧客管理（検索、詳細、履歴）</li>
+                <li>メニュー管理</li>
+                <li>スタッフ管理</li>
+                <li>設定管理</li>
+            </ul>
+        </div>
+        
+        <!-- 5. システムアーキテクチャ -->
+        <div class="section" id="architecture">
+            <h2>5. システムアーキテクチャ</h2>
+            
+            <h3>技術スタック</h3>
+            <table>
+                <tr>
+                    <th>レイヤー</th>
+                    <th>技術</th>
+                    <th>選定理由</th>
+                </tr>
+                <tr>
+                    <td>フロントエンド</td>
+                    <td>Next.js 14, React, TypeScript, Tailwind CSS</td>
+                    <td>高速、型安全、最新のUI/UX</td>
+                </tr>
+                <tr>
+                    <td>バックエンド</td>
+                    <td>Laravel 10, PHP 8.2</td>
+                    <td>堅牢、豊富なエコシステム</td>
+                </tr>
+                <tr>
+                    <td>データベース</td>
+                    <td>PostgreSQL 15</td>
+                    <td>JSONB対応、高信頼性</td>
+                </tr>
+                <tr>
+                    <td>認証</td>
+                    <td>Firebase Authentication</td>
+                    <td>安全、スケーラブル</td>
+                </tr>
+                <tr>
+                    <td>インフラ</td>
+                    <td>Google Cloud Run</td>
+                    <td>サーバーレス、自動スケール</td>
+                </tr>
+                <tr>
+                    <td>CDN</td>
+                    <td>Cloudflare</td>
+                    <td>高速配信、DDoS対策</td>
+                </tr>
+                <tr>
+                    <td>監視</td>
+                    <td>Google Cloud Monitoring</td>
+                    <td>統合監視、アラート</td>
+                </tr>
+            </table>
+            
+            <h3>セキュリティ設計</h3>
+            <div class="info-box">
+                <ul>
+                    <li><strong>認証：</strong>Firebase Authentication（多要素認証対応）</li>
+                    <li><strong>通信：</strong>全通信SSL/TLS暗号化</li>
+                    <li><strong>データ：</strong>保存時暗号化（AES-256）</li>
+                    <li><strong>API：</strong>レート制限、HMAC署名検証</li>
+                    <li><strong>監査：</strong>全操作のログ記録</li>
+                </ul>
+            </div>
+            
+            <h3>データベース設計（主要テーブル）</h3>
+            <pre style="background: #f5f5f5; padding: 15px; border-radius: 5px; overflow-x: auto;">
+-- サロンマスタ
+salons (id, name, address, phone, settings)
+
+-- 顧客マスタ  
+customers (id, salon_id, name, phone, email, line_user_id)
+
+-- 予約
+reservations (id, salon_id, customer_id, menu_id, datetime, status)
+
+-- 利用規約スナップショット
+terms_snapshots (id, snapshot_id, terms_data, content_hash)
+
+-- 同意記録
+terms_agreements (id, reservation_id, snapshot_id, agreed_at, ip_address)
+
+-- 施術記録
+treatment_records (id, reservation_id, photos, memo, created_at)
+            </pre>
+        </div>
+        
+        <!-- 6. 開発フェーズ -->
+        <div class="section" id="phases">
+            <h2>6. 開発フェーズ</h2>
+            
+            <div class="phase-cards">
+                <div class="phase-card">
+                    <div class="phase-number">1</div>
+                    <div class="phase-title">Phase 1: 基盤構築</div>
+                    <div class="phase-duration">📅 4週間</div>
+                    <ul>
+                        <li>環境構築</li>
+                        <li>データベース設計</li>
+                        <li>認証システム実装</li>
+                        <li>API基盤構築</li>
+                    </ul>
+                </div>
+                
+                <div class="phase-card">
+                    <div class="phase-number">2</div>
+                    <div class="phase-title">Phase 2: コア機能</div>
+                    <div class="phase-duration">📅 6週間</div>
+                    <ul>
+                        <li>予約管理機能</li>
+                        <li>顧客管理機能</li>
+                        <li>LINE連携</li>
+                        <li>Google連携</li>
+                    </ul>
+                </div>
+                
+                <div class="phase-card">
+                    <div class="phase-number">3</div>
+                    <div class="phase-title">Phase 3: 利用規約</div>
+                    <div class="phase-duration">📅 3週間</div>
+                    <ul>
+                        <li>規約管理システム</li>
+                        <li>全文保存機能</li>
+                        <li>証跡出力機能</li>
+                        <li>履歴管理</li>
+                    </ul>
+                </div>
+                
+                <div class="phase-card">
+                    <div class="phase-number">4</div>
+                    <div class="phase-title">Phase 4: 管理画面</div>
+                    <div class="phase-duration">📅 4週間</div>
+                    <ul>
+                        <li>ダッシュボード</li>
+                        <li>レポート機能</li>
+                        <li>設定画面</li>
+                        <li>UI/UX改善</li>
+                    </ul>
+                </div>
+                
+                <div class="phase-card">
+                    <div class="phase-number">5</div>
+                    <div class="phase-title">Phase 5: テスト</div>
+                    <div class="phase-duration">📅 3週間</div>
+                    <ul>
+                        <li>単体テスト</li>
+                        <li>結合テスト</li>
+                        <li>E2Eテスト</li>
+                        <li>負荷テスト</li>
+                    </ul>
+                </div>
+                
+                <div class="phase-card">
+                    <div class="phase-number">6</div>
+                    <div class="phase-title">Phase 6: リリース</div>
+                    <div class="phase-duration">📅 2週間</div>
+                    <ul>
+                        <li>本番環境構築</li>
+                        <li>データ移行</li>
+                        <li>段階的リリース</li>
+                        <li>運用開始</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 7. スケジュール -->
+        <div class="section" id="schedule">
+            <h2>7. スケジュール</h2>
+            
+            <h3>マイルストーン</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <strong>2025年1月</strong> - プロジェクトキックオフ
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <strong>2025年2月</strong> - Phase 1完了（基盤構築）
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <strong>2025年3月中旬</strong> - Phase 2完了（コア機能）
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <strong>2025年4月上旬</strong> - Phase 3完了（利用規約）
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <strong>2025年5月上旬</strong> - Phase 4完了（管理画面）
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <strong>2025年5月末</strong> - Phase 5完了（テスト）
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <strong>2025年6月中旬</strong> - 正式リリース 🚀
+                    </div>
+                </div>
+            </div>
+            
+            <h3>クリティカルパス</h3>
+            <div class="warning-box">
+                <p><strong>遅延リスクが高い項目：</strong></p>
+                <ul>
+                    <li>LINE API審査（2-3週間必要）</li>
+                    <li>Google API認証（1-2週間必要）</li>
+                    <li>セキュリティ監査（2週間必要）</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 8. 必要リソース -->
+        <div class="section" id="resources">
+            <h2>8. 必要リソース</h2>
+            
+            <h3>人的リソース</h3>
+            <table>
+                <tr>
+                    <th>役割</th>
+                    <th>人数</th>
+                    <th>期間</th>
+                    <th>スキル要件</th>
+                </tr>
+                <tr>
+                    <td>プロジェクトマネージャー</td>
+                    <td>1名</td>
+                    <td>6ヶ月</td>
+                    <td>PM経験3年以上</td>
+                </tr>
+                <tr>
+                    <td>フロントエンドエンジニア</td>
+                    <td>2名</td>
+                    <td>5ヶ月</td>
+                    <td>React, Next.js</td>
+                </tr>
+                <tr>
+                    <td>バックエンドエンジニア</td>
+                    <td>2名</td>
+                    <td>5ヶ月</td>
+                    <td>Laravel, API設計</td>
+                </tr>
+                <tr>
+                    <td>UI/UXデザイナー</td>
+                    <td>1名</td>
+                    <td>3ヶ月</td>
+                    <td>Figma, モバイルUI</td>
+                </tr>
+                <tr>
+                    <td>QAエンジニア</td>
+                    <td>1名</td>
+                    <td>2ヶ月</td>
+                    <td>自動テスト経験</td>
+                </tr>
+            </table>
+            
+            <h3>技術リソース</h3>
+            <table>
+                <tr>
+                    <th>項目</th>
+                    <th>内容</th>
+                    <th>月額費用</th>
+                </tr>
+                <tr>
+                    <td>Google Cloud Platform</td>
+                    <td>Cloud Run, Cloud SQL</td>
+                    <td>¥30,000</td>
+                </tr>
+                <tr>
+                    <td>Firebase</td>
+                    <td>Authentication, Storage</td>
+                    <td>¥10,000</td>
+                </tr>
+                <tr>
+                    <td>LINE API</td>
+                    <td>Messaging API Pro</td>
+                    <td>¥15,000</td>
+                </tr>
+                <tr>
+                    <td>開発ツール</td>
+                    <td>GitHub, Figma, etc</td>
+                    <td>¥20,000</td>
+                </tr>
+                <tr>
+                    <td>監視ツール</td>
+                    <td>Datadog, Sentry</td>
+                    <td>¥15,000</td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- 9. 予算計画 -->
+        <div class="section" id="budget">
+            <h2>9. 予算計画</h2>
+            
+            <div class="budget-table">
+                <h3>開発費用</h3>
+                <table>
+                    <tr>
+                        <th>項目</th>
+                        <th>単価</th>
+                        <th>数量</th>
+                        <th>小計</th>
+                    </tr>
+                    <tr>
+                        <td>PM（6ヶ月）</td>
+                        <td>¥800,000/月</td>
+                        <td>6</td>
+                        <td>¥4,800,000</td>
+                    </tr>
+                    <tr>
+                        <td>フロントエンド開発（2名×5ヶ月）</td>
+                        <td>¥700,000/月</td>
+                        <td>10</td>
+                        <td>¥7,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>バックエンド開発（2名×5ヶ月）</td>
+                        <td>¥700,000/月</td>
+                        <td>10</td>
+                        <td>¥7,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>UI/UXデザイン（3ヶ月）</td>
+                        <td>¥600,000/月</td>
+                        <td>3</td>
+                        <td>¥1,800,000</td>
+                    </tr>
+                    <tr>
+                        <td>QA/テスト（2ヶ月）</td>
+                        <td>¥500,000/月</td>
+                        <td>2</td>
+                        <td>¥1,000,000</td>
+                    </tr>
+                    <tr class="budget-total">
+                        <td colspan="3">開発費用合計</td>
+                        <td>¥21,600,000</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="budget-table">
+                <h3>運用費用（月額）</h3>
+                <table>
+                    <tr>
+                        <th>項目</th>
+                        <th>月額</th>
+                        <th>年額</th>
+                    </tr>
+                    <tr>
+                        <td>インフラ費用</td>
+                        <td>¥90,000</td>
+                        <td>¥1,080,000</td>
+                    </tr>
+                    <tr>
+                        <td>保守・運用</td>
+                        <td>¥200,000</td>
+                        <td>¥2,400,000</td>
+                    </tr>
+                    <tr>
+                        <td>カスタマーサポート</td>
+                        <td>¥150,000</td>
+                        <td>¥1,800,000</td>
+                    </tr>
+                    <tr class="budget-total">
+                        <td>運用費用合計</td>
+                        <td>¥440,000</td>
+                        <td>¥5,280,000</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <h3>ROI予測</h3>
+            <div class="success-box">
+                <h4>収益モデル</h4>
+                <ul>
+                    <li><strong>フリープラン：</strong>¥0（3予約/日まで）</li>
+                    <li><strong>ベーシック：</strong>¥2,980/月（10予約/日）</li>
+                    <li><strong>プロ：</strong>¥9,800/月（無制限）</li>
+                </ul>
+                <h4>6ヶ月後の目標</h4>
+                <ul>
+                    <li>導入店舗：100店</li>
+                    <li>有料化率：30%</li>
+                    <li>月間収益：¥500,000</li>
+                    <li>投資回収期間：18ヶ月</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 10. リスク管理 -->
+        <div class="section" id="risks">
+            <h2>10. リスク管理</h2>
+            
+            <h3>リスク評価マトリックス</h3>
+            <div class="risk-matrix">
+                <div class="risk-item risk-high">
+                    <h4>高リスク</h4>
+                    <p>LINE API仕様変更</p>
+                    <p>個人情報漏洩</p>
+                </div>
+                
+                <div class="risk-item risk-medium">
+                    <h4>中リスク</h4>
+                    <p>開発遅延</p>
+                    <p>予算超過</p>
+                    <p>競合参入</p>
+                </div>
+                
+                <div class="risk-item risk-low">
+                    <h4>低リスク</h4>
+                    <p>要件変更</p>
+                    <p>人材離脱</p>
+                    <p>技術的課題</p>
+                </div>
+            </div>
+            
+            <h3>リスク対策</h3>
+            <table>
+                <tr>
+                    <th>リスク</th>
+                    <th>影響度</th>
+                    <th>発生確率</th>
+                    <th>対策</th>
+                </tr>
+                <tr>
+                    <td>LINE API仕様変更</td>
+                    <td>高</td>
+                    <td>中</td>
+                    <td>
+                        ・API変更通知の監視<br>
+                        ・抽象化層の実装<br>
+                        ・代替API の準備
+                    </td>
+                </tr>
+                <tr>
+                    <td>個人情報漏洩</td>
+                    <td>高</td>
+                    <td>低</td>
+                    <td>
+                        ・暗号化の徹底<br>
+                        ・定期的なセキュリティ監査<br>
+                        ・賠償保険加入
+                    </td>
+                </tr>
+                <tr>
+                    <td>開発遅延</td>
+                    <td>中</td>
+                    <td>中</td>
+                    <td>
+                        ・バッファ期間の確保<br>
+                        ・段階的リリース<br>
+                        ・外部リソース確保
+                    </td>
+                </tr>
+                <tr>
+                    <td>競合参入</td>
+                    <td>中</td>
+                    <td>高</td>
+                    <td>
+                        ・差別化機能の強化<br>
+                        ・早期市場投入<br>
+                        ・顧客ロックイン
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- 11. 成功指標 -->
+        <div class="section" id="kpi">
+            <h2>11. 成功指標（KPI）</h2>
+            
+            <h3>ビジネスKPI</h3>
+            <table>
+                <tr>
+                    <th>指標</th>
+                    <th>3ヶ月後</th>
+                    <th>6ヶ月後</th>
+                    <th>1年後</th>
+                </tr>
+                <tr>
+                    <td>導入店舗数</td>
+                    <td>30店</td>
+                    <td>100店</td>
+                    <td>500店</td>
+                </tr>
+                <tr>
+                    <td>月間予約数</td>
+                    <td>3,000件</td>
+                    <td>15,000件</td>
+                    <td>100,000件</td>
+                </tr>
+                <tr>
+                    <td>有料化率</td>
+                    <td>20%</td>
+                    <td>30%</td>
+                    <td>40%</td>
+                </tr>
+                <tr>
+                    <td>月間収益</td>
+                    <td>¥150,000</td>
+                    <td>¥500,000</td>
+                    <td>¥3,000,000</td>
+                </tr>
+                <tr>
+                    <td>顧客満足度</td>
+                    <td>80%</td>
+                    <td>85%</td>
+                    <td>90%</td>
+                </tr>
+            </table>
+            
+            <h3>技術KPI</h3>
+            <div class="info-box">
+                <ul>
+                    <li><strong>システム稼働率：</strong>99.9%以上</li>
+                    <li><strong>レスポンスタイム：</strong>平均200ms以下</li>
+                    <li><strong>同時接続数：</strong>1,000以上対応</li>
+                    <li><strong>バグ発生率：</strong>1%以下</li>
+                    <li><strong>デプロイ頻度：</strong>週2回以上</li>
+                </ul>
+            </div>
+            
+            <h3>オペレーションKPI</h3>
+            <ul>
+                <li><strong>サポート応答時間：</strong>24時間以内</li>
+                <li><strong>問題解決時間：</strong>48時間以内</li>
+                <li><strong>オンボーディング完了率：</strong>80%以上</li>
+                <li><strong>チャーン率：</strong>月5%以下</li>
+            </ul>
+        </div>
+        
+        <!-- 12. 成果物 -->
+        <div class="section" id="deliverables">
+            <h2>12. 成果物</h2>
+            
+            <h3>開発成果物</h3>
+            <table>
+                <tr>
+                    <th>カテゴリ</th>
+                    <th>成果物</th>
+                    <th>形式</th>
+                </tr>
+                <tr>
+                    <td>ソースコード</td>
+                    <td>
+                        ・フロントエンドアプリケーション<br>
+                        ・バックエンドAPI<br>
+                        ・管理画面
+                    </td>
+                    <td>GitHubリポジトリ</td>
+                </tr>
+                <tr>
+                    <td>ドキュメント</td>
+                    <td>
+                        ・要件定義書<br>
+                        ・設計書<br>
+                        ・API仕様書<br>
+                        ・運用マニュアル
+                    </td>
+                    <td>Markdown, PDF</td>
+                </tr>
+                <tr>
+                    <td>デザイン</td>
+                    <td>
+                        ・UIデザイン<br>
+                        ・ブランドガイドライン<br>
+                        ・マーケティング素材
+                    </td>
+                    <td>Figma, Adobe</td>
+                </tr>
+                <tr>
+                    <td>テスト</td>
+                    <td>
+                        ・テスト計画書<br>
+                        ・テストケース<br>
+                        ・テスト結果報告書
+                    </td>
+                    <td>Excel, PDF</td>
+                </tr>
+            </table>
+            
+            <h3>運用成果物</h3>
+            <div class="success-box">
+                <ul>
+                    <li><strong>本番環境：</strong>Google Cloud Platform上に構築</li>
+                    <li><strong>監視ダッシュボード：</strong>Datadog/Google Cloud Monitoring</li>
+                    <li><strong>バックアップ：</strong>日次自動バックアップ設定</li>
+                    <li><strong>CI/CDパイプライン：</strong>GitHub Actions設定済み</li>
+                    <li><strong>サポートサイト：</strong>ヘルプセンター、FAQ</li>
+                </ul>
+            </div>
+            
+            <h3>納品物チェックリスト</h3>
+            <table>
+                <tr>
+                    <th>✓</th>
+                    <th>項目</th>
+                    <th>完了予定</th>
+                </tr>
+                <tr>
+                    <td>☐</td>
+                    <td>ソースコード一式</td>
+                    <td>2025年5月末</td>
+                </tr>
+                <tr>
+                    <td>☐</td>
+                    <td>システム設計書</td>
+                    <td>2025年5月末</td>
+                </tr>
+                <tr>
+                    <td>☐</td>
+                    <td>運用マニュアル</td>
+                    <td>2025年6月上旬</td>
+                </tr>
+                <tr>
+                    <td>☐</td>
+                    <td>テスト成果物</td>
+                    <td>2025年5月末</td>
+                </tr>
+                <tr>
+                    <td>☐</td>
+                    <td>本番環境</td>
+                    <td>2025年6月中旬</td>
+                </tr>
+                <tr>
+                    <td>☐</td>
+                    <td>引き継ぎ資料</td>
+                    <td>2025年6月末</td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- まとめ -->
+        <div class="section">
+            <h2>📌 プロジェクト成功への道</h2>
+            
+            <div class="highlight-box">
+                <h3>成功要因</h3>
+                <ul>
+                    <li><strong>明確なビジョン：</strong>美容サロンの予約管理を革新する</li>
+                    <li><strong>段階的アプローチ：</strong>MVP→改善→スケール</li>
+                    <li><strong>顧客中心設計：</strong>現場の声を反映</li>
+                    <li><strong>技術的優位性：</strong>LINE×Google統合の先駆者</li>
+                    <li><strong>法的保護：</strong>完全な利用規約管理システム</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <h3>次のアクション</h3>
+                <ol>
+                    <li>プロジェクトチーム編成（1月第1週）</li>
+                    <li>詳細要件定義（1月第2-3週）</li>
+                    <li>開発環境構築（1月第4週）</li>
+                    <li>Phase 1開発開始（2月第1週）</li>
+                </ol>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px; padding: 30px; background: linear-gradient(135deg, #d4a574 0%, #c19a6b 100%); color: white; border-radius: 10px;">
+                <h3 style="margin-bottom: 10px;">プロジェクトを成功に導く</h3>
+                <p>「小さく始めて、大きく育てる」</p>
+                <p style="margin-top: 20px; font-size: 14px;">合同会社RES - LINA開発チーム</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

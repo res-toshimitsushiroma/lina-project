@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINA - 利用規約設定</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #d4a574 0%, #c19a6b 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .back-button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .back-button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 5px;
+        }
+        
+        .info-box p {
+            font-size: 13px;
+            color: #1976d2;
+            line-height: 1.6;
+        }
+        
+        .terms-section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .term-item {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        
+        .term-item.active {
+            border-color: #d4a574;
+            background: #fffbf5;
+        }
+        
+        .term-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .term-title-group {
+            flex: 1;
+        }
+        
+        .term-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .term-subtitle {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #4caf50;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+        
+        .term-preview {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #555;
+            line-height: 1.6;
+            display: none;
+        }
+        
+        .term-edit-area {
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .term-item.active .term-edit-area {
+            display: block;
+        }
+        
+        .term-content-editor {
+            background: #f9f9f9;
+            border: 1px solid #d4a574;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .reset-button {
+            padding: 8px 15px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 12px;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .reset-button:hover {
+            background: #e0e0e0;
+        }
+        
+        .custom-term-item {
+            border: 2px dashed #ddd;
+            background: #fafafa;
+        }
+        
+        .custom-term-item.active {
+            border-color: #d4a574;
+            border-style: solid;
+        }
+        
+        .custom-inputs {
+            display: none;
+            margin-top: 15px;
+        }
+        
+        .custom-term-item.active .custom-inputs {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .preview-button {
+            width: 100%;
+            padding: 15px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+        
+        .preview-button:hover {
+            background: #e0e0e0;
+        }
+        
+        .save-button {
+            width: 100%;
+            padding: 15px;
+            background: #d4a574;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .save-button:hover {
+            background: #c19a6b;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .badge-off {
+            background: #e0e0e0;
+            color: #666;
+        }
+        
+        .badge-on {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        /* モーダル */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 440px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .terms-preview-content {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        .terms-preview-content h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #d4a574;
+        }
+        
+        .terms-preview-content h4 {
+            font-size: 14px;
+            margin: 20px 0 10px;
+            color: #333;
+        }
+        
+        .success-toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4caf50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none;
+            animation: slideUp 0.3s;
+        }
+        
+        .success-toast.show {
+            display: block;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateX(-50%) translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <button class="back-button" onclick="goBack()">←</button>
+            <h1 style="font-size: 20px;">利用規約設定</h1>
+        </div>
+        
+        <div class="content">
+            <!-- 説明 -->
+            <div class="info-box">
+                <p>
+                    <strong>💡 お客様向けの利用規約を設定</strong><br>
+                    予約時にお客様に同意いただく規約を選択してください。<br>
+                    有効にした規約は、予約の際に毎回表示されます。
+                </p>
+            </div>
+            
+            <!-- 標準規約 -->
+            <div class="terms-section">
+                <h2 class="section-title">標準規約</h2>
+                
+                <!-- 年齢制限 -->
+                <div class="term-item" id="term-age">
+                    <div class="term-header">
+                        <div class="term-title-group">
+                            <div class="term-title">
+                                18歳未満の親権者同意
+                                <span class="status-badge badge-off" id="badge-age">OFF</span>
+                            </div>
+                            <div class="term-subtitle">未成年者の施術に親権者同意を必須とします</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-age" onchange="toggleTerm('age')">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="term-edit-area">
+                        <div class="form-group">
+                            <label class="form-label">規約内容（編集可能）</label>
+                            <textarea class="form-textarea term-content-editor" id="content-age" rows="6">18歳未満のお客様が施術を受ける場合、親権者の同意が必要となります。
+ご予約時に親権者の同意を得ていることをご確認ください。
+なお、親権者の同意確認はお客様の自己申告に基づくものとし、予約システム提供者（LINA）はその真偽について確認する義務を負わず、一切の責任を負いません。
+同意の確認および管理は当サロンの責任において行います。</textarea>
+                        </div>
+                        <button class="reset-button" onclick="resetToDefault('age')">デフォルトに戻す</button>
+                    </div>
+                </div>
+                
+                <!-- 施術責任 -->
+                <div class="term-item" id="term-responsibility">
+                    <div class="term-header">
+                        <div class="term-title-group">
+                            <div class="term-title">
+                                施術責任の明確化
+                                <span class="status-badge badge-off" id="badge-responsibility">OFF</span>
+                            </div>
+                            <div class="term-subtitle">施術内容の責任範囲を明示します</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-responsibility" onchange="toggleTerm('responsibility')">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="term-edit-area">
+                        <div class="form-group">
+                            <label class="form-label">規約内容（編集可能）</label>
+                            <textarea class="form-textarea term-content-editor" id="content-responsibility" rows="5">施術内容、使用器具、資格、許可、届出、法令遵守等については、すべて当サロンが責任を持って管理しております。
+予約システム提供者（LINA）は、施術の適法性、安全性、品質について一切保証せず、責任を負いません。
+施術に関するご質問やご不安がございましたら、当サロンまでお気軽にお申し付けください。</textarea>
+                        </div>
+                        <button class="reset-button" onclick="resetToDefault('responsibility')">デフォルトに戻す</button>
+                    </div>
+                </div>
+                
+                <!-- 健全運営 -->
+                <div class="term-item" id="term-appropriate">
+                    <div class="term-header">
+                        <div class="term-title-group">
+                            <div class="term-title">
+                                健全運営ポリシー
+                                <span class="status-badge badge-off" id="badge-appropriate">OFF</span>
+                            </div>
+                            <div class="term-subtitle">不適切な利用を防止します</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-appropriate" onchange="toggleTerm('appropriate')">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="term-edit-area">
+                        <div class="form-group">
+                            <label class="form-label">規約内容（編集可能）</label>
+                            <textarea class="form-textarea term-content-editor" id="content-appropriate" rows="4">当サロンは美容、健康、リラクゼーションを目的としたサービスを提供しております。
+風俗営業、性的サービス、またはこれらに該当・類似する行為を目的とした利用は固くお断りいたします。
+不適切な利用が確認された場合、サービスの提供を中止し、以後の利用をお断りさせていただきます。</textarea>
+                        </div>
+                        <button class="reset-button" onclick="resetToDefault('appropriate')">デフォルトに戻す</button>
+                    </div>
+                </div>
+                
+                <!-- ハラスメント防止 -->
+                <div class="term-item" id="term-harassment">
+                    <div class="term-header">
+                        <div class="term-title-group">
+                            <div class="term-title">
+                                ハラスメント防止
+                                <span class="status-badge badge-off" id="badge-harassment">OFF</span>
+                            </div>
+                            <div class="term-subtitle">スタッフとお客様の安全を守ります</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-harassment" onchange="toggleTerm('harassment')">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="term-edit-area">
+                        <div class="form-group">
+                            <label class="form-label">規約内容（編集可能）</label>
+                            <textarea class="form-textarea term-content-editor" id="content-harassment" rows="8">お客様には、当サロンスタッフに対して以下の行為を行わないことをお約束いただきます：
+・暴言、威圧、脅迫等のハラスメント行為
+・性的な発言、接触、要求等のセクシャルハラスメント
+・わいせつな言動または行為
+・業務の円滑な遂行を妨げる行為
+・その他、社会通念上不適切と判断される行為
+
+違反があった場合、サービスの提供を中止し、予約の取消、今後の利用停止等の措置を取らせていただきます。
+なお、これらの対応について予約システム提供者（LINA）は一切の責任を負いません。</textarea>
+                        </div>
+                        <button class="reset-button" onclick="resetToDefault('harassment')">デフォルトに戻す</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- カスタム規約 -->
+            <div class="terms-section">
+                <h2 class="section-title">カスタム規約</h2>
+                
+                <div class="term-item custom-term-item" id="term-custom">
+                    <div class="term-header">
+                        <div class="term-title-group">
+                            <div class="term-title">
+                                独自の規約を追加
+                                <span class="status-badge badge-off" id="badge-custom">OFF</span>
+                            </div>
+                            <div class="term-subtitle">お店独自のルールを設定できます</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-custom" onchange="toggleTerm('custom')">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="custom-inputs">
+                        <div class="form-group">
+                            <label class="form-label">規約タイトル</label>
+                            <input type="text" class="form-input" id="custom-title" placeholder="例：キャンセルポリシー">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">規約内容</label>
+                            <textarea class="form-textarea" id="custom-content" placeholder="例：前日までのキャンセルは無料、当日キャンセルは料金の50%をいただきます。"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- アクションボタン -->
+            <button class="preview-button" onclick="showPreview()">
+                📄 お客様に表示される規約をプレビュー
+            </button>
+            
+            <button class="save-button" onclick="saveSettings()">
+                設定を保存
+            </button>
+        </div>
+    </div>
+    
+    <!-- プレビューモーダル -->
+    <div id="previewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">利用規約プレビュー</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="terms-preview-content">
+                <h3>ご利用規約</h3>
+                <p>以下の規約に同意の上、ご予約をお願いいたします。</p>
+                
+                <div id="preview-content">
+                    <!-- 動的に生成される規約内容 -->
+                </div>
+                
+                <div style="margin-top: 30px; padding: 15px; background: #fff3e0; border-radius: 8px;">
+                    <p style="font-size: 12px; color: #f57c00; margin: 0;">
+                        <strong>⚠️ 実際の表示イメージ</strong><br>
+                        お客様は予約時にこの規約に同意する必要があります。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 保存完了トースト -->
+    <div id="successToast" class="success-toast">
+        ✅ 設定を保存しました
+    </div>
+    
+    <script>
+        // デフォルトの規約文章
+        const defaultTerms = {
+            age: `18歳未満のお客様が施術を受ける場合、親権者の同意が必要となります。
+ご予約時に親権者の同意を得ていることをご確認ください。
+なお、親権者の同意確認はお客様の自己申告に基づくものとし、予約システム提供者（LINA）はその真偽について確認する義務を負わず、一切の責任を負いません。
+同意の確認および管理は当サロンの責任において行います。`,
+            
+            responsibility: `施術内容、使用器具、資格、許可、届出、法令遵守等については、すべて当サロンが責任を持って管理しております。
+予約システム提供者（LINA）は、施術の適法性、安全性、品質について一切保証せず、責任を負いません。
+施術に関するご質問やご不安がございましたら、当サロンまでお気軽にお申し付けください。`,
+            
+            appropriate: `当サロンは美容、健康、リラクゼーションを目的としたサービスを提供しております。
+風俗営業、性的サービス、またはこれらに該当・類似する行為を目的とした利用は固くお断りいたします。
+不適切な利用が確認された場合、サービスの提供を中止し、以後の利用をお断りさせていただきます。`,
+            
+            harassment: `お客様には、当サロンスタッフに対して以下の行為を行わないことをお約束いただきます：
+・暴言、威圧、脅迫等のハラスメント行為
+・性的な発言、接触、要求等のセクシャルハラスメント
+・わいせつな言動または行為
+・業務の円滑な遂行を妨げる行為
+・その他、社会通念上不適切と判断される行為
+
+違反があった場合、サービスの提供を中止し、予約の取消、今後の利用停止等の措置を取らせていただきます。
+なお、これらの対応について予約システム提供者（LINA）は一切の責任を負いません。`
+        };
+        
+        // 規約のON/OFF切り替え
+        function toggleTerm(type) {
+            const termItem = document.getElementById(`term-${type}`);
+            const badge = document.getElementById(`badge-${type}`);
+            const toggle = document.getElementById(`toggle-${type}`);
+            
+            if (toggle.checked) {
+                termItem.classList.add('active');
+                badge.classList.remove('badge-off');
+                badge.classList.add('badge-on');
+                badge.textContent = 'ON';
+            } else {
+                termItem.classList.remove('active');
+                badge.classList.remove('badge-on');
+                badge.classList.add('badge-off');
+                badge.textContent = 'OFF';
+            }
+        }
+        
+        // デフォルトに戻す
+        function resetToDefault(type) {
+            if (confirm('デフォルトの文章に戻しますか？\n現在の編集内容は失われます。')) {
+                document.getElementById(`content-${type}`).value = defaultTerms[type];
+            }
+        }
+        
+        // プレビュー表示
+        function showPreview() {
+            const modal = document.getElementById('previewModal');
+            const previewContent = document.getElementById('preview-content');
+            
+            // プレビュー内容を生成
+            let html = '';
+            let clauseNumber = 1;
+            
+            // 年齢制限
+            if (document.getElementById('toggle-age').checked) {
+                const content = document.getElementById('content-age').value;
+                html += `
+                    <h4>第${clauseNumber}条 年齢確認について</h4>
+                    <p>${content.replace(/\n/g, '<br>')}</p>
+                `;
+                clauseNumber++;
+            }
+            
+            // 施術責任
+            if (document.getElementById('toggle-responsibility').checked) {
+                const content = document.getElementById('content-responsibility').value;
+                html += `
+                    <h4>第${clauseNumber}条 施術について</h4>
+                    <p>${content.replace(/\n/g, '<br>')}</p>
+                `;
+                clauseNumber++;
+            }
+            
+            // 健全運営
+            if (document.getElementById('toggle-appropriate').checked) {
+                const content = document.getElementById('content-appropriate').value;
+                html += `
+                    <h4>第${clauseNumber}条 サービスの利用目的</h4>
+                    <p>${content.replace(/\n/g, '<br>')}</p>
+                `;
+                clauseNumber++;
+            }
+            
+            // ハラスメント防止
+            if (document.getElementById('toggle-harassment').checked) {
+                const content = document.getElementById('content-harassment').value;
+                html += `
+                    <h4>第${clauseNumber}条 禁止行為</h4>
+                    <p>${content.replace(/\n/g, '<br>')}</p>
+                `;
+                clauseNumber++;
+            }
+            
+            // カスタム規約
+            if (document.getElementById('toggle-custom').checked) {
+                const title = document.getElementById('custom-title').value || 'その他';
+                const content = document.getElementById('custom-content').value || '（内容が入力されていません）';
+                html += `
+                    <h4>第${clauseNumber}条 ${title}</h4>
+                    <p>${content.replace(/\n/g, '<br>')}</p>
+                `;
+            }
+            
+            // 規約がない場合
+            if (html === '') {
+                html = '<p style="text-align: center; color: #999;">規約が設定されていません</p>';
+            }
+            
+            previewContent.innerHTML = html;
+            modal.classList.add('active');
+        }
+        
+        // モーダルを閉じる
+        function closeModal() {
+            document.getElementById('previewModal').classList.remove('active');
+        }
+        
+        // 設定を保存
+        function saveSettings() {
+            // 保存処理（実際はAPIコール）
+            const settings = {
+                age_consent_enabled: document.getElementById('toggle-age').checked,
+                age_consent_content: document.getElementById('content-age').value,
+                
+                service_responsibility_enabled: document.getElementById('toggle-responsibility').checked,
+                service_responsibility_content: document.getElementById('content-responsibility').value,
+                
+                appropriate_use_enabled: document.getElementById('toggle-appropriate').checked,
+                appropriate_use_content: document.getElementById('content-appropriate').value,
+                
+                harassment_prevention_enabled: document.getElementById('toggle-harassment').checked,
+                harassment_prevention_content: document.getElementById('content-harassment').value,
+                
+                custom_term_enabled: document.getElementById('toggle-custom').checked,
+                custom_term_title: document.getElementById('custom-title').value,
+                custom_term_content: document.getElementById('custom-content').value
+            };
+            
+            console.log('保存する設定:', settings);
+            
+            // トースト表示
+            const toast = document.getElementById('successToast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // 戻る
+        function goBack() {
+            // 管理画面に戻る
+            window.history.back();
+        }
+        
+        // モーダルの外側クリックで閉じる
+        window.onclick = function(event) {
+            const modal = document.getElementById('previewModal');
+            if (event.target == modal) {
+                modal.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>

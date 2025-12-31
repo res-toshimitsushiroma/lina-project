@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINA - 顧客詳細（利用規約履歴付き）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #d4a574 0%, #c19a6b 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .back-button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .customer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+        
+        .customer-name {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .customer-id {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .vip-badge {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #333;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
+        .info-section {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .info-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #333;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: #666;
+        }
+        
+        .info-value {
+            color: #333;
+            font-weight: 500;
+        }
+        
+        /* 利用規約履歴セクション */
+        .terms-history-section {
+            background: #fff3e0;
+            border: 1px solid #ffcc80;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .terms-history-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #f57c00;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .terms-history-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .terms-record {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+        
+        .terms-record:last-child {
+            margin-bottom: 0;
+        }
+        
+        .terms-date {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 6px;
+        }
+        
+        .terms-agreed {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 6px;
+        }
+        
+        .terms-badge {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+        }
+        
+        .terms-menu {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .terms-alert {
+            background: #ffebee;
+            border: 1px solid #ffcdd2;
+            border-radius: 5px;
+            padding: 8px;
+            margin-top: 10px;
+            font-size: 11px;
+            color: #c62828;
+        }
+        
+        /* 来店履歴 */
+        .visit-history {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .visit-item {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .visit-item:last-child {
+            border-bottom: none;
+        }
+        
+        .visit-date {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .visit-menu {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        
+        .visit-details {
+            font-size: 11px;
+            color: #999;
+        }
+        
+        .section-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .tab-button {
+            padding: 10px 15px;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 13px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab-button.active {
+            color: #d4a574;
+            border-bottom-color: #d4a574;
+        }
+        
+        .view-full-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 12px;
+            color: #666;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .view-full-button:hover {
+            background: #e0e0e0;
+        }
+        
+        /* メモセクション */
+        .memo-section {
+            background: #fffde7;
+            border: 1px solid #f9a825;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .memo-content {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <button class="back-button" onclick="history.back()">←</button>
+            <h1 style="font-size: 18px;">顧客詳細</h1>
+        </div>
+        
+        <div class="content">
+            <!-- 顧客情報ヘッダー -->
+            <div class="customer-header">
+                <div>
+                    <div class="customer-name">田中 美咲 様</div>
+                    <div class="customer-id">ID: C2024-0542</div>
+                </div>
+                <div class="vip-badge">⭐ VIP</div>
+            </div>
+            
+            <!-- 基本情報 -->
+            <div class="info-section">
+                <div class="info-title">基本情報</div>
+                <div class="info-item">
+                    <span class="info-label">電話番号</span>
+                    <span class="info-value">090-1234-5678</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">メールアドレス</span>
+                    <span class="info-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="77031619161c1637120f161a071b125914181a">[email&#160;protected]</a></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">初回来店日</span>
+                    <span class="info-value">2024年3月15日</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">累計来店回数</span>
+                    <span class="info-value">12回</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">累計利用金額</span>
+                    <span class="info-value">¥68,500</span>
+                </div>
+            </div>
+            
+            <!-- 利用規約同意履歴 -->
+            <div class="terms-history-section">
+                <div class="terms-history-title">
+                    📝 利用規約同意履歴
+                </div>
+                
+                <div class="terms-history-list">
+                    <!-- 最新の予約 -->
+                    <div class="terms-record">
+                        <div class="terms-date">2024年12月25日 14:00 予約時</div>
+                        <div class="terms-agreed">
+                            <span class="terms-badge">健全運営ポリシー</span>
+                            <span class="terms-badge">ハラスメント防止</span>
+                        </div>
+                        <div class="terms-menu">施術：まつげパーマ（¥5,000）</div>
+                    </div>
+                    
+                    <!-- 過去の予約1 -->
+                    <div class="terms-record">
+                        <div class="terms-date">2024年11月20日 15:30 予約時</div>
+                        <div class="terms-agreed">
+                            <span class="terms-badge">健全運営ポリシー</span>
+                            <span class="terms-badge">ハラスメント防止</span>
+                        </div>
+                        <div class="terms-menu">施術：眉毛ワックス（¥3,500）</div>
+                    </div>
+                    
+                    <!-- 過去の予約2（規約が違う例） -->
+                    <div class="terms-record">
+                        <div class="terms-date">2024年6月10日 11:00 予約時</div>
+                        <div class="terms-agreed">
+                            <span class="terms-badge" style="background: #e3f2fd; color: #1976d2;">18歳未満の親権者同意</span>
+                        </div>
+                        <div class="terms-menu">施術：ネイル（¥7,000）</div>
+                    </div>
+                </div>
+                
+                <button class="view-full-button" onclick="viewFullTermsHistory()">
+                    全ての同意履歴を見る（12件）
+                </button>
+            </div>
+            
+            <!-- タブ切り替え -->
+            <div class="section-tabs">
+                <button class="tab-button active" onclick="showTab('visits')">来店履歴</button>
+                <button class="tab-button" onclick="showTab('photos')">施術記録</button>
+                <button class="tab-button" onclick="showTab('memo')">メモ</button>
+            </div>
+            
+            <!-- 来店履歴 -->
+            <div id="visits" class="visit-history">
+                <div class="visit-item">
+                    <div class="visit-date">2024年12月25日（水）14:00</div>
+                    <div class="visit-menu">まつげパーマ</div>
+                    <div class="visit-details">¥5,000 / 担当：山田 / 60分</div>
+                </div>
+                
+                <div class="visit-item">
+                    <div class="visit-date">2024年11月20日（水）15:30</div>
+                    <div class="visit-menu">眉毛ワックス</div>
+                    <div class="visit-details">¥3,500 / 担当：山田 / 30分</div>
+                </div>
+                
+                <div class="visit-item">
+                    <div class="visit-date">2024年10月15日（火）11:00</div>
+                    <div class="visit-menu">ネイル</div>
+                    <div class="visit-details">¥7,000 / 担当：佐藤 / 90分</div>
+                </div>
+            </div>
+            
+            <!-- メモ（非表示） -->
+            <div id="memo" class="memo-section" style="display: none;">
+                <div class="memo-content">
+                    <strong>2024/12/25 更新</strong><br>
+                    ・まつげが細めなので、カールは控えめに<br>
+                    ・化粧品アレルギーあり（要パッチテスト）<br>
+                    ・次回、眉毛の形を整えたいとのこと<br><br>
+                    
+                    <strong>2024/11/20 更新</strong><br>
+                    ・肌が敏感なため、低刺激の製品を使用<br>
+                    ・仕事の都合で土日の予約が多い
+                </div>
+            </div>
+            
+            <!-- 規約確認用のアラート例 -->
+            <div class="terms-alert" style="display: none;" id="terms-alert">
+                ⚠️ <strong>重要：</strong>過去の予約で「18歳未満の親権者同意」に同意いただいています。<br>
+                予約日：2024年6月10日<br>
+                この記録は法的証拠として保存されています。
+            </div>
+        </div>
+    </div>
+    
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        function showTab(tabName) {
+            // タブボタンの切り替え
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // コンテンツの切り替え
+            document.getElementById('visits').style.display = tabName === 'visits' ? 'block' : 'none';
+            document.getElementById('memo').style.display = tabName === 'memo' ? 'block' : 'none';
+            // photos タブは実装省略
+        }
+        
+        function viewFullTermsHistory() {
+            // 全履歴表示（実際は別画面やモーダル）
+            alert('全12件の利用規約同意履歴を表示します\n\n' +
+                  '2024/12/25 - 健全運営、ハラスメント防止\n' +
+                  '2024/11/20 - 健全運営、ハラスメント防止\n' +
+                  '2024/10/15 - 健全運営、ハラスメント防止\n' +
+                  '2024/09/10 - 健全運営、ハラスメント防止\n' +
+                  '2024/08/05 - 健全運営のみ\n' +
+                  '2024/07/20 - 健全運営のみ\n' +
+                  '2024/06/10 - 18歳未満の親権者同意\n' +
+                  '... 他5件');
+        }
+        
+ 
