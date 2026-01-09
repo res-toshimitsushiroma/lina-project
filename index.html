@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LINA - LINE×Google完全統合型 予約管理システム</title>
+    <title>LINA - LINE連携型サロン予約管理システム</title>
+    <link rel="icon" type="image/png" href="demo/LINA_icon_1_1.png">
+    <link rel="apple-touch-icon" href="demo/LINA_icon_1_3.png">
+    <meta name="application-name" content="LINA">
     
     <!-- OGP設定 -->
     <meta property="og:title" content="LINA - 美容サロン向け予約管理システム">
@@ -26,9 +29,9 @@
         
         /* ヘッダー */
         header {
-            background: linear-gradient(135deg, #f5a623 0%, #f76b1c 100%);
-            color: white;
-            padding: 20px 0;
+            background: #ffffff;
+            color: #333;
+            padding: 15px 0;
             position: fixed;
             width: 100%;
             top: 0;
@@ -46,8 +49,8 @@
         }
         
         .logo {
-            font-size: 24px;
-            font-weight: bold;
+            display: flex;
+            align-items: center;
         }
         
         .nav-links {
@@ -57,13 +60,15 @@
         }
         
         .nav-links a {
-            color: white;
+            color: #333;
             text-decoration: none;
             transition: opacity 0.3s;
+            font-weight: 500;
         }
         
         .nav-links a:hover {
-            opacity: 0.8;
+            opacity: 0.7;
+            color: #E91E63;
         }
         
         /* ヒーローセクション */
@@ -325,7 +330,9 @@
     <!-- ヘッダー -->
     <header>
         <nav>
-            <div class="logo">💝 LINA</div>
+            <div class="logo">
+                <img src="demo/LINA_icon_1_2.png" alt="LINA" style="height: 40px; width: auto;">
+            </div>
             <ul class="nav-links">
                 <li><a href="#features">特徴</a></li>
                 <li><a href="#demo">デモ</a></li>
@@ -408,6 +415,36 @@
                     サロンIDによる一元管理。<br>
                     退会時の完全データ削除。<br>
                     自動バックアップで安心。
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🌀</div>
+                <h3 class="feature-title">台風対策機能</h3>
+                <p class="feature-description">
+                    沖縄の気候に完全対応。<br>
+                    台風接近時の自動通知。<br>
+                    暴風警報時のキャンセルポリシー設定。
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🏢</div>
+                <h3 class="feature-title">シェアサロン対応</h3>
+                <p class="feature-description">
+                    準備・片付け時間の自動考慮。<br>
+                    他オーナーとのバッティング防止。<br>
+                    スペース共有の最適化。
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📋</div>
+                <h3 class="feature-title">利用規約・顧客管理</h3>
+                <p class="feature-description">
+                    カスタマイズ可能な利用規約。<br>
+                    問題顧客のブロック機能。<br>
+                    トラブルを未然に防止。
                 </p>
             </div>
         </div>
@@ -496,40 +533,15 @@
         <div class="footer-content">
             <div class="company-info">
                 <h3 class="company-name">合同会社RES</h3>
-                <p>〒901-1202 沖縄県南城市</p>
-                <p>Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dfb6b1b9b09fadbaacf2b3b3bcf1b5af">[email&#160;protected]</a></p>
+                <p>〒901-0504 沖縄県島尻郡八重瀬町字後原537</p>
+                <p>代表: 城間 敏光</p>
+                <p>Email: <a href="/cdn-cgi/l/email-protection#6b181e1b1b04191f2b190e185d5a5b45080406" style="color: #f5a623;"><span class="__cf_email__" data-cfemail="7c0f090c0c130e083c0e190f4a4d4c521f1311">[email&#160;protected]</span></a></p>
             </div>
             
             <div style="margin-top: 30px; padding-top: 30px; border-top: 1px solid #555;">
                 <p>&copy; 2024 合同会社RES. All rights reserved.</p>
-                <p style="margin-top: 10px;">
-                    <a href="https://github.com/res-llc/lina" style="color: #f5a623; text-decoration: none;">
-                        GitHub
-                    </a>
-                </p>
             </div>
         </div>
     </footer>
     
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        // スムーススクロール
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-        
-        // スクロールアニメーション
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeInUp 0.6s both';
- 
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cg

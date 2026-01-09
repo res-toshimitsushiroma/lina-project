@@ -4,11 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LINA - オーナー管理画面</title>
+    <link rel="icon" type="image/png" href="LINA_icon_1_1.png" id="favicon">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+        
+        /* カラーテーマのCSS変数 */
+        :root {
+            /* デフォルト: ゴールド系（管理画面用） */
+            --admin-primary: #d4a574;
+            --admin-primary-dark: #c19a6b;
+            
+            /* 顧客画面用テーマ */
+            --primary-color: #E91E63;
+            --primary-light: #F8BBD0;
+            --primary-dark: #C2185B;
+            --accent-color: #06C755;
+            --text-primary: #424242;
+            --text-secondary: #757575;
+        }
+        
+        /* Dark Masculine Theme */
+        body.theme-dark {
+            --primary-color: #263238;
+            --primary-light: #455A64;
+            --primary-dark: #1A1A1A;
+            --accent-color: #FF6F00;
+        }
+        
+        /* Ocean Blue Theme */
+        body.theme-blue {
+            --primary-color: #0288D1;
+            --primary-light: #03A9F4;
+            --primary-dark: #01579B;
+            --accent-color: #00BCD4;
         }
         
         body {
@@ -24,12 +56,14 @@
         }
         
         .header {
-            background: linear-gradient(135deg, #d4a574 0%, #c19a6b 100%);
-            color: white;
+            background: #F5F5F5;
+            color: #333;
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 2px solid var(--admin-primary, #E91E63);
+            transition: border-color 0.3s ease;
         }
         
         .tabs {
@@ -259,7 +293,7 @@
     <div class="container">
         <!-- ヘッダー -->
         <div class="header">
-            <h1 style="font-size: 20px;">LINA 管理画面</h1>
+            <img src="LINA_icon_1_2.png" alt="LINA" style="height: 35px; width: auto;" id="header-logo">
             <span style="font-size: 12px;">美容サロン LINA</span>
         </div>
         
@@ -295,6 +329,8 @@
                         <div style="font-size: 20px;">📸</div>
                         <div style="font-size: 11px; margin-top: 3px;">施術記録</div>
                     </button>
+                </div>
+                <div class="tab-row">
                     <button class="tab-item" onclick="showTab('reports')">
                         <div style="font-size: 20px;">📊</div>
                         <div style="font-size: 11px; margin-top: 3px;">集計</div>
@@ -782,6 +818,7 @@
                 </button>
             </div>
             
+            
             <!-- 利用規約設定 -->
             <div id="terms" class="tab-content">
                 <h2 style="font-size: 18px; margin-bottom: 20px;">利用規約設定</h2>
@@ -877,50 +914,296 @@
             <div id="settings" class="tab-content">
                 <h2 style="font-size: 18px; margin-bottom: 20px;">設定</h2>
                 
-                <div class="form-group">
-                    <label class="form-label">サロン名</label>
-                    <input type="text" class="form-input" value="美容サロン LINA">
-                </div>
+                <style>
+                    .accordion-item {
+                        background: white;
+                        border: 1px solid #e0e0e0;
+                        border-radius: 10px;
+                        margin-bottom: 10px;
+                        overflow: hidden;
+                    }
+                    
+                    .accordion-header {
+                        padding: 15px;
+                        cursor: pointer;
+                        background: #f9f9f9;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        transition: background 0.3s;
+                        user-select: none;
+                    }
+                    
+                    .accordion-header:hover {
+                        background: #FFF0F5;
+                    }
+                    
+                    .accordion-header.active {
+                        background: #FFF0F5;
+                        border-bottom: 1px solid #e0e0e0;
+                    }
+                    
+                    .accordion-icon {
+                        font-size: 18px;
+                        margin-right: 10px;
+                    }
+                    
+                    .accordion-title {
+                        display: flex;
+                        align-items: center;
+                        font-size: 14px;
+                        font-weight: bold;
+                        flex: 1;
+                    }
+                    
+                    .accordion-arrow {
+                        font-size: 12px;
+                        color: #999;
+                        transition: transform 0.3s;
+                    }
+                    
+                    .accordion-header.active .accordion-arrow {
+                        transform: rotate(180deg);
+                    }
+                    
+                    .accordion-content {
+                        display: none;
+                        background: white;
+                        padding: 0;
+                    }
+                    
+                    .accordion-content.show {
+                        display: block;
+                    }
+                    
+                    .accordion-inner {
+                        padding: 15px;
+                    }
+                </style>
                 
-                <div class="form-group">
-                    <label class="form-label">営業時間</label>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="time" class="form-input" value="10:00">
-                        <span style="padding: 10px;">〜</span>
-                        <input type="time" class="form-input" value="19:00">
+                <!-- サロン基本情報 -->
+                <div class="accordion-item">
+                    <div class="accordion-header active" onclick="toggleAccordion(this)">
+                        <div class="accordion-title">
+                            <span class="accordion-icon">🏪</span>
+                            サロン基本情報
+                        </div>
+                        <span class="accordion-arrow">▼</span>
+                    </div>
+                    <div class="accordion-content show">
+                        <div class="accordion-inner">
+                            <div class="form-group">
+                                <label class="form-label">サロン名</label>
+                                <input type="text" class="form-input" value="美容サロン LINA">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">営業時間</label>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <input type="time" class="form-input" value="10:00">
+                                    <span>〜</span>
+                                    <input type="time" class="form-input" value="19:00">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">定休日</label>
+                                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                    <label style="cursor: pointer;"><input type="checkbox"> 月</label>
+                                    <label style="cursor: pointer;"><input type="checkbox"> 火</label>
+                                    <label style="cursor: pointer;"><input type="checkbox"> 水</label>
+                                    <label style="cursor: pointer;"><input type="checkbox"> 木</label>
+                                    <label style="cursor: pointer;"><input type="checkbox"> 金</label>
+                                    <label style="cursor: pointer;"><input type="checkbox"> 土</label>
+                                    <label style="cursor: pointer;"><input type="checkbox" checked> 日</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <label class="form-label">定休日</label>
-                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                        <label><input type="checkbox"> 月</label>
-                        <label><input type="checkbox"> 火</label>
-                        <label><input type="checkbox"> 水</label>
-                        <label><input type="checkbox"> 木</label>
-                        <label><input type="checkbox"> 金</label>
-                        <label><input type="checkbox"> 土</label>
-                        <label><input type="checkbox" checked> 日</label>
+                <!-- カラーテーマ設定 -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <div class="accordion-title">
+                            <span class="accordion-icon">🎨</span>
+                            カラーテーマ設定
+                        </div>
+                        <span class="accordion-arrow">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-inner">
+                            <p style="font-size: 12px; color: #666; margin-bottom: 15px;">
+                                お客様画面のカラーテーマを選択できます
+                            </p>
+                            
+                            <!-- Rose Pink -->
+                            <label style="display: flex; align-items: center; margin-bottom: 10px; cursor: pointer;">
+                                <input type="radio" name="theme" value="pink" checked style="margin-right: 10px;" onchange="previewTheme('pink')">
+                                <span style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="width: 20px; height: 20px; background: #E91E63; border-radius: 50%;"></span>
+                                    <span style="font-size: 13px;">Rose Pink（女性向け）</span>
+                                </span>
+                            </label>
+                            
+                            <!-- Dark Mode -->
+                            <label style="display: flex; align-items: center; margin-bottom: 10px; cursor: pointer;">
+                                <input type="radio" name="theme" value="dark" style="margin-right: 10px;" onchange="previewTheme('dark')">
+                                <span style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="width: 20px; height: 20px; background: #263238; border-radius: 50%;"></span>
+                                    <span style="font-size: 13px;">Dark Mode（メンズ向け）</span>
+                                </span>
+                            </label>
+                            
+                            <!-- Ocean Blue -->
+                            <label style="display: flex; align-items: center; margin-bottom: 10px; cursor: pointer;">
+                                <input type="radio" name="theme" value="blue" style="margin-right: 10px;" onchange="previewTheme('blue')">
+                                <span style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="width: 20px; height: 20px; background: #0288D1; border-radius: 50%;"></span>
+                                    <span style="font-size: 13px;">Ocean Blue（ユニセックス）</span>
+                                </span>
+                            </label>
+                            
+                            <button class="btn btn-secondary" onclick="confirmTheme()" style="width: 100%; margin-top: 10px;">
+                                このテーマに決定
+                            </button>
+                        </div>
                     </div>
                 </div>
                 
-                <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin-top: 20px;">
-                    <h4 style="font-size: 14px; margin-bottom: 10px;">LINE連携設定</h4>
-                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
-                        ステータス: <span style="color: #4caf50; font-weight: bold;">連携済み</span>
-                    </p>
-                    <button class="btn btn-secondary">連携を解除</button>
+                <!-- 台風対応設定 -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <div class="accordion-title">
+                            <span class="accordion-icon">🌀</span>
+                            台風対応設定
+                        </div>
+                        <span class="accordion-arrow">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-inner">
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                    <input type="checkbox" checked style="width: 18px; height: 18px; margin-right: 8px;">
+                                    <span style="font-size: 13px;">台風接近時の自動通知を有効にする</span>
+                                </label>
+                            </div>
+                            
+                            <div style="margin-bottom: 15px;">
+                                <p style="font-size: 12px; color: #666; margin-bottom: 10px;">通知タイミング：</p>
+                                <select class="form-select" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                                    <option value="3" selected>3日前から通知（推奨）</option>
+                                    <option value="2">2日前から通知</option>
+                                    <option value="1">前日のみ通知</option>
+                                </select>
+                            </div>
+                            
+                            <div style="margin-bottom: 10px;">
+                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                    <input type="checkbox" checked style="width: 18px; height: 18px; margin-right: 8px;">
+                                    <span style="font-size: 13px;">暴風警報発令時は当日キャンセル料免除</span>
+                                </label>
+                            </div>
+                            
+                            <button class="btn btn-secondary" onclick="testTyphoonNotice()" style="width: 100%; margin-top: 10px; font-size: 13px;">
+                                テスト通知を送信
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 
-                <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin-top: 15px;">
-                    <h4 style="font-size: 14px; margin-bottom: 10px;">Google連携設定</h4>
-                    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
-                        ステータス: <span style="color: #4caf50; font-weight: bold;">連携済み</span>
-                    </p>
-                    <button class="btn btn-secondary">連携を解除</button>
+                <!-- 利用規約設定 -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <div class="accordion-title">
+                            <span class="accordion-icon">📋</span>
+                            利用規約設定
+                        </div>
+                        <span class="accordion-arrow">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-inner">
+                            <div style="margin-bottom: 12px;">
+                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                    <input type="checkbox" style="width: 18px; height: 18px; margin-right: 8px;">
+                                    <span style="font-size: 13px;">18歳未満の親権者同意を必須にする</span>
+                                </label>
+                            </div>
+                            
+                            <div style="margin-bottom: 12px;">
+                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                    <input type="checkbox" checked style="width: 18px; height: 18px; margin-right: 8px;">
+                                    <span style="font-size: 13px;">施術による肌トラブル免責条項を表示</span>
+                                </label>
+                            </div>
+                            
+                            <div style="margin-bottom: 12px;">
+                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                    <input type="checkbox" checked style="width: 18px; height: 18px; margin-right: 8px;">
+                                    <span style="font-size: 13px;">キャンセルポリシーを表示</span>
+                                </label>
+                            </div>
+                            
+                            <div style="margin-bottom: 12px;">
+                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                    <input type="checkbox" style="width: 18px; height: 18px; margin-right: 8px;">
+                                    <span style="font-size: 13px;">妊娠中の施術制限を表示</span>
+                                </label>
+                            </div>
+                            
+                            <div style="margin-bottom: 12px;">
+                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                    <input type="checkbox" style="width: 18px; height: 18px; margin-right: 8px;">
+                                    <span style="font-size: 13px;">写真撮影・SNS投稿同意を確認</span>
+                                </label>
+                            </div>
+                            
+                            <button class="btn btn-secondary" onclick="window.location.href='lina-terms-editor.html'" style="width: 100%; margin-top: 10px; font-size: 13px;">
+                                利用規約の詳細を編集
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 
-                <button class="btn btn-primary" style="width: 100%; margin-top: 30px;">
+                <!-- LINE連携設定 -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <div class="accordion-title">
+                            <span class="accordion-icon">💬</span>
+                            LINE連携設定
+                        </div>
+                        <span class="accordion-arrow">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-inner">
+                            <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                                ステータス: <span style="color: #4caf50; font-weight: bold;">連携済み</span>
+                            </p>
+                            <button class="btn btn-secondary">連携を解除</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Google連携設定 -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <div class="accordion-title">
+                            <span class="accordion-icon">☁️</span>
+                            Google連携設定
+                        </div>
+                        <span class="accordion-arrow">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-inner">
+                            <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                                ステータス: <span style="color: #4caf50; font-weight: bold;">連携済み</span>
+                            </p>
+                            <button class="btn btn-secondary">連携を解除</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" style="width: 100%; margin-top: 20px;">
                     設定を保存
                 </button>
             </div>
@@ -928,6 +1211,80 @@
     </div>
     
     <script>
+        // アコーディオン機能
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            
+            // 現在の状態を切り替え
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                header.classList.remove('active');
+            } else {
+                content.classList.add('show');
+                header.classList.add('active');
+            }
+        }
+        
+        // カラーテーマプレビュー（管理画面のみ変更）
+        function previewTheme(theme) {
+            const body = document.body;
+            body.classList.remove('theme-dark', 'theme-blue');
+            
+            // ロゴとファビコンを切り替え
+            const headerLogo = document.getElementById('header-logo');
+            const favicon = document.getElementById('favicon');
+            
+            // プレビュー用のヘッダー色変更
+            const root = document.documentElement;
+            
+            if (theme === 'dark') {
+                body.classList.add('theme-dark');
+                headerLogo.src = 'LINA_icon_2_2.png';
+                favicon.href = 'LINA_icon_2_1.png';
+                root.style.setProperty('--admin-primary', '#263238');
+                root.style.setProperty('--admin-primary-dark', '#1A1A1A');
+            } else if (theme === 'blue') {
+                body.classList.add('theme-blue');
+                headerLogo.src = 'LINA_icon_3_2.png';
+                favicon.href = 'LINA_icon_3_1.png';
+                root.style.setProperty('--admin-primary', '#0288D1');
+                root.style.setProperty('--admin-primary-dark', '#01579B');
+            } else {
+                headerLogo.src = 'LINA_icon_1_2.png';
+                favicon.href = 'LINA_icon_1_1.png';
+                root.style.setProperty('--admin-primary', '#E91E63');
+                root.style.setProperty('--admin-primary-dark', '#C2185B');
+            }
+        }
+        
+        // テーマ決定（お客様画面にも反映）
+        function confirmTheme() {
+            const selectedTheme = document.querySelector('input[name="theme"]:checked').value;
+            localStorage.setItem('lina-theme', selectedTheme);
+            localStorage.setItem('lina-theme-confirmed', selectedTheme);
+            alert('カラーテーマを設定しました！\nお客様の画面に反映されます。');
+        }
+        
+        // 台風テスト通知
+        function testTyphoonNotice() {
+            alert('テスト通知を送信しました！\nLINEをご確認ください。');
+        }
+        
+        // ページ読み込み時に保存済みテーマを適用
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('lina-theme') || 'pink';
+            const confirmedTheme = localStorage.getItem('lina-theme-confirmed') || 'pink';
+            
+            // ラジオボタンを設定
+            const themeRadio = document.querySelector(`input[name="theme"][value="${savedTheme}"]`);
+            if (themeRadio) {
+                themeRadio.checked = true;
+            }
+            
+            // プレビュー適用
+            previewTheme(savedTheme);
+        });
+        
         function showTab(tabName) {
             // すべてのタブコンテンツを非表示
             document.querySelectorAll('.tab-content').forEach(content => {

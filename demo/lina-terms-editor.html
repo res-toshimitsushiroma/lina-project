@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>利用規約編集 - LINA</title>
+    <link rel="icon" type="image/png" href="LINA_icon_1_2.png" id="favicon">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* ヘッダー */
+        header {
+            background: #F5F5F5;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-bottom: 2px solid #E91E63;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .back-button {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .back-button:hover {
+            background: #f0f0f0;
+            transform: translateX(-2px);
+        }
+        
+        .logo {
+            height: 35px;
+        }
+        
+        .page-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .header-right {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #666;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .btn-secondary:hover {
+            background: #f0f0f0;
+        }
+        
+        .btn-primary {
+            background: #E91E63;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background: #C2185B;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(233,30,99,0.3);
+        }
+        
+        /* メインコンテンツ */
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+        
+        .terms-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #E91E63;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+        
+        .section-content {
+            margin-top: 15px;
+        }
+        
+        .content-disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+        
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #E91E63;
+            box-shadow: 0 0 0 3px rgba(233,30,99,0.1);
+        }
+        
+        .template-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .template-btn {
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .template-btn:hover {
+            background: #FFE8F0;
+            border-color: #E91E63;
+            color: #E91E63;
+        }
+        
+        .info-box {
+            background: #FFF8E1;
+            border-left: 4px solid #FFC107;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .info-box-title {
+            font-weight: bold;
+            font-size: 13px;
+            color: #F57C00;
+            margin-bottom: 5px;
+        }
+        
+        .info-box-text {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .preview-section {
+            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .preview-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .preview-content {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 13px;
+            line-height: 1.6;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        /* 固定フッター */
+        .fixed-footer {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .footer-info {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .footer-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        /* レスポンシブ */
+        @media (max-width: 640px) {
+            .header-left {
+                gap: 10px;
+            }
+            
+            .page-title {
+                display: none;
+            }
+            
+            .container {
+                padding: 0 10px;
+            }
+            
+            .fixed-footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .footer-buttons {
+                width: 100%;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <button class="back-button" onclick="goBack()">
+                ← 戻る
+            </button>
+            <img src="LINA_icon_1_2.png" alt="LINA" class="logo">
+            <div class="page-title">利用規約編集</div>
+        </div>
+        <div class="header-right">
+            <button class="btn-secondary" onclick="preview()">プレビュー</button>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- 年齢制限 -->
+        <div class="terms-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <span>👶</span>
+                    18歳未満の親権者同意
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="age-toggle" onchange="toggleSection('age')">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="section-content content-disabled" id="age-content">
+                <div class="info-box">
+                    <div class="info-box-title">💡 この規約を有効にすると</div>
+                    <div class="info-box-text">
+                        18歳未満のお客様が予約する際、親権者の同意確認画面が表示されます。
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">表示テキスト</label>
+                    <textarea class="form-textarea" id="age-text">当サロンでは、18歳未満のお客様のご利用には親権者の同意が必要です。
+
+18歳未満の方は、必ず親権者の方と一緒にご来店いただくか、事前に親権者の同意書をご提出ください。
+
+なお、中学生以下のお客様は、親権者の同伴が必須となります。</textarea>
+                </div>
+                <div class="template-buttons">
+                    <button class="template-btn" onclick="useTemplate('age', 'strict')">厳格版</button>
+                    <button class="template-btn" onclick="useTemplate('age', 'standard')">標準版</button>
+                    <button class="template-btn" onclick="useTemplate('age', 'flexible')">柔軟版</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 施術による肌トラブル免責 -->
+        <div class="terms-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <span>⚠️</span>
+                    施術による肌トラブル免責条項
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="skin-toggle" checked onchange="toggleSection('skin')">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="section-content" id="skin-content">
+                <div class="info-box">
+                    <div class="info-box-title">💡 この規約を有効にすると</div>
+                    <div class="info-box-text">
+                        予約確認画面で、施術による肌トラブルに関する免責事項への同意が必要になります。
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">表示テキスト</label>
+                    <textarea class="form-textarea" id="skin-text">施術により、まれに以下のような症状が現れる場合があります：
+・赤み、腫れ、かゆみ
+・一時的な色素沈着
+・アレルギー反応
+
+お客様の体質や肌の状態により、施術後に予期せぬ反応が生じる可能性があります。施術前に必ずパッチテストを実施させていただきます。
+
+万が一、施術によるトラブルが発生した場合、当サロンでは応急処置は行いますが、それ以上の責任は負いかねますことをご了承ください。
+
+アレルギー体質の方、皮膚疾患をお持ちの方は、事前に必ずお申し出ください。</textarea>
+                </div>
+                <div class="template-buttons">
+                    <button class="template-btn" onclick="useTemplate('skin', 'detailed')">詳細版</button>
+                    <button class="template-btn" onclick="useTemplate('skin', 'standard')">標準版</button>
+                    <button class="template-btn" onclick="useTemplate('skin', 'simple')">シンプル版</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- キャンセルポリシー -->
+        <div class="terms-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <span>🚫</span>
+                    キャンセルポリシー
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="cancel-toggle" checked onchange="toggleSection('cancel')">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="section-content" id="cancel-content">
+                <div class="info-box">
+                    <div class="info-box-title">💡 この規約を有効にすると</div>
+                    <div class="info-box-text">
+                        予約確認画面で、キャンセルポリシーへの同意が必要になります。
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">表示テキスト</label>
+                    <textarea class="form-textarea" id="cancel-text">【キャンセル・変更について】
+
+・前日まで：無料でキャンセル・変更可能
+・当日キャンセル：施術料金の50%
+・無断キャンセル：施術料金の100%
+
+※台風等の自然災害による場合は、キャンセル料は発生しません。
+※体調不良の場合は、お早めにご連絡ください。
+
+度重なる当日キャンセルや無断キャンセルの場合、今後のご予約をお断りする場合がございます。</textarea>
+                </div>
+                <div class="template-buttons">
+                    <button class="template-btn" onclick="useTemplate('cancel', 'strict')">厳格版</button>
+                    <button class="template-btn" onclick="useTemplate('cancel', 'standard')">標準版</button>
+                    <button class="template-btn" onclick="useTemplate('cancel', 'flexible')">柔軟版</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 妊娠中の施術制限 -->
+        <div class="terms-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <span>🤰</span>
+                    妊娠中の施術制限
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="pregnancy-toggle" onchange="toggleSection('pregnancy')">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="section-content content-disabled" id="pregnancy-content">
+                <div class="info-box">
+                    <div class="info-box-title">💡 この規約を有効にすると</div>
+                    <div class="info-box-text">
+                        予約時に妊娠中の方への注意事項が表示されます。
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">表示テキスト</label>
+                    <textarea class="form-textarea" id="pregnancy-text">妊娠中または妊娠の可能性がある方へ：
+
+安全のため、以下の施術はお受けいただけません：
+・まつげパーマ（薬剤使用のため）
+・眉毛ワックス（刺激が強いため）
+
+妊娠中はホルモンバランスの変化により、通常とは異なる反応が出る可能性があります。
+
+施術をご希望の場合は、必ず事前にご相談ください。
+お客様と赤ちゃんの安全を最優先に考えております。</textarea>
+                </div>
+                <div class="template-buttons">
+                    <button class="template-btn" onclick="useTemplate('pregnancy', 'strict')">完全制限</button>
+                    <button class="template-btn" onclick="useTemplate('pregnancy', 'partial')">部分制限</button>
+                    <button class="template-btn" onclick="useTemplate('pregnancy', 'consultation')">要相談</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 写真撮影・SNS投稿 -->
+        <div class="terms-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <span>📸</span>
+                    写真撮影・SNS投稿同意
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="photo-toggle" onchange="toggleSection('photo')">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="section-content content-disabled" id="photo-content">
+                <div class="info-box">
+                    <div class="info-box-title">💡 この規約を有効にすると</div>
+                    <div class="info-box-text">
+                        施術後の写真撮影とSNS投稿に関する同意確認が表示されます。
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">表示テキスト</label>
+                    <textarea class="form-textarea" id="photo-text">施術後のお写真撮影について：
+
+当サロンでは、技術向上とお客様への施術例のご紹介のため、施術後のお写真を撮影させていただく場合がございます。
+
+撮影したお写真は、以下の用途で使用させていただく可能性があります：
+・サロンのInstagram、Facebook等のSNS
+・サロンのホームページ
+・店内での施術例展示
+
+お顔を含む撮影の場合は、必ず事前にご確認いたします。
+撮影・投稿を希望されない場合は、遠慮なくお申し出ください。
+
+※目元のみ、施術部分のみの撮影も可能です。</textarea>
+                </div>
+                <div class="template-buttons">
+                    <button class="template-btn" onclick="useTemplate('photo', 'full')">全体公開</button>
+                    <button class="template-btn" onclick="useTemplate('photo', 'partial')">部分公開</button>
+                    <button class="template-btn" onclick="useTemplate('photo', 'optional')">任意選択</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- プレビューセクション -->
+        <div class="preview-section" id="preview-section" style="display: none;">
+            <div class="preview-title">お客様に表示される内容</div>
+            <div class="preview-content" id="preview-content">
+                プレビュー内容がここに表示されます
+            </div>
+        </div>
+    </div>
+    
+    <div class="fixed-footer">
+        <div class="footer-info">
+            ※ 変更は自動保存されます
+        </div>
+        <div class="footer-buttons">
+            <button class="btn-secondary" onclick="goBack()">キャンセル</button>
+            <button class="btn-primary" onclick="saveAndBack()">保存して戻る</button>
+        </div>
+    </div>
+    
+    <script>
+        // セクションのON/OFF切り替え
+        function toggleSection(section) {
+            const toggle = document.getElementById(section + '-toggle');
+            const content = document.getElementById(section + '-content');
+            
+            if (toggle.checked) {
+                content.classList.remove('content-disabled');
+            } else {
+                content.classList.add('content-disabled');
+            }
+            
+            // 自動保存（実際の実装では、APIを呼ぶ）
+            autoSave();
+        }
+        
+        // テンプレート適用
+        function useTemplate(section, type) {
+            const templates = {
+                age: {
+                    strict: '当サロンでは、18歳未満のお客様の施術は一切お断りしております。\n\n年齢確認のため、身分証明書のご提示をお願いする場合がございます。',
+                    standard: '当サロンでは、18歳未満のお客様のご利用には親権者の同意が必要です。\n\n18歳未満の方は、必ず親権者の方と一緒にご来店いただくか、事前に親権者の同意書をご提出ください。\n\nなお、中学生以下のお客様は、親権者の同伴が必須となります。',
+                    flexible: '18歳未満のお客様は、親権者の同意が必要です。\n\n高校生の方は、同意書をご持参ください。\n中学生以下の方は、保護者の同伴をお願いします。'
+                },
+                skin: {
+                    detailed: '【重要】施術に関する免責事項\n\n施術により、以下のリスクがあることをご理解ください：\n\n1. アレルギー反応\n・使用する薬剤によるアレルギー\n・かぶれ、腫れ、赤み\n\n2. 肌トラブル\n・一時的な炎症\n・色素沈着\n・皮膚の過敏反応\n\n3. 体質による反応\n・個人差があります\n・予測困難な反応の可能性\n\n必ずパッチテストを実施し、48時間の経過観察を行います。\nトラブル発生時の医療費等は、お客様負担となります。',
+                    standard: '施術により、まれに以下のような症状が現れる場合があります：\n・赤み、腫れ、かゆみ\n・一時的な色素沈着\n・アレルギー反応\n\nお客様の体質や肌の状態により、施術後に予期せぬ反応が生じる可能性があります。施術前に必ずパッチテストを実施させていただきます。\n\n万が一、施術によるトラブルが発生した場合、当サロンでは応急処置は行いますが、それ以上の責任は負いかねますことをご了承ください。\n\nアレルギー体質の方、皮膚疾患をお持ちの方は、事前に必ずお申し出ください。',
+                    simple: '施術による肌トラブルのリスクをご理解ください。\n\nアレルギーや肌トラブルが発生する可能性があります。\n事前のパッチテストにご協力ください。'
+                },
+                cancel: {
+                    strict: '【厳格なキャンセルポリシー】\n\n・3日前まで：無料\n・2日前：30%\n・前日：50%\n・当日：100%\n・無断キャンセル：100% + 次回予約不可\n\nいかなる理由でもキャンセル料が発生します。',
+                    standard: '【キャンセル・変更について】\n\n・前日まで：無料でキャンセル・変更可能\n・当日キャンセル：施術料金の50%\n・無断キャンセル：施術料金の100%\n\n※台風等の自然災害による場合は、キャンセル料は発生しません。\n※体調不良の場合は、お早めにご連絡ください。\n\n度重なる当日キャンセルや無断キャンセルの場合、今後のご予約をお断りする場合がございます。',
+                    flexible: 'キャンセルは前日までにご連絡ください。\n\n当日キャンセルはご遠慮いただいております。\n無断キャンセルの場合、次回のご予約をお受けできない場合があります。'
+                },
+                pregnancy: {
+                    strict: '妊娠中の方への施術は、安全上の理由により一切お断りしております。\n\n産後3ヶ月以降から施術可能です。',
+                    partial: '妊娠中または妊娠の可能性がある方へ：\n\n安全のため、以下の施術はお受けいただけません：\n・まつげパーマ（薬剤使用のため）\n・眉毛ワックス（刺激が強いため）\n\n妊娠中はホルモンバランスの変化により、通常とは異なる反応が出る可能性があります。\n\n施術をご希望の場合は、必ず事前にご相談ください。\nお客様と赤ちゃんの安全を最優先に考えております。',
+                    consultation: '妊娠中の方は、事前にご相談ください。\n\n体調や週数により、施術内容を調整させていただきます。'
+                },
+                photo: {
+                    full: '施術例として、お顔を含む写真をSNSに投稿させていただきます。\n\n撮影・投稿にご同意いただけない場合は、施術をお受けいただけません。',
+                    partial: '施術後のお写真撮影について：\n\n当サロンでは、技術向上とお客様への施術例のご紹介のため、施術後のお写真を撮影させていただく場合がございます。\n\n撮影したお写真は、以下の用途で使用させていただく可能性があります：\n・サロンのInstagram、Facebook等のSNS\n・サロンのホームページ\n・店内での施術例展示\n\nお顔を含む撮影の場合は、必ず事前にご確認いたします。\n撮影・投稿を希望されない場合は、遠慮なくお申し出ください。\n\n※目元のみ、施術部分のみの撮影も可能です。',
+                    optional: '施術後の写真撮影は任意です。\n\nSNS投稿をご希望の方には、特典をご用意しています。'
+                }
+            };
+            
+            const textarea = document.getElementById(section + '-text');
+            if (templates[section] && templates[section][type]) {
+                textarea.value = templates[section][type];
+                autoSave();
+            }
+        }
+        
+        // プレビュー表示
+        function preview() {
+            const previewSection = document.getElementById('preview-section');
+            const previewContent = document.getElementById('preview-content');
+            
+            let content = '<div style="font-weight: bold; margin-bottom: 15px; color: #E91E63;">ご予約にあたっての確認事項</div>';
+            
+            // 各セクションの内容を収集
+            const sections = [
+                { id: 'age', title: '👶 年齢制限について' },
+                { id: 'skin', title: '⚠️ 施術に関する注意事項' },
+                { id: 'cancel', title: '🚫 キャンセルポリシー' },
+                { id: 'pregnancy', title: '🤰 妊娠中の方へ' },
+                { id: 'photo', title: '📸 写真撮影について' }
+            ];
+            
+            sections.forEach(section => {
+                const toggle = document.getElementById(section.id + '-toggle');
+                const text = document.getElementById(section.id + '-text');
+                
+                if (toggle.checked) {
+                    content += `<div style="margin-top: 20px;">`;
+                    content += `<div style="font-weight: bold; color: #333; margin-bottom: 10px;">${section.title}</div>`;
+                    content += `<div style="white-space: pre-wrap; color: #666;">${text.value}</div>`;
+                    content += `</div>`;
+                }
+            });
+            
+            if (content === '<div style="font-weight: bold; margin-bottom: 15px; color: #E91E63;">ご予約にあたっての確認事項</div>') {
+                content += '<div style="color: #999; text-align: center; padding: 20px;">利用規約が設定されていません</div>';
+            } else {
+                content += '<div style="margin-top: 30px; padding: 15px; background: #FFF3E0; border-radius: 8px;">';
+                content += '<label style="display: flex; align-items: flex-start; cursor: pointer;">';
+                content += '<input type="checkbox" style="margin-right: 10px; margin-top: 3px;">';
+                content += '<span style="font-size: 13px; line-height: 1.5;">上記の内容を確認し、同意します</span>';
+                content += '</label>';
+                content += '</div>';
+            }
+            
+            previewContent.innerHTML = content;
+            previewSection.style.display = 'block';
+            
+            // プレビュー位置へスクロール
+            previewSection.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 自動保存
+        function autoSave() {
+            // 実際の実装では、ここでAPIを呼んで保存
+            console.log('自動保存しました');
+            
+            // 保存完了の視覚的フィードバック
+            const footerInfo = document.querySelector('.footer-info');
+            footerInfo.textContent = '✓ 保存しました';
+            setTimeout(() => {
+                footerInfo.textContent = '※ 変更は自動保存されます';
+            }, 2000);
+        }
+        
+        // 戻る
+        function goBack() {
+            if (confirm('変更は保存されています。設定画面に戻りますか？')) {
+                window.location.href = 'lina-owner-admin.html#settings';
+            }
+        }
+        
+        // 保存して戻る
+        function saveAndBack() {
+            autoSave();
+            window.location.href = 'lina-owner-admin.html#settings';
+        }
+        
+        // 入力時の自動保存
+        document.querySelectorAll('.form-textarea').forEach(textarea => {
+            let saveTimer;
+            textarea.addEventListener('input', () => {
+                clearTimeout(saveTimer);
+                saveTimer = setTimeout(autoSave, 1000);
+            });
+        });
+    </script>
+</body>
+</html>
