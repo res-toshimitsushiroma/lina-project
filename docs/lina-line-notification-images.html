@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINA LINE通知イメージ - 美容サロン予約システム</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .notification-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .category-title {
+            grid-column: 1 / -1;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .category-badge {
+            background: #E91E63;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+        
+        .category-badge.optional {
+            background: #FF9800;
+        }
+        
+        .category-badge.admin {
+            background: #9C27B0;
+        }
+        
+        .phone-container {
+            background: white;
+            border-radius: 30px;
+            padding: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-width: 350px;
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .phone-screen {
+            background: #f5f5f5;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .status-bar {
+            background: white;
+            padding: 8px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .time {
+            font-weight: bold;
+        }
+        
+        .icons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .line-header {
+            background: #00B900;
+            color: white;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+        }
+        
+        .line-icon {
+            width: 30px;
+            height: 30px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .chat-container {
+            background: #C8DDE8;
+            min-height: 400px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .message {
+            max-width: 85%;
+            animation: messageSlide 0.3s ease-out;
+        }
+        
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .message.bot {
+            align-self: flex-start;
+        }
+        
+        .message-bubble {
+            background: white;
+            padding: 12px;
+            border-radius: 15px;
+            border-top-left-radius: 3px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .message-time {
+            font-size: 10px;
+            color: #999;
+            margin-top: 4px;
+            margin-left: 5px;
+        }
+        
+        .rich-content {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .line-button {
+            background: #00B900;
+            color: white;
+            padding: 10px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .line-button:hover {
+            background: #00A000;
+            transform: scale(1.02);
+        }
+        
+        .line-button.secondary {
+            background: white;
+            color: #00B900;
+            border: 2px solid #00B900;
+        }
+        
+        .line-button.secondary:hover {
+            background: #f0fff0;
+        }
+        
+        .info-card {
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 13px;
+        }
+        
+        .info-label {
+            color: #666;
+        }
+        
+        .info-value {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .notification-label {
+            background: #E91E63;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .notification-label.optional {
+            background: #FF9800;
+        }
+        
+        .notification-label.special {
+            background: #9C27B0;
+        }
+        
+        .input-area {
+            background: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .input-field {
+            flex: 1;
+            background: #f5f5f5;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .send-button {
+            background: #00B900;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        /* レスポンシブ対応 */
+        @media (max-width: 768px) {
+            .notification-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .phone-container {
+                margin: 0 auto;
+            }
+        }
+        
+        /* 印刷用CSS */
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .notification-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .phone-container {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📱 LINA LINE通知イメージ</h1>
+        <p>実際にお客様に届くLINE通知のサンプル画面</p>
+    </div>
+    
+    <div class="container">
+        <!-- 必須通知 -->
+        <div class="notification-grid">
+            <div class="category-title">
+                <span>📌 必須通知</span>
+                <span class="category-badge">必須</span>
+                <span style="margin-left: auto; font-size: 14px; font-weight: normal; color: #666;">
+                    すべてのお客様に自動送信される基本通知
+                </span>
+            </div>
+            
+            <!-- 予約完了通知 -->
+            <div class="phone-container">
+                <div class="notification-label">予約完了通知</div>
+                <div class="phone-screen">
+                    <div class="status-bar">
+                        <span class="time">10:30</span>
+                        <span class="icons">📶 📶 🔋</span>
+                    </div>
+                    <div class="line-header">
+                        <div class="line-icon">💇</div>
+                        <span>美容サロン LINA</span>
+                    </div>
+                    <div class="chat-container">
+                        <div class="message bot">
+                            <div class="message-bubble">
+                                ✨ ご予約ありがとうございます！
+                                
+                                <div class="info-card">
+                                    <div class="info-row">
+                                        <span class="info-label">📅 日付</span>
+                                        <span class="info-value">1月15日(水)</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="info-label">⏰ 時間</span>
+                                        <span class="info-value">14:00〜15:30</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="info-label">✂️ メニュー</span>
+                                        <span class="info-value">まつげパーマ</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="button-group">
+                                    <div class="line-button">予約内容を確認</div>
+                                    <div class="line-button secondary">予約を変更</div>
+                                </div>
+                            </div>
+                            <div class="message-time">10:30</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 前日リマインダー -->
+            <div class="phone-container">
+                <div class="notification-label">前日リマインダー</div>
+                <div class="phone-screen">
+                    <div class="status-bar">
+                        <span class="time">19:00</span>
+                        <span class="icons">📶 📶 🔋</span>
+                    </div>
+                    <div class="line-header">
+                        <div class="line-icon">💇</div>
+                        <span>美容サロン LINA</span>
+                    </div>
+                    <div class="chat-container">
+                        <div class="message bot">
+                            <div class="message-bubble">
+                                🔔 明日のご予約のお知らせです
+                                
+                                <div class="info-card">
+                                    <div class="info-row">
+                                        <span class="info-label">📅 明日</span>
+                                        <span class="info-value">1月15日(水)</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="info-label">⏰ 時間</span>
+                                        <span class="info-value">14:00〜</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="info-label">📍 場所</span>
+                                        <span class="info-value">美容サロンLINA</span>
+                                    </div>
+                                </div>
+                                
+                                お気をつけてお越しください😊
+                                
+                                <div class="button-group">
+                                    <div class="line-button">地図を見る</div>
+                                </div>
+                            </div>
+                            <div class="message-time">19:00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 予約変更完了 -->
+            <div class="phone-container">
+                <div class="notification-label">予約変更完了</div>
+                <div class="phone-screen">
+                    <div class="status-bar">
+                        <span class="time">15:45</span>
+                        <span class="icons">📶 📶 🔋</span>
+                    </div>
+                    <div class="line-header">
+                        <div class="line-icon">💇</div>
+                        <span>美容サロン LINA</span>
+                    </div>
+                    <div class="chat-container">
+                        <div class="message bot">
+                            <div class="message-bubble">
+                                ✅ 予約を変更しました
+                                
+                                <div class="info-card">
+                                    <div style="background: #FFE8F0; padding: 8px; border-radius: 5px; margin-bottom: 8px;">
+                                        <div style="font-size: 12px; color: #666;">変更前</div>
+                                        <div style="text-decoration: line-through; color: #999;">
+                                            1/15(水) 14:00〜
+                                        </div>
+                                    </div>
+                                    <div style="background: #E8F5E9; padding: 8px; border-radius: 5px;">
+                                        <div style="font-size: 12px; color: #666;">変更後</div>
+                                        <div style="font-weight: bold; color: #2E7D32;">
+                                            1/18(土) 10:00〜
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                変更を承りました。
+                                お待ちしております✨
+                            </div>
+                            <div class="message-time">15:45</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- キャンセル完了 -->
+            <div class="phone-container">
+                <div class="notification-label">キャンセル完了</div>
+                <div class="phone-screen">
+                    <div class="status-bar">
+                        <span class="time">11:20</span>
+                        <span class="icons">📶 📶 🔋</span>
+                    </div>
+                    <div class="line-header">
+                        <div class="line-icon">💇</div>
+                        <span>美容サロン LINA</span>
+                    </div>
+                    <div class="chat-container">
+                        <div class="message bot">
+                            <div class="message-bubble">
+                                予約をキャンセルしました
+                                
+                                <div class="info-card" style="background: #fff3e0;">
+                                    <div style="text-align: center; padding: 10px;">
+                                        <div style="font-size: 24px; margin-bottom: 5px;">😔</div>
+                                        <div style="color: #666; font-size: 12px;">
+                                            1月15日(水) 14:00〜<br>
+                                            のご予約をキャンセルしました
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                またのご予約をお待ちしております。
+                                
+                                <div class="button-group">
+                                    <div class="line-button">新規予約する</div>
+                                </div>
+                            </div>
+                            <div class="message-time">11:20</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- オプション通知 -->
+        <div class="notification-grid">
+            <div class="category-title">
+                <span>⚙️ オプション通知</span>
+                <span class="category-badge optional">オプション</span>
+                <span style="margin-left: auto; font-size: 14px; font-weight: normal; color: #666;">
+                    設定によって送信される追加通知
+                </span>
+            </div>
+            
+            <!-- 当日朝リマインダー -->
+            <div class="phone-container">
+                <div class="notification-label optional">当日朝リマインダー</div>
+                <div class="phone-screen">
+                    <div class="status-bar">
+                        <span class="time">9:00</span>
+                        <span class="icons">📶 📶 🔋</span>
+                    </div>
+                    <div class="line-header">
+                        <div class="line-icon">💇</div>
+                        <span>美容サロン LINA</span>
+                    </div>
+                    <div class="chat-container">
+                        <div class="message bot">
+                            <div class="message-bubble">
+                                おはようございます☀️
+                                
+                                本日のご予約確認です
+                                
+                                <div class="info-card" style="background: #E3F2FD;">
+                                    <div style="text-align: center; padding: 10px;">
+                                        <div style="font-size: 20px; font-weight: bold; color: #1976D2;">
+                                            本日 14:00〜
+                                        </div>
+                                        <div style="margin-top: 5px; color: #666;">
+                                            まつげパーマ
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                お気をつけてお越しください♪
+                            </div>
+                            <div class="message-time">9:00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 施術後お礼 -->
+            <div class="phone-container">
+                <div class="notification-label optional">施術後お礼</div>
+                <div class="phone-screen">
+                    <div class="status-bar">
+                        <span class="time">20:00</span>
+                        <span class="icons">📶 📶 🔋</span>
+                    </div>
+                    <div class="line-header">
+                        <div class="line-icon">💇</div>
+                        <span>美容サロン LINA</span>
+                    </div>
+                    <div class="chat-container">
+                        <div class="message bot">
+                            <div class="message-bubble">
+                                本日はご来店ありがとうございました💝
+                                
+                                仕上がりはいかがでしょうか？
+                                
+                                <div style="background: #FFF8E1; padding: 12px; border-radius: 8px; margin: 10px 0;">
+                                    <div style="font-size: 12px; color: #666; margin-bottom: 5px;">
+                                        💡 アフターケアのポイント
+                                    </div>
+                                    <div style="font-size: 13px; line-height: 1.5;">
+                                        ・24時間は目元を濡らさない<br>
+                                        ・こすらないよう注意<br>
+                                        ・オイルクレンジングNG
+                                    </div>
+                                </div>
+                                
+                                何かご不明点がございましたら
+                                お気軽にご連絡ください😊
+                                
+                                <div class="button-group">
+                                    <div class="line-button">次回予約する</div>
+                                </div>
+                            </div>
+                            <div class="message-time">20:00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 台風接近通知 -->
+            <div class="phone-container">
+                <div class="notification-label optional">台風接近通知（沖縄特有）</div>
+                <div class="phone-screen">
+                    <div class="status-bar">
+                        <span class="time">12:00</span>
+                        <span class="icons">📶 📶 🔋</span>
+                    </div>
+                    <div class="line-header">
+                        <div class="line-icon">💇</div>
+                        <span>美容サロン LINA</span>
+                    </div>
+                    <div class="chat-container">
+                        <div class="message bot">
+                            <div class="message-bubble">
+                                🌀 台風情報のお知らせ
+                                
+                                <div class="info-card" style="background: #FFEBEE; border: 1px solid #FF5252;">
+                                    <div style="text-align: center; padding: 10px;">
+                                        <div style="font-size: 16px; font-weight: bold; color: #D32F2F; margin-bottom: 5px;">
+                                            台風14号接近中
+                                        </div>
+                                        <div style="font-size: 12px; color: #666;">
+                                            3日後（土曜日）に<br>
+                                            沖縄本島に最接近予定
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                ⚠️ ご予約のお客様へ
+                                
+                                土曜日にご予約の方は、
+                                無料で日程変更が可能です。
+                                
+                                暴風警報発令時は
+                                キャンセル料はいただきません。
+                                
+                                <div class="button-group">
+                                    <div class="line-button">予約を確認する</div>
+                                    <div class="line-button secondary">日程を変更する</div>
+                                </div>
+                            </div>
+                            <div class="message-time">12:00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 暴風警報発令 -->
+            <div class="phone-container">
+                <div class="notification-label optional">暴風警報発令（沖縄特有）</div>
+                <div class="phone-screen">
+                    <div class="status-bar">
+                        <span class="time">6:30</span>
+                        <span class="icons">📶 📶 🔋</span>
+                    </div>
+                    <div class="line-header">
+                        <div class="line-icon">💇</div>
+                        <span>美容サロン LINA</span>
+                    </div>
+                    <div class="chat-container">
+                        <div class="message bot">
+                            <div class="message-bubble">
+                                🚨 緊急のお知らせ
+                                
+                                <div class="info-card" style="background: #D32F2F; color: white; text-align: center;">
+                                    <div style="padding: 10px;">
+                                        <div style="font-size: 16px; font-weight: bold;">
+                                            暴風警報発令
+                                        </div>
+                                        <div style="font-size: 12px; margin-top: 5px;">
+                                            本日は臨時休業いたします
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                📅 本日ご予約のお客様へ
+                                
+                                安全のため、本日の営業を
+                                中止させていただきます。
+                                
+                                ✅ キャンセル料は無料です
+                                ✅ 振替日程をご案内します
+                                
+                                皆様の安全を最優先に
+                                考えております。
+                                
+                                どうぞお気をつけてお過ごしください。
+                            </div>
+                            <div class="message-time">6:30</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 次回予約案内 -->
+            <div class="phone-container">
+                <div class="notification-label optional">次回予約案内</div>
+                <div class="phone-screen">
+                    <div class="status-bar">
+                        <span class="time">15:00</span>
+                        <span class="icons">📶 📶 🔋</span>
+                    </div>
+                    <div class="line-header">
+                        <div class="line-icon">💇</div>
+                        <span>美容サロン LINA</span>
+                    </div>
+                    <div class="chat-container">
+                        <div class="message bot">
+                            <div class="message-bubble">
+                                こんにちは😊
+                                
+                                前回の施術から1ヶ月が
+                                経ちました✨
+                                
+                                <div class="info-card" style="background: #F3E5F5;">
+                                    <div style="text-align: center; padding: 10px;">
+                                        <div style="font-size: 20px; margin-bottom: 5px;">💅</div>
+                                        <div style="font-size: 14px; color: #7B1FA2;">
+                                            そろそろメンテナンス<br>
+                                            いかがですか？
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                今月のおすすめ
+                                ・まつげパーマ → リペア
+                                ・眉毛ワックス → 整え
+                                
+                                <div class="button-group">
+                                    <div class="line-button">空き状況を見る</div>
+                                    <div class="line-button secondary">今回はスキップ</div>
+                                </div>
+                            </div>
+                            <div class="message-time">15:00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 空き枠通知 -->
+            <div class="phone-container">
+                <div class="notification-label optional">空き枠通知</div>
+                <div class="phone-screen">
+                    <div class="status-bar">
+                        <span class="time">10:00</span>
+                        <span class="icons">📶 📶 🔋</span>
+                    </div>
+                    <div class="line-header">
+                        <div class="line-icon">💇</div>
+                        <span>美容サロン LINA</span>
+                    </div>
+                    <div class="chat-container">
+                        <div class="message bot">
+                            <div class="message-bubble">
+                                📢 本日の空き枠のお知らせ
+                                
+                                <div class="info-card" style="background: #E8F5E9;">
+                                    <div style="padding: 10px;">
+                                        <div style="font-size: 14px; font-weight: bold; color: #2E7D32; margin-bottom: 8px;">
+                                            本日予約可能！
+                                        </div>
+                                        <div style="font-size: 13px; line-height: 1.8;">
+                                            ⏰ 13:00〜14:30<br>
+                                            ⏰ 16:00〜17:30<br>
+                                            ⏰ 18:00〜19:30
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                急なご予約も承っております♪
+                                
+                                <div class="button-group">
+                                    <div class="line-button">今すぐ予約する</div>
+                                </div>
+                            </div>
+                            <div class="message-time">10:00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 管理者用通知 -->
+        <div class="notification-grid">
+            <div class="category-title">
+                <span>🔧 管理者用通知</span>
+                <span class="category-badge admin">管理者</span>
+                <span style="margin-left: auto; font-size: 14px; font-weight: normal; color: #666;">
+                    システムメンテナンスなどの特別な通知
+                </span>
+            </div>
+            
+            <!-- メンテナンス通知 -->
+            <div class="phone-container">
+                <div class="notification-label special">メンテナンス通知</div>
+                <div class="phone-screen">
+                    <div class="status-bar">
+                        <span class="time">21:00</span>
+                        <span class="icons">📶 📶 🔋</span>
+                    </div>
+                    <div class="line-header">
+                        <div class="line-icon">💇</div>
+                        <span>美容サロン LINA</span>
+                    </div>
+                    <div class="chat-container">
+                        <div class="message bot">
+                            <div class="message-bubble">
+                                📋 システムメンテナンスのお知らせ
+                                
+                                <div class="info-card" style="background: #F3E5F5; border: 1px solid #9C27B0;">
+                                    <div style="padding: 10px;">
+                                        <div style="font-size: 14px; font-weight: bold; color: #7B1FA2; margin-bottom: 8px;">
+                                            メンテナンス予定
+                                        </div>
+                                        <div style="font-size: 13px; line-height: 1.6;">
+                                            📅 1月20日(月) <br>
+                                            ⏰ 深夜2:00〜4:00<br>
+                                            　 （約2時間）
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                上記時間帯は
+                                予約システムをご利用いただけません。
+                                
+                                ご不便をおかけしますが、
+                                より良いサービスのため
+                                ご理解をお願いいたします。
+                                
+                                <div style="margin-top: 10px; padding: 10px; background: #fff8e1; border-radius: 8px; font-size: 12px; color: #666;">
+                                    ※ 既存のご予約には影響ありません
+                                </div>
+                            </div>
+                            <div class="message-time">21:00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // メッセージのアニメーション
+        const messages = document.querySelectorAll('.message');
+        messages.forEach((message, index) => {
+            message.style.animationDelay = `${index * 0.2}s`;
+        });
+        
+        // ボタンクリックのフィードバック
+        document.querySelectorAll('.line-button').forEach(button => {
+            button.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                    alert('この機能は実際のLINAシステムで動作します');
+                }, 100);
+            });
+        });
+        
+        // スクロール表示アニメーション
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.phone-container').forEach(container => {
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(20px)';
+            container.style.transition = 'all 0.6s ease-out';
+            observer.observe(container);
+        });
+    </script>
+</body>
+</html>

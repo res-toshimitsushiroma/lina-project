@@ -1,616 +1,757 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LINA - LINE連携型サロン予約管理システム</title>
-    <link rel="icon" type="image/png" href="demo/LINA_icon_1_1.png">
-    <link rel="apple-touch-icon" href="demo/LINA_icon_1_3.png">
-    <meta name="application-name" content="LINA">
-    
+    <link rel="icon" type="image/png" href="demo/LINA_icon_1_1.png" />
+    <link rel="apple-touch-icon" href="demo/LINA_icon_1_3.png" />
+    <meta name="application-name" content="LINA" />
+
     <!-- OGP設定 -->
-    <meta property="og:title" content="LINA - 美容サロン向け予約管理システム">
-    <meta property="og:description" content="LINE×Google完全統合で10年間完全無料。個人サロンに最適な予約管理システム">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="images/ogp.png">
-    
+    <meta property="og:title" content="LINA - 美容サロン向け予約管理システム" />
+    <meta
+      property="og:description"
+      content="LINE×Google完全統合で10年間完全無料。個人サロンに最適な予約管理システム"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="images/ogp.png" />
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        line-height: 1.6;
+        color: #333;
+      }
+
+      /* ヘッダー */
+      header {
+        background: #ffffff;
+        color: #333;
+        padding: 15px 0;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      nav {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 30px;
+        list-style: none;
+      }
+
+      .nav-links a {
+        color: #333;
+        text-decoration: none;
+        transition: opacity 0.3s;
+        font-weight: 500;
+      }
+
+      .nav-links a:hover {
+        opacity: 0.7;
+        color: #e91e63;
+      }
+
+      /* ヒーローセクション */
+      .hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 150px 20px 100px;
+        text-align: center;
+      }
+
+      .hero h1 {
+        font-size: 48px;
+        margin-bottom: 20px;
+        animation: fadeInUp 1s;
+      }
+
+      .hero p {
+        font-size: 20px;
+        margin-bottom: 40px;
+        opacity: 0.95;
+        animation: fadeInUp 1s 0.2s both;
+      }
+
+      .cta-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        animation: fadeInUp 1s 0.4s both;
+      }
+
+      .btn {
+        padding: 15px 40px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: transform 0.3s;
+        display: inline-block;
+      }
+
+      .btn:hover {
+        transform: translateY(-3px);
+      }
+
+      .btn-primary {
+        background: white;
+        color: #764ba2;
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: white;
+        border: 2px solid white;
+      }
+
+      /* 特徴セクション */
+      .features {
+        padding: 80px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .section-title {
+        text-align: center;
+        font-size: 36px;
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      .section-subtitle {
+        text-align: center;
+        color: #666;
+        margin-bottom: 60px;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 40px;
+      }
+
+      .feature-card {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .feature-icon {
+        font-size: 48px;
+        margin-bottom: 20px;
+      }
+
+      .feature-title {
+        font-size: 24px;
+        margin-bottom: 15px;
+        color: #333;
+      }
+
+      .feature-description {
+        color: #666;
+        line-height: 1.8;
+      }
+
+      /* デモセクション */
+      .demo-section {
+        background: #f9f9f9;
+        padding: 80px 20px;
+      }
+
+      .demo-container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 40px;
+        margin-top: 40px;
+      }
+
+      .demo-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+      }
+
+      .demo-card:hover {
+        transform: scale(1.05);
+      }
+
+      .demo-image {
+        width: 100%;
+        height: 200px;
+        background: linear-gradient(135deg, #d4a574 0%, #c19a6b 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 60px;
+        color: white;
+      }
+
+      .demo-content {
+        padding: 30px;
+      }
+
+      .demo-title {
+        font-size: 20px;
+        margin-bottom: 10px;
+        color: #333;
+      }
+
+      .demo-description {
+        color: #666;
+        margin-bottom: 20px;
+      }
+
+      .demo-link {
+        color: #f5a623;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      /* 価格セクション */
+      .pricing {
+        padding: 80px 20px;
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .price-card {
+        background: linear-gradient(135deg, #4caf50, #45a049);
+        color: white;
+        padding: 50px;
+        border-radius: 20px;
+        margin-top: 40px;
+      }
+
+      .price-tag {
+        font-size: 60px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      .price-features {
+        list-style: none;
+        margin: 30px 0;
+      }
+
+      .price-features li {
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      /* フッター */
+      footer {
+        background: #333;
+        color: white;
+        padding: 40px 20px;
+        text-align: center;
+      }
+
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .company-info {
+        margin-bottom: 20px;
+      }
+
+      .company-name {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+
+      /* アニメーション */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
         }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            line-height: 1.6;
-            color: #333;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
-        
-        /* ヘッダー */
-        header {
-            background: #ffffff;
-            color: #333;
-            padding: 15px 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-        
+      }
+
+      /* レスポンシブ */
+      @media (max-width: 768px) {
         .nav-links {
-            display: flex;
-            gap: 30px;
-            list-style: none;
+          display: none;
         }
-        
-        .nav-links a {
-            color: #333;
-            text-decoration: none;
-            transition: opacity 0.3s;
-            font-weight: 500;
-        }
-        
-        .nav-links a:hover {
-            opacity: 0.7;
-            color: #E91E63;
-        }
-        
-        /* ヒーローセクション */
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 150px 20px 100px;
-            text-align: center;
-        }
-        
+
         .hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            animation: fadeInUp 1s;
+          font-size: 32px;
         }
-        
-        .hero p {
-            font-size: 20px;
-            margin-bottom: 40px;
-            opacity: 0.95;
-            animation: fadeInUp 1s 0.2s both;
-        }
-        
+
         .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            animation: fadeInUp 1s 0.4s both;
+          flex-direction: column;
+          align-items: center;
         }
-        
-        .btn {
-            padding: 15px 40px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: transform 0.3s;
-            display: inline-block;
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-        }
-        
-        .btn-primary {
-            background: white;
-            color: #764ba2;
-        }
-        
-        .btn-secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-        }
-        
-        /* 特徴セクション */
-        .features {
-            padding: 80px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .section-title {
-            text-align: center;
-            font-size: 36px;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        
-        .section-subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 60px;
-        }
-        
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-        }
-        
-        .feature-card {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-        }
-        
-        .feature-icon {
-            font-size: 48px;
-            margin-bottom: 20px;
-        }
-        
-        .feature-title {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: #333;
-        }
-        
-        .feature-description {
-            color: #666;
-            line-height: 1.8;
-        }
-        
-        /* デモセクション */
-        .demo-section {
-            background: #f9f9f9;
-            padding: 80px 20px;
-        }
-        
-        .demo-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
+
         .demo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 40px;
-            margin-top: 40px;
+          grid-template-columns: 1fr;
         }
-        
-        .demo-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-        
-        .demo-card:hover {
-            transform: scale(1.05);
-        }
-        
-        .demo-image {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, #d4a574 0%, #c19a6b 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 60px;
-            color: white;
-        }
-        
-        .demo-content {
-            padding: 30px;
-        }
-        
-        .demo-title {
-            font-size: 20px;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .demo-description {
-            color: #666;
-            margin-bottom: 20px;
-        }
-        
-        .demo-link {
-            color: #f5a623;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        
-        /* 価格セクション */
-        .pricing {
-            padding: 80px 20px;
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        
-        .price-card {
-            background: linear-gradient(135deg, #4caf50, #45a049);
-            color: white;
-            padding: 50px;
-            border-radius: 20px;
-            margin-top: 40px;
-        }
-        
-        .price-tag {
-            font-size: 60px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        
-        .price-features {
-            list-style: none;
-            margin: 30px 0;
-        }
-        
-        .price-features li {
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-        }
-        
-        /* フッター */
-        footer {
-            background: #333;
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-        }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .company-info {
-            margin-bottom: 20px;
-        }
-        
-        .company-name {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-        
-        /* アニメーション */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* レスポンシブ */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            
-            .hero h1 {
-                font-size: 32px;
-            }
-            
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .demo-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- ヘッダー -->
     <header>
-        <nav>
-            <div class="logo">
-                <img src="demo/LINA_icon_1_2.png" alt="LINA" style="height: 40px; width: auto;">
-            </div>
-            <ul class="nav-links">
-                <li><a href="#features">特徴</a></li>
-                <li><a href="#demo">デモ</a></li>
-                <li><a href="#pricing">料金</a></li>
-                <li><a href="#contact">お問い合わせ</a></li>
-            </ul>
-        </nav>
+      <nav>
+        <div class="logo">
+          <img
+            src="demo/LINA_icon_1_2.png"
+            alt="LINA"
+            style="height: 40px; width: auto"
+          />
+        </div>
+        <ul class="nav-links">
+          <li><a href="#features">特徴</a></li>
+          <li><a href="#demo">デモ</a></li>
+          <li><a href="#pricing">料金</a></li>
+          <li><a href="#contact">お問い合わせ</a></li>
+        </ul>
+      </nav>
     </header>
-    
+
     <!-- ヒーローセクション -->
     <section class="hero">
-        <h1>美容サロンの予約管理を<br>もっとシンプルに</h1>
-        <p>LINE×Google完全統合型 予約管理システム</p>
-        <div class="cta-buttons">
-            <a href="#demo" class="btn btn-primary">デモを見る</a>
-            <a href="#features" class="btn btn-secondary">詳しく見る</a>
-        </div>
+      <h1>美容サロンの予約管理を<br />もっとシンプルに</h1>
+      <p>LINE×Google完全統合型 予約管理システム</p>
+      <div class="cta-buttons">
+        <a href="#demo" class="btn btn-primary">デモを見る</a>
+        <a href="#features" class="btn btn-secondary">詳しく見る</a>
+      </div>
     </section>
-    
+
     <!-- 特徴セクション -->
     <section id="features" class="features">
-        <h2 class="section-title">LINAの特徴</h2>
-        <p class="section-subtitle">個人サロンオーナー様のために設計された機能</p>
-        
-        <div class="feature-grid">
-            <div class="feature-card">
-                <div class="feature-icon">💬</div>
-                <h3 class="feature-title">LINE完全統合</h3>
-                <p class="feature-description">
-                    お客様はLINEから直接予約。<br>
-                    新しいアプリのインストール不要で<br>
-                    離脱率を最小限に抑えます。
-                </p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">☁️</div>
-                <h3 class="feature-title">Google連携</h3>
-                <p class="feature-description">
-                    Googleフォトで施術写真を無制限保存。<br>
-                    カレンダー同期で予約管理も簡単。<br>
-                    10年間完全無料で運用可能。
-                </p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3 class="feature-title">経営分析機能</h3>
-                <p class="feature-description">
-                    売上・顧客分析を自動化。<br>
-                    確定申告用のPDFレポート作成。<br>
-                    前年比較で成長を可視化。
-                </p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🎨</div>
-                <h3 class="feature-title">施術記録管理</h3>
-                <p class="feature-description">
-                    Before/After写真を簡単管理。<br>
-                    顧客ごとの施術履歴を記録。<br>
-                    次回への申し送りメモ機能。
-                </p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">👥</div>
-                <h3 class="feature-title">顧客管理</h3>
-                <p class="feature-description">
-                    VIP顧客の自動判定。<br>
-                    顧客メモで接客品質向上。<br>
-                    リピート率の自動計算。
-                </p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🔐</div>
-                <h3 class="feature-title">データ管理</h3>
-                <p class="feature-description">
-                    サロンIDによる一元管理。<br>
-                    退会時の完全データ削除。<br>
-                    自動バックアップで安心。
-                </p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🌀</div>
-                <h3 class="feature-title">台風対策機能</h3>
-                <p class="feature-description">
-                    沖縄の気候に完全対応。<br>
-                    台風接近時の自動通知。<br>
-                    暴風警報時のキャンセルポリシー設定。
-                </p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🏢</div>
-                <h3 class="feature-title">シェアサロン対応</h3>
-                <p class="feature-description">
-                    準備・片付け時間の自動考慮。<br>
-                    他オーナーとのバッティング防止。<br>
-                    スペース共有の最適化。
-                </p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">📋</div>
-                <h3 class="feature-title">利用規約・顧客管理</h3>
-                <p class="feature-description">
-                    カスタマイズ可能な利用規約。<br>
-                    問題顧客のブロック機能。<br>
-                    トラブルを未然に防止。
-                </p>
-            </div>
+      <h2 class="section-title">LINAの特徴</h2>
+      <p class="section-subtitle">個人サロンオーナー様のために設計された機能</p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3 class="feature-title">LINE完全統合</h3>
+          <p class="feature-description">
+            お客様はLINEから直接予約。<br />
+            新しいアプリのインストール不要で<br />
+            離脱率を最小限に抑えます。
+          </p>
         </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">☁️</div>
+          <h3 class="feature-title">Google連携</h3>
+          <p class="feature-description">
+            Googleフォトで施術写真を無制限保存。<br />
+            カレンダー同期で予約管理も簡単。<br />
+            10年間完全無料で運用可能。
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3 class="feature-title">経営分析機能</h3>
+          <p class="feature-description">
+            売上・顧客分析を自動化。<br />
+            確定申告用のPDFレポート作成。<br />
+            前年比較で成長を可視化。
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🎨</div>
+          <h3 class="feature-title">施術記録管理</h3>
+          <p class="feature-description">
+            Before/After写真を簡単管理。<br />
+            顧客ごとの施術履歴を記録。<br />
+            次回への申し送りメモ機能。
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">👥</div>
+          <h3 class="feature-title">顧客管理</h3>
+          <p class="feature-description">
+            VIP顧客の自動判定。<br />
+            顧客メモで接客品質向上。<br />
+            リピート率の自動計算。
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔐</div>
+          <h3 class="feature-title">データ管理</h3>
+          <p class="feature-description">
+            サロンIDによる一元管理。<br />
+            退会時の完全データ削除。<br />
+            自動バックアップで安心。
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🌀</div>
+          <h3 class="feature-title">台風対策機能</h3>
+          <p class="feature-description">
+            沖縄の気候に完全対応。<br />
+            台風接近時の自動通知。<br />
+            暴風警報時のキャンセルポリシー設定。
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🏢</div>
+          <h3 class="feature-title">シェアサロン対応</h3>
+          <p class="feature-description">
+            準備・片付け時間の自動考慮。<br />
+            他オーナーとのバッティング防止。<br />
+            スペース共有の最適化。
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📋</div>
+          <h3 class="feature-title">利用規約・顧客管理</h3>
+          <p class="feature-description">
+            カスタマイズ可能な利用規約。<br />
+            問題顧客のブロック機能。<br />
+            トラブルを未然に防止。
+          </p>
+        </div>
+      </div>
     </section>
-    
+
     <!-- デモセクション -->
     <section id="demo" class="demo-section">
-        <div class="demo-container">
-            <h2 class="section-title">実際の画面を体験</h2>
-            <p class="section-subtitle">3つの画面でLINAの全機能をご確認いただけます</p>
-            
-            <div class="demo-grid">
-                <div class="demo-card">
-                    <div class="demo-image">🚀</div>
-                    <div class="demo-content">
-                        <h3 class="demo-title">オーナー様 初期設定</h3>
-                        <p class="demo-description">
-                            5ステップで完了する簡単セットアップ。<br>
-                            サロンID設定、LINE連携、Google連携まで。
-                        </p>
-                        <a href="demo/lina-owner-setup.html" class="demo-link" target="_blank">
-                            デモを見る →
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="demo-card">
-                    <div class="demo-image">📊</div>
-                    <div class="demo-content">
-                        <h3 class="demo-title">オーナー様 管理画面</h3>
-                        <p class="demo-description">
-                            予約管理、顧客管理、売上分析まで<br>
-                            全ての機能を1つの画面で操作。
-                        </p>
-                        <a href="demo/lina-owner-admin.html" class="demo-link" target="_blank">
-                            デモを見る →
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="demo-card">
-                    <div class="demo-image">📱</div>
-                    <div class="demo-content">
-                        <h3 class="demo-title">お客様 予約画面</h3>
-                        <p class="demo-description">
-                            LINEから直接アクセス。<br>
-                            3ステップで予約完了するシンプル設計。
-                        </p>
-                        <a href="demo/lina-customer.html" class="demo-link" target="_blank">
-                            デモを見る →
-                        </a>
-                    </div>
-                </div>
+      <div class="demo-container">
+        <h2 class="section-title">実際の画面を体験</h2>
+        <p class="section-subtitle">
+          3つの画面でLINAの全機能をご確認いただけます
+        </p>
+
+        <div class="demo-grid">
+          <div class="demo-card">
+            <div class="demo-image">🚀</div>
+            <div class="demo-content">
+              <h3 class="demo-title">オーナー様 初期設定</h3>
+              <p class="demo-description">
+                5ステップで完了する簡単セットアップ。<br />
+                サロンID設定、LINE連携、Google連携まで。
+              </p>
+              <a
+                href="demo/lina-owner-setup.html"
+                class="demo-link"
+                target="_blank"
+              >
+                デモを見る →
+              </a>
             </div>
+          </div>
+
+          <div class="demo-card">
+            <div class="demo-image">📊</div>
+            <div class="demo-content">
+              <h3 class="demo-title">オーナー様 管理画面</h3>
+              <p class="demo-description">
+                予約管理、顧客管理、売上分析まで<br />
+                全ての機能を1つの画面で操作。
+              </p>
+              <a
+                href="demo/lina-owner-admin.html"
+                class="demo-link"
+                target="_blank"
+              >
+                デモを見る →
+              </a>
+            </div>
+          </div>
+
+          <div class="demo-card">
+            <div class="demo-image">📱</div>
+            <div class="demo-content">
+              <h3 class="demo-title">お客様 予約画面</h3>
+              <p class="demo-description">
+                LINEから直接アクセス。<br />
+                3ステップで予約完了するシンプル設計。
+              </p>
+              <a
+                href="demo/lina-customer.html"
+                class="demo-link"
+                target="_blank"
+              >
+                デモを見る →
+              </a>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
-    
+
     <!-- プロジェクト資料 -->
-    <section class="project-docs" style="padding: 80px 20px; background: #f9f9f9;">
-        <h2 class="section-title">📚 プロジェクト資料</h2>
-        <p class="section-subtitle">LINAの詳細な資料をご覧いただけます</p>
-        
-        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px;">
-            <div style="background: white; border-radius: 15px; padding: 30px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s;">
-                <div style="font-size: 48px; margin-bottom: 20px;">📋</div>
-                <h3 style="font-size: 20px; margin-bottom: 15px; color: #333;">プロジェクト計画書</h3>
-                <p style="color: #666; font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
-                    開発計画、スケジュール、要件定義などの詳細ドキュメント
-                </p>
-                <a href="docs/lina-project-plan.html" target="_blank" style="display: inline-block; background: #E91E63; color: white; padding: 10px 25px; border-radius: 20px; text-decoration: none; transition: all 0.3s;">
-                    計画書を見る →
-                </a>
-            </div>
-            
-            <div style="background: white; border-radius: 15px; padding: 30px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s;">
-                <div style="font-size: 48px; margin-bottom: 20px;">📊</div>
-                <h3 style="font-size: 20px; margin-bottom: 15px; color: #333;">業務フロー図</h3>
-                <p style="color: #666; font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
-                    LINA利用の流れと3者の役割マップ（オーナー様向け）
-                </p>
-                <a href="docs/lina-business-flow.html" target="_blank" style="display: inline-block; background: #E91E63; color: white; padding: 10px 25px; border-radius: 20px; text-decoration: none; transition: all 0.3s;">
-                    フロー図を見る →
-                </a>
-            </div>
-            
-            <div style="background: white; border-radius: 15px; padding: 30px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s;">
-                <div style="font-size: 48px; margin-bottom: 20px;">💬</div>
-                <h3 style="font-size: 20px; margin-bottom: 15px; color: #333;">LINE連携資料</h3>
-                <p style="color: #666; font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
-                    リッチメニュー設定ガイドとデザインテンプレート
-                </p>
-                <a href="docs/lina-line-richmenu-guide.html" target="_blank" style="display: inline-block; background: #E91E63; color: white; padding: 10px 25px; border-radius: 20px; text-decoration: none; transition: all 0.3s;">
-                    設定ガイドを見る →
-                </a>
-            </div>
+    <section
+      class="project-docs"
+      style="padding: 80px 20px; background: #f9f9f9"
+    >
+      <h2 class="section-title">📚 プロジェクト資料</h2>
+      <p class="section-subtitle">LINAの詳細な資料をご覧いただけます</p>
+
+      <div
+        style="
+          max-width: 1200px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 30px;
+          margin-top: 40px;
+        "
+      >
+        <div
+          style="
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+          "
+        >
+          <div style="font-size: 48px; margin-bottom: 20px">📋</div>
+          <h3 style="font-size: 20px; margin-bottom: 15px; color: #333">
+            プロジェクト計画書
+          </h3>
+          <p
+            style="
+              color: #666;
+              font-size: 14px;
+              line-height: 1.6;
+              margin-bottom: 20px;
+            "
+          >
+            開発計画、スケジュール、要件定義などの詳細ドキュメント
+          </p>
+          <a
+            href="docs/lina-project-plan.html"
+            target="_blank"
+            style="
+              display: inline-block;
+              background: #e91e63;
+              color: white;
+              padding: 10px 25px;
+              border-radius: 20px;
+              text-decoration: none;
+              transition: all 0.3s;
+            "
+          >
+            計画書を見る →
+          </a>
         </div>
+
+        <div
+          style="
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+          "
+        >
+          <div style="font-size: 48px; margin-bottom: 20px">📊</div>
+          <h3 style="font-size: 20px; margin-bottom: 15px; color: #333">
+            業務フロー図
+          </h3>
+          <p
+            style="
+              color: #666;
+              font-size: 14px;
+              line-height: 1.6;
+              margin-bottom: 20px;
+            "
+          >
+            LINA利用の流れと3者の役割マップ（オーナー様向け）
+          </p>
+          <a
+            href="docs/lina-business-flow.html"
+            target="_blank"
+            style="
+              display: inline-block;
+              background: #e91e63;
+              color: white;
+              padding: 10px 25px;
+              border-radius: 20px;
+              text-decoration: none;
+              transition: all 0.3s;
+            "
+          >
+            フロー図を見る →
+          </a>
+        </div>
+
+        <div
+          style="
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+          "
+        >
+          <div style="font-size: 48px; margin-bottom: 20px">💬</div>
+          <h3 style="font-size: 20px; margin-bottom: 15px; color: #333">
+            LINE通知イメージ
+          </h3>
+          <p
+            style="
+              color: #666;
+              font-size: 14px;
+              line-height: 1.6;
+              margin-bottom: 20px;
+            "
+          >
+            お客様に届くLINE通知の実際の画面サンプル
+          </p>
+          <a
+            href="docs/lina-line-notification-images.html"
+            target="_blank"
+            style="
+              display: inline-block;
+              background: #e91e63;
+              color: white;
+              padding: 10px 25px;
+              border-radius: 20px;
+              text-decoration: none;
+              transition: all 0.3s;
+            "
+          >
+            設定ガイドを見る →
+          </a>
+        </div>
+      </div>
     </section>
-    
+
     <!-- 価格セクション -->
     <section id="pricing" class="pricing">
-        <h2 class="section-title">料金プラン</h2>
-        <p class="section-subtitle">全機能が使える安心プラン</p>
-        
-        <div class="price-card">
-            <div class="price-tag">¥0</div>
-            <p>永久無料プラン</p>
-            
-            <ul class="price-features">
-                <li>✅ 予約管理（無制限）</li>
-                <li>✅ 顧客管理（無制限）</li>
-                <li>✅ LINE自動配信</li>
-                <li>✅ 施術写真保存（無制限）</li>
-                <li>✅ 売上集計・レポート</li>
-                <li>✅ データバックアップ</li>
-                <li>✅ 10年間無料運用保証</li>
-            </ul>
-            
-            <p style="font-size: 14px; opacity: 0.9;">
-                ※Googleフォト連携により実現<br>
-                ※LINE公式アカウントは別途必要（無料プランあり）
-            </p>
-        </div>
+      <h2 class="section-title">料金プラン</h2>
+      <p class="section-subtitle">全機能が使える安心プラン</p>
+
+      <div class="price-card">
+        <div class="price-tag">¥0</div>
+        <p>永久無料プラン</p>
+
+        <ul class="price-features">
+          <li>✅ 予約管理（無制限）</li>
+          <li>✅ 顧客管理（無制限）</li>
+          <li>✅ LINE自動配信</li>
+          <li>✅ 施術写真保存（無制限）</li>
+          <li>✅ 売上集計・レポート</li>
+          <li>✅ データバックアップ</li>
+          <li>✅ 10年間無料運用保証</li>
+        </ul>
+
+        <p style="font-size: 14px; opacity: 0.9">
+          ※Googleフォト連携により実現<br />
+          ※LINE公式アカウントは別途必要（無料プランあり）
+        </p>
+      </div>
     </section>
-    
+
     <!-- フッター -->
     <footer id="contact">
-        <div class="footer-content">
-            <div class="company-info">
-                <h3 class="company-name">合同会社RES</h3>
-                <p>〒901-0504 沖縄県島尻郡八重瀬町字後原537</p>
-                <p>代表: 城間 敏光</p>
-                <p>Email: <a href="/cdn-cgi/l/email-protection#8ffcfaffffe0fdfbcffdeafcb9bebfa1ece0e2" style="color: #f5a623;"><span class="__cf_email__" data-cfemail="71020401011e0305310314024740415f121e1c">[info@res610.com]</span></a></p>
-            </div>
-            
-            <div style="margin-top: 30px; padding-top: 30px; border-top: 1px solid #555;">
-                <p>&copy; 2024 合同会社RES. All rights reserved.</p>
-            </div>
+      <div class="footer-content">
+        <div class="company-info">
+          <h3 class="company-name">合同会社RES</h3>
+          <p>〒901-0504 沖縄県島尻郡八重瀬町字後原537</p>
+          <p>代表: 城間 敏光</p>
+          <p>
+            Email:
+            <a
+              href="/cdn-cgi/l/email-protection#8ffcfaffffe0fdfbcffdeafcb9bebfa1ece0e2"
+              style="color: #f5a623"
+              ><span
+                class="__cf_email__"
+                data-cfemail="71020401011e0305310314024740415f121e1c"
+                >[info@res610.com]</span
+              ></a
+            >
+          </p>
         </div>
+
+        <div
+          style="
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #555;
+          "
+        >
+          <p>&copy; 2024 合同会社RES. All rights reserved.</p>
+        </div>
+      </div>
     </footer>
-    
+
     <script>
-        // スムーススクロール
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+      // スムーススクロール
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
             });
+          }
         });
-        
-        // ナビゲーションのスティッキー効果
-        window.addEventListener('scroll', function() {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 100) {
-                nav.style.background = 'rgba(255, 255, 255, 0.98)';
-                nav.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
-            } else {
-                nav.style.background = 'rgba(255, 255, 255, 0.95)';
-                nav.style.boxShadow = 'none';
-            }
-        });
+      });
+
+      // ナビゲーションのスティッキー効果
+      window.addEventListener("scroll", function () {
+        const nav = document.querySelector("nav");
+        if (window.scrollY > 100) {
+          nav.style.background = "rgba(255, 255, 255, 0.98)";
+          nav.style.boxShadow = "0 2px 10px rgba(0,0,0,0.1)";
+        } else {
+          nav.style.background = "rgba(255, 255, 255, 0.95)";
+          nav.style.boxShadow = "none";
+        }
+      });
     </script>
-</body>
+  </body>
 </html>
